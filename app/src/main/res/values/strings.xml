@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Timetable</string>
+
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <string name="dialog1_title">What do you want to do?</string>
+    <string name="dialog2_title">Edit %1$d. hour:</string>
+    <string name="dialog3_title_1">Subject for hour %1$d:</string>
+    <string name="dialog3_title_2">Delete this subject?</string>
+
+    <string name="Toast_saved">Saved</string>
+    <string name="Toast_deleted">Deleted</string>
+
+    <string name="TV_date">%1$s.%2$s.%3$s</string>
+
+    <string name="B_options">Options</string>
+    <string name="B_subject_color">Color</string>
+
+    <string name="B_mode">Finished</string>
+    <string name="B_mode_view">Edit plan</string>
+    <string name="B_subject_delete">Delete subject</string>
+    <string name="B_subject_save">Save</string>
+    <string name="TF_teacher">Teacher</string>
+    <string name="TF_room">Room</string>
+    <string name="TF_subject">Subject</string>
+    <string name="TF_notes" >Notes</string>
+
+
+    <string-array name="days">
+        <item></item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+        <item>@string/sunday</item>
+    </string-array>
+
+    <string-array name="suppAppChoices">
+        <item>@string/rateApp</item>
+        <item>@string/watchAd</item>
+        <item>@string/commentApp</item>
+    </string-array>
+
+    <string name="rateApp">Rate this App</string>
+    <string name="watchAd">Watch an short ad to support my work</string>
+    <string name="commentApp">Leave feedback in the Play Store</string>
+
+    <string name="TV_opt_1">Which days do you want to manage?</string>
+    <string name="TV_opt_1_to">to</string>
+    <string name="TV_opt_2">What are the maximum hours a day should have?</string>
+    <string name="TV_opt_3">Do you want to use the two-week system for the hours 8/9?</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="TV_opt_4">More actions:</string>
+
+    <string name="B_opt_delete">Delete a subject</string>
+    <string name="B_opt_supp_app">Support this app</string>
+    <string name="D_createSubject">Create new subject</string>
+    <string name="D_select_subject">Select subject</string>
+    <string name="D_freeHour">Set free hour</string>
+    <string name="D_delete_subject">Which subject do you want to delete?</string>
+    <string name="aboutApp">Programming: \n- Julius Henke
+                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
+                            \n\n© Julius Henke 2016</string>
+    <string name="B_opt_aboutApp">About App</string>
+
+    <string name="D_title_help">Tutorial</string>
+    <string name="D_help">Hi, thanks for using this App!
+                            \n\n1. To switch between days just swipe to the left and right.
+                            \n\n2. Tweak the timetable-settings to your liking by clicking the button [Options].
+                            \n\n3. You can always reedit your timetable by clicking the button [Edit plan].
+                            \n\nIf you have further questions or suggestions feel free to comment it in the Play Store.</string>
+    <string name="B_opt_help">Help</string>
+</resources>

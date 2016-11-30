@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Stundenplan</string>
+    <string name="friday">Freitag</string>
+    <string name="monday">Montag</string>
+    <string name="saturday">Samstag</string>
+    <string name="sunday">Sonntag</string>
+    <string name="thursday">Donnerstag</string>
+    <string name="tuesday">Dienstag</string>
+    <string name="wednesday">Mittwoch</string>
+    <string name="dialog2_title">%1$d. Stunde bearbeiten:</string>
+    <string name="dialog1_title">Was möchtest du machen?</string>
+    <string name="dialog3_title_2">Welches Fach möchtest du löschen?</string>
+    <string name="dialog3_title_1">Fach für Stunde %1$d:</string>
+    <string name="Toast_saved">Gespeichert</string>
+    <string name="Toast_deleted">Gelöscht</string>
+    <string name="TF_teacher">Leher/in</string>
+    <string name="TF_subject">Fach</string>
+    <string name="TF_room">Raum</string>
+    <string name="B_subject_save">Speichern</string>
+    <string name="B_subject_delete">Fach löschen</string>
+    <string name="B_subject_color">Farbe</string>
+    <string name="B_options">Optionen</string>
+    <string name="B_mode_view">Plan bearbeiten</string>
+    <string name="B_mode">Fertigstellen</string>
+    <string name="TF_notes">Notizen</string>
+    <string name="B_opt_delete">Ein Fach löschen</string>
+    <string name="B_opt_supp_app">Diese App unterstützen</string>
+    <string name="No">Nein</string>
+    <string name="TV_opt_1">Welche Tage willst du managen?</string>
+    <string name="TV_opt_1_to">bis</string>
+    <string name="TV_opt_2">Aus wie vielen Stunden soll ein Tag maximal bestehen?</string>
+    <string name="TV_opt_3">Willst du das zweiwöchige System für die Stunden 8/9 benutzen?</string>
+    <string name="TV_opt_4">Weitere Aktionen:</string>
+    <string name="Yes">Ja</string>
+    <string name="D_createSubject">Neues Fach erstellen</string>
+    <string name="D_select_subject">Fach aus Auswahl</string>
+    <string name="D_freeHour">Freistunde festlegen</string>
+    <string name="D_delete_subject">Welches Fach willst du löschen?</string>
+    <string name="TV_date">%2$s.%1$s.%3$s</string>
+    <string name="aboutApp">Programmierung: \n- Julius Henke
+                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
+                            \n\n© Julius Henke 2016</string>
+    <string name="B_opt_aboutApp">Informationen zur App</string>
+
+    <string name="D_title_help">Tutorial</string>
+    <string name="D_help">Hi, danke, dass du meine App benutzt!
+                            \n\n1. Um zwischen den Tagen zu wecheseln wische einfach nach rechts oder links.
+                            \n\n2. Passe die Einsellungen des Stundenplans nach deinen Preferenzen ein indem du auf [Optionen] drückst.
+                            \n\n3. Du kannst deinen Plan jederzeit bearbeiten indem du auf [Plan bearbeiten] drückst.
+                            \n\nBei weiteren Fragen oder Anregungen kannst du gerene ein Kommentar im Play Store hinterlassen.</string>
+    <string name="B_opt_help">Hilfe</string>
+
+    <string name="rateApp">Bewerte diese App</string>
+    <string name="watchAd">Schaue einen kurzen Werbeclip um meine Arbeit zu unterstützen</string>
+    <string name="commentApp">Geb mir Feedback im Play Store</string>
+</resources>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:clipToPadding="false">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linear_layout">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_weight="1"
+            android:text="@string/TV_opt_1"
+            android:textSize="24sp"
+            android:textColor="@color/materialcolorpicker__black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <Button
+                    android:text="Monday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/B_opt_startDay"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    android:onClick="clickB_opt_startDay"
+                    android:textColor="@color/materialcolorpicker__black"
+                    android:fontFamily="sans-serif" />
+
+                <TextView
+                    android:text="@string/TV_opt_1_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/materialcolorpicker__black" />
+
+                <Button
+                    android:text="Friday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/B_opt_endDay"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    android:onClick="clickB_opt_endDay"
+                    android:textColor="@color/materialcolorpicker__black"
+                    android:fontFamily="sans-serif" />
+
+            </TableRow>
+        </TableLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6"
+            android:layout_weight="1"
+            android:text="@string/TV_opt_3"
+            android:textSize="24sp"
+            android:textColor="@color/materialcolorpicker__black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <RadioButton
+                    android:text="@string/Yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RB_opt_yes"
+                    android:onClick="clickRB_opt_twoWeekSystem"
+                    android:textColor="@color/materialcolorpicker__black"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"
+                    android:checked="false" />
+
+                <Space
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:text="@string/No"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RB_opt_no"
+                    android:onClick="clickRB_opt_twoWeekSystem"
+                    android:textColor="@color/materialcolorpicker__black"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif" />
+            </TableRow>
+        </TableLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:layout_weight="1"
+            android:text="@string/TV_opt_2"
+            android:textSize="24sp"
+            android:textColor="@color/materialcolorpicker__black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <Button
+            android:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_opt_maxHours"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="clickB_opt_maxHours"
+            android:textColor="@color/materialcolorpicker__black"
+            android:fontFamily="sans-serif" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_weight="1"
+            android:text="@string/TV_opt_4"
+            android:textSize="24sp"
+            android:textColor="@color/materialcolorpicker__black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <Button
+            android:text="@string/B_opt_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_opt_help"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:onClick="clickB_opt_help"
+            android:textColor="@color/materialcolorpicker__black"
+            android:fontFamily="sans-serif" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <Button
+            android:text="@string/B_mode_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_opt_editPlan"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:onClick="clickB_main_editMode"
+            android:textColor="@color/materialcolorpicker__black"
+            android:fontFamily="sans-serif" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <Button
+            android:text="@string/B_opt_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_opt_deleteSubject"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:onClick="clickB_opt_deleteSubject"
+            android:textColor="@color/materialcolorpicker__black"
+            android:fontFamily="sans-serif" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <Button
+            android:text="@string/B_opt_supp_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_opt_suppApp"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:onClick="clickB_opt_suppApp"
+            android:textColor="@color/materialcolorpicker__black"
+            android:fontFamily="sans-serif" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+
+        <Button
+            android:text="@string/B_opt_aboutApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/B_opt_aboutApp"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:onClick="clickB_opt_aboutApp"
+            android:textColor="@color/materialcolorpicker__black"
+            android:fontFamily="sans-serif" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+</ScrollView>
