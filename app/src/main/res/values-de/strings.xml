@@ -37,7 +37,6 @@
     <string name="D_select_subject">Fach aus Auswahl</string>
     <string name="D_freeHour">Freistunde festlegen</string>
     <string name="D_delete_subject">Welches Fach willst du löschen?</string>
-    <string name="TV_date">%2$s.%1$s.%3$s</string>
     <string name="aboutApp">Programmierung: \n- Julius Henke
                             \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
                             \n\n© Julius Henke 2016</string>
@@ -54,4 +53,7 @@
     <string name="rateApp">Bewerte diese App</string>
     <string name="watchAd">Schaue einen kurzen Werbeclip um meine Arbeit zu unterstützen</string>
     <string name="commentApp">Geb mir Feedback im Play Store</string>
+    <string name="date_today">(heute)</string>
+    <string name="date_tomorrow">(morgen)</string>
+    <string name="date_yesterday">(gestern)</string>
 </resources>

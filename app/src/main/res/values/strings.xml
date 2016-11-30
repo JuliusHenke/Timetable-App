@@ -18,8 +18,6 @@
     <string name="Toast_saved">Saved</string>
     <string name="Toast_deleted">Deleted</string>
 
-    <string name="TV_date">%1$s.%2$s.%3$s</string>
-
     <string name="B_options">Options</string>
     <string name="B_subject_color">Color</string>
 
@@ -80,4 +78,7 @@
                             \n\n3. You can always reedit your timetable by clicking the button [Edit plan].
                             \n\nIf you have further questions or suggestions feel free to comment it in the Play Store.</string>
     <string name="B_opt_help">Help</string>
+    <string name="date_today">(today)</string>
+    <string name="date_tomorrow">(tomorrow)</string>
+    <string name="date_yesterday">(yesterday)</string>
 </resources>

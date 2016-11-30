@@ -28,9 +28,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -76,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDay(int input_change){
+        Resources r = getResources();
+
         //Adding a TouchListener for swiping
         ScrollView mParentLayout = (ScrollView) findViewById(R.id.scrollview);
         mParentLayout.setOnClickListener(new View.OnClickListener() {
@@ -154,23 +158,36 @@ public class MainActivity extends AppCompatActivity {
         selected_day_of_week = getDay_of_week(c);
 
         //----------------------------------------------------------------------------------------------
-        String[] days = getResources().getStringArray(R.array.days);
+        String[] days = r.getStringArray(R.array.days);
         TextView TV_day = (TextView) findViewById(R.id.TV_day);
         TV_day.setText(days[selected_day_of_week]);
 
-
-        Date the_date = c.getTime();
-        SimpleDateFormat format_day = new SimpleDateFormat("dd");
-        SimpleDateFormat format_month = new SimpleDateFormat("MM");
-        SimpleDateFormat format_year = new SimpleDateFormat("yyyy");
-
-        String date_day = format_day.format(the_date);
-        String date_month = format_month.format(the_date);
-        String date_year = format_year.format(the_date);
-
         TextView TV_selected_date = (TextView) findViewById(R.id.TV_selected_date);
         if(editing_mode) TV_selected_date.setText("");
-        else TV_selected_date.setText(getResources().getString(R.string.TV_date, date_month,date_day,date_year));
+        else{
+            int selected_date = c.get(Calendar.DAY_OF_YEAR);
+
+            Calendar c_today = Calendar.getInstance();
+
+            Calendar c_tomorrow = Calendar.getInstance();
+            c_tomorrow.add(Calendar.DAY_OF_YEAR, +1);
+
+            Calendar c_yesterday = Calendar.getInstance();
+            c_tomorrow.add(Calendar.DAY_OF_YEAR, -1);
+
+            if(c_today.get(Calendar.DAY_OF_YEAR) == selected_date) TV_selected_date.setText(r.getString(R.string.date_today));
+
+            //this doesn't work yet ------------------------------------------------------------------
+            else if(c_tomorrow.get(Calendar.DAY_OF_YEAR) == selected_date) TV_selected_date.setText(r.getString(R.string.date_tomorrow));
+            else if(c_yesterday.get(Calendar.DAY_OF_YEAR) == selected_date) TV_selected_date.setText(r.getString(R.string.date_yesterday));
+            //----------------------------------------------------------------------------------------
+
+            else{
+                DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+                String string_date = DATE_FORMAT.format(c.getTime());
+                TV_selected_date.setText(string_date);
+            }
+        }
 
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
         boolean week_isOdd = isOdd(date_week);
