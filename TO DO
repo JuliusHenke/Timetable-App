@@ -1,0 +1,8 @@
+This is the to do list:
+- new configurable option: daily push message at specific time with the timetable for the next day
+- new configurable option: setCurDay() shows the next day when a specific time is reached
+- show (today, tomorrow, yeserday) instead of the date in TF_main_date
+- Widget support
+- Action bar (to replace these buttons wtih icons: B_main_options, B_main_editMode)
+- more translations (localization)
+- show date correctly formatted (localization) 
