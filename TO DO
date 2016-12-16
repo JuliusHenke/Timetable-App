@@ -1,7 +1,15 @@
-This is the to do list:
-- new configurable option: daily push message at specific time with the timetable for the next day
+This is the to do list!
+
+Main points:
 - new configurable option: setCurDay() shows the next day when a specific time is reached
 - show (tomorrow, yeserday) instead of the date in TF_main_date
 - Widget support
 - Action bar (to replace these buttons wtih icons: B_main_options, B_main_editMode)
+- redesign activity_options
+- rework even/odd week system for more compability
+
+Future / less urgent points:
+- homework feature
+- grades feature
+- events/calendar feature
 - more translations (localization)
