@@ -165,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
         TextView TV_selected_date = (TextView) findViewById(R.id.TV_selected_date);
         if(editing_mode) TV_selected_date.setText("");
         else{
-            int selected_date = c.get(Calendar.DAY_OF_YEAR);
-
             Calendar c_today = Calendar.getInstance();
 
             Calendar c_tomorrow = Calendar.getInstance();
@@ -175,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
             Calendar c_yesterday = Calendar.getInstance();
             c_tomorrow.add(Calendar.DAY_OF_YEAR, -1);
 
-            if(c_today.get(Calendar.DAY_OF_YEAR) == selected_date) TV_selected_date.setText(r.getString(R.string.date_today));
+            if(c_today.equals(c)) TV_selected_date.setText(r.getString(R.string.date_today));
 
             //this doesn't work yet ------------------------------------------------------------------
-            else if(c_tomorrow.get(Calendar.DAY_OF_YEAR) == selected_date) TV_selected_date.setText(r.getString(R.string.date_tomorrow));
-            else if(c_yesterday.get(Calendar.DAY_OF_YEAR) == selected_date) TV_selected_date.setText(r.getString(R.string.date_yesterday));
+            else if(c_tomorrow.equals(c)) TV_selected_date.setText(r.getString(R.string.date_tomorrow));
+            else if(c_yesterday.equals(c)) TV_selected_date.setText(r.getString(R.string.date_yesterday));
             //----------------------------------------------------------------------------------------
 
             else{
