@@ -135,11 +135,15 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         saved_change = saved_change + input_change;
         c.add(Calendar.DAY_OF_YEAR, saved_change);
-        //Check if tomorrow has to be shown
+
+
+        /*/Check if tomorrow has to be shown
         if(c.get(Calendar.HOUR_OF_DAY) > 18){
             c.add(Calendar.DAY_OF_YEAR, +1);
             saved_change++;
-        }
+        }*/
+
+
         selected_day_of_week = getDay_of_week(c);
 
         int extra_change = 0;
@@ -347,7 +351,8 @@ public class MainActivity extends AppCompatActivity {
 
         B_startDay.setText(days[settings.getStart_day()]);
         B_endDay.setText(days[settings.getEnd_day()]);
-        B_maxHours.setText(settings.getMax_hours());
+        B_maxHours.setText(""+settings.getMax_hours());
+
         if(settings.getTwo_week_system()){
             RB_yes.setChecked(true);
             RB_no.setChecked(false);
