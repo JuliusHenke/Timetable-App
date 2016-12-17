@@ -1,8 +1,6 @@
 This is the to do list!
 
 Main points:
-- new configurable option: setCurDay() shows the next day when a specific time is reached
-- show (tomorrow, yeserday) instead of the date in TF_main_date
 - Widget support
 - Action bar (to replace these buttons wtih icons: B_main_options, B_main_editMode)
 - redesign activity_options
