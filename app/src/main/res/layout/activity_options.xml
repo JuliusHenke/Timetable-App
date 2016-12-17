@@ -129,6 +129,7 @@
                     android:textColor="@color/materialcolorpicker__black"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif" />
+
             </TableRow>
         </TableLayout>
 
@@ -233,18 +234,6 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="10dp" />
-
-        <Button
-            android:text="@string/B_opt_supp_app"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/B_opt_suppApp"
-            android:layout_weight="1"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:onClick="clickB_opt_suppApp"
-            android:textColor="@color/materialcolorpicker__black"
-            android:fontFamily="sans-serif" />
 
         <Space
             android:layout_width="match_parent"

@@ -55,7 +55,7 @@
     <string name="TV_opt_1">Which days do you want to manage?</string>
     <string name="TV_opt_1_to">to</string>
     <string name="TV_opt_2">What are the maximum hours a day should have?</string>
-    <string name="TV_opt_3">Do you want to use the two-week system for the hours 8/9?</string>
+    <string name="TV_opt_3">Use even/odd week system for 8/9th hour</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
     <string name="TV_opt_4">More actions:</string>

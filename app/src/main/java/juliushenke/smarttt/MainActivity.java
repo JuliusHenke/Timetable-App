@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
@@ -137,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         saved_change = saved_change + input_change;
         c.add(Calendar.DAY_OF_YEAR, saved_change);
+        //Check if tomorrow has to be shown
+        if(c.get(Calendar.HOUR_OF_DAY) > 18){
+            c.add(Calendar.DAY_OF_YEAR, +1);
+            saved_change++;
+        }
         selected_day_of_week = getDay_of_week(c);
 
         int extra_change = 0;
@@ -173,13 +180,9 @@ public class MainActivity extends AppCompatActivity {
             Calendar c_yesterday = Calendar.getInstance();
             c_tomorrow.add(Calendar.DAY_OF_YEAR, -1);
 
-            if(c_today.equals(c)) TV_selected_date.setText(r.getString(R.string.date_today));
-
-            //this doesn't work yet ------------------------------------------------------------------
-            else if(c_tomorrow.equals(c)) TV_selected_date.setText(r.getString(R.string.date_tomorrow));
-            else if(c_yesterday.equals(c)) TV_selected_date.setText(r.getString(R.string.date_yesterday));
-            //----------------------------------------------------------------------------------------
-
+            if(getDay_of_week(c_today) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_today));
+            else if(getDay_of_week(c_tomorrow) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_tomorrow));
+            else if(getDay_of_week(c_yesterday) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_yesterday));
             else{
                 DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
                 String string_date = DATE_FORMAT.format(c.getTime());
@@ -230,12 +233,12 @@ public class MainActivity extends AppCompatActivity {
                 int a = i;
                 try{
                     filename = "SUBJECT-" + hours[i] + ".srl";
-                    if(settings.getTwo_week_system()){
-                        if(!editing_mode && i == 8 && week_isOdd){
+                    if(!editing_mode && settings.getTwo_week_system()){
+                        if(i == 8 && week_isOdd){
                             a = i + 1;
                             filename = "SUBJECT-" + hours[a] + ".srl";
                         }
-                        else if(!editing_mode && i == 9 && !week_isOdd){
+                        else if(i == 9 && !week_isOdd){
                             a = i - 1;
                             filename = "SUBJECT-" + hours[a] + ".srl";
                         }
@@ -360,6 +363,8 @@ public class MainActivity extends AppCompatActivity {
             RB_yes.setChecked(false);
             RB_no.setChecked(true);
         }
+
+
     }
 
     //Clickers ---------------------------------------------------------------------------------
