@@ -1,7 +1,5 @@
 package juliushenke.smarttt;
 
-import android.graphics.Color;
-
 import java.io.Serializable;
 
 class Subject implements Serializable {
@@ -21,19 +19,10 @@ class Subject implements Serializable {
     }
 
     //Getters
-    public String getName(){return name;}
-    public int getColor(){
+    String getName(){return name;}
+    String getRoom(){return room;}
+    String getTeacher(){return teacher;}
+    int getColor(){
         return color;
-    }
-
-    //Setters
-    public void setName(String name){
-        this.name = name;
-    }
-    public void setRoom(String room){
-        this.room = room;
-    }
-    public void setTeacher(String teacher){
-        this.teacher = teacher;
     }
 }

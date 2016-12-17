@@ -32,7 +32,7 @@
 
 
     <string-array name="days">
-        <item></item>
+        <item> </item>
         <item>@string/monday</item>
         <item>@string/tuesday</item>
         <item>@string/wednesday</item>
