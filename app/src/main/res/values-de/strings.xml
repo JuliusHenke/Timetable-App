@@ -29,9 +29,9 @@
     <string name="No">Nein</string>
     <string name="TV_opt_1">Welche Tage willst du managen?</string>
     <string name="TV_opt_1_to">bis</string>
-    <string name="TV_opt_2">Aus wie vielen Stunden soll ein Tag maximal bestehen?</string>
+    <string name="TV_opt_2">Maximale Stunden pro Tag</string>
     <string name="TV_opt_3">Gerade/ungerade Wochensystem für 8/9 Stunde</string>
-    <string name="TV_opt_4">Weitere Aktionen:</string>
+    <string name="TV_opt_4">Weitere Aktionen</string>
     <string name="Yes">Ja</string>
     <string name="D_createSubject">Neues Fach erstellen</string>
     <string name="D_select_subject">Fach aus Auswahl</string>
@@ -40,7 +40,7 @@
     <string name="aboutApp">Programmierung: \n- Julius Henke
                             \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
                             \n\n© Julius Henke 2016</string>
-    <string name="B_opt_aboutApp">Informationen zur App</string>
+    <string name="B_opt_aboutApp">Credits</string>
 
     <string name="D_title_help">Tutorial</string>
     <string name="D_help">Hi, danke, dass du meine App benutzt!
@@ -56,4 +56,5 @@
     <string name="date_today">(heute)</string>
     <string name="date_tomorrow">(morgen)</string>
     <string name="date_yesterday">(gestern)</string>
+    <string name="Toast_need_name">BItte gebe dem Fach einen Namen</string>
 </resources>

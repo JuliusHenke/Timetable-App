@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
@@ -31,9 +29,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 
@@ -248,8 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     Subject s = (Subject) input.readObject();
 
                     Bts[i].setVisibility(View.VISIBLE);
-                    if(i == 9 && !editing_mode && settings.getTwo_week_system());
-                    else if(! s.getName().equals(hours[i-1])) TVs_room[i].setText(s.getRoom());
+                    if((i != 9 && editing_mode && ! settings.getTwo_week_system()) || (! s.getName().equals(hours[i-1]))) TVs_room[i].setText(s.getRoom());
                     Bts[i].setText(s.getName());
                     Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
                     if(isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
@@ -325,13 +320,11 @@ public class MainActivity extends AppCompatActivity {
             EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
             EditText TF_room = (EditText) findViewById(R.id.TF_room);
             EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
-            EditText TF_notes = (EditText) findViewById(R.id.TF_notes);
             Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
 
             TF_subject.setText(subject.getName());
             TF_room.setText(subject.getRoom());
             TF_teacher.setText(subject.getTeacher());
-            TF_notes.setText(subject.getNotes());
 
             selectedColorRGB = subject.getColor();
             B_subject_color.getBackground().setColorFilter(subject.getColor(), PorterDuff.Mode.MULTIPLY);
@@ -354,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
 
         B_startDay.setText(days[settings.getStart_day()]);
         B_endDay.setText(days[settings.getEnd_day()]);
-        B_maxHours.setText(""+settings.getMax_hours());
+        B_maxHours.setText(settings.getMax_hours());
         if(settings.getTwo_week_system()){
             RB_yes.setChecked(true);
             RB_no.setChecked(false);
@@ -391,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
             File[] files = getSubjectFiles();
             if(files.length > 0) {
                 Resources r = getResources();
-                if(selected_subject.equals("+") || selected_subject.equals("") || selected_subject.equals(null)){
+                if(selected_subject.equals("+") || selected_subject.equals("")){
                     String[] options = {r.getString(R.string.D_select_subject),r.getString(R.string.D_createSubject)};
                     Dialog edit_hour = edit_hour(options);
                     edit_hour.show();
@@ -481,11 +474,6 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void  clickB_opt_suppApp(View view){
-        Dialog suppApp = suppApp();
-        suppApp.show();
-    }
-
     public void  clickB_opt_help(View view){
         Dialog tutorial = help();
         tutorial.show();
@@ -523,23 +511,21 @@ public class MainActivity extends AppCompatActivity {
         EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
         EditText TF_room = (EditText) findViewById(R.id.TF_room);
         EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
-        EditText TF_notes = (EditText) findViewById(R.id.TF_notes);
 
         String name = TF_subject.getText().toString().trim();
         String room = TF_room.getText().toString().trim();
         String teacher = TF_teacher.getText().toString().trim();
-        String notes = TF_notes.getText().toString().trim();
 
-        if(! name.equals("") && ! name.equals(null) && ! name.equals("+")){
-            Subject subject = new Subject(name, room, teacher, notes, selectedColorRGB);
-            //delete the subject if it already exists
+        if(! name.equals("") && ! name.equals("+")){
+            Subject subject = new Subject(name, room, teacher, selectedColorRGB);
+            /*/delete the subject if it already exists
             try {
                 File dir = getFilesDir();
                 File file = new File(dir, "SUBJECT-" + name + ".srl");
                 file.delete();
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
 
             try {
                 String filename = "SUBJECT-" + subject.getName() + ".srl";
@@ -551,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
                     ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                     String [] hours = (String []) input.readObject();
                     hours[selected_hour] = name;
-                    if((selected_hour == 1 || selected_hour == 3 || selected_hour == 5) && (hours[selected_hour+1].equals("") || hours[selected_hour+1].equals(null))){
+                    if((selected_hour == 1 || selected_hour == 3 || selected_hour == 5) && (hours[selected_hour+1].equals("") || hours[selected_hour+1] == null)){
                         hours[selected_hour + 1] = name;
                     }
                     input.close();
@@ -560,24 +546,21 @@ public class MainActivity extends AppCompatActivity {
                     out.writeObject(hours);
                     out.close();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_saved), Toast.LENGTH_SHORT).show();
-                } catch (FileNotFoundException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplication(),"Gespeichert",Toast.LENGTH_SHORT);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_saved), Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        //Hide keyboard
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            //Hide keyboard
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-        setContentView(R.layout.activity_main);
-        setDay(0);
+            setContentView(R.layout.activity_main);
+            setDay(0);
+        }
+        else Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_need_name), Toast.LENGTH_LONG).show();
     }
 
     //Dialogs ---------------------------------------------------------------------------------
@@ -653,7 +636,7 @@ public class MainActivity extends AppCompatActivity {
                         ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                         String [] hours = (String []) input.readObject();
                         hours[selected_hour] = subject_names[which];
-                        if((selected_hour == 1 || selected_hour == 3 || selected_hour == 5) && (hours[selected_hour+1].equals("") || hours[selected_hour+1].equals(null))){
+                        if((selected_hour == 1 || selected_hour == 3 || selected_hour == 5) && (hours[selected_hour+1].equals("") || hours[selected_hour+1] == null)){
                             hours[selected_hour + 1] = subject_names[which];
                         }
                         input.close();
@@ -761,37 +744,6 @@ public class MainActivity extends AppCompatActivity {
         Resources r = getResources();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(r.getString(R.string.D_title_help)).setMessage(r.getString(R.string.D_help));
-        return builder.create();
-    }
-
-    private Dialog suppApp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] options = getResources().getStringArray(R.array.suppAppChoices);
-
-        builder.setTitle(null).setSingleChoiceItems(options, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Settings settings = new Settings(1, 5, 11, false);
-                String filename = "SETTINGS.srl";
-                try{
-                    ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                    settings = (Settings) input.readObject();
-                } catch(ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
-                }
-                settings.setMax_hours(which+1);
-                try {
-                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                    out.writeObject(settings);
-                    out.close();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_saved), Toast.LENGTH_SHORT).show();
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-                update_activityOptions(settings);
-                dialog.cancel();
-            }
-        });
         return builder.create();
     }
 
