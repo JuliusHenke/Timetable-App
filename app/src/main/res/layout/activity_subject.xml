@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:id="@+id/scrollview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -11,12 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/linear_layout">
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableLayout>
 
         <EditText
             android:layout_width="match_parent"
@@ -79,7 +73,7 @@
             android:layout_width="match_parent"
             android:text="@string/B_subject_save"
             android:id="@+id/B_subject_save"
-            android:layout_gravity="right|top"
+            android:layout_gravity="end|top"
             android:textSize="24sp"
             android:onClick="clickB_sub_save"
             android:layout_weight="1"
@@ -94,15 +88,6 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/TF_notes"
-            android:textSize="24sp"
-            android:hint="@string/TF_notes" />
 
     </LinearLayout>
 </ScrollView>

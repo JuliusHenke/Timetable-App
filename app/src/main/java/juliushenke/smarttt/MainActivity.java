@@ -45,34 +45,88 @@ public class MainActivity extends AppCompatActivity {
     private boolean editing_mode = false;
     private boolean days_changed = false;
 
+    private boolean main_activity_selected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setCurDay();
+        setActivity_main();
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            setContentView(R.layout.activity_main);
-            if(days_changed){
-                days_changed = false;
-                setCurDay();
-            }
-            else if(editing_mode){
+            if(editing_mode){
                 editing_mode = false;
-                setCurDay();
+                saved_change = 0;
+                setActivity_main();
             }
-            else setDay(0);
+            else if(main_activity_selected){
+                finish();
+            }
+            else{
+                setActivity_main();
+                if(days_changed){
+                    days_changed = false;
+                    saved_change = 0;
+                    setActivity_main();
+                }
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
     //Voids --------------------------------------------------------------------------------
-    private void setCurDay(){
-        saved_change = 0;
+    private void setActivity_main(){
+        setContentView(R.layout.activity_main);
+        main_activity_selected = true;
         setDay(0);
+    }
+
+    private void setActivity_options(){
+        setContentView(R.layout.activity_options);
+        main_activity_selected = false;
+        update_activityOptions();
+    }
+
+    private void setActivity_subject(boolean newSubject){
+        setContentView(R.layout.activity_subject);
+        main_activity_selected = false;
+
+        EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
+        EditText TF_room = (EditText) findViewById(R.id.TF_room);
+        EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
+        Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
+
+        if(newSubject){
+            TF_subject.setText("");
+            TF_room.setText("");
+            TF_teacher.setText("");
+
+            selectedColorRGB = R.color.Color_B_hour;
+            B_subject_color.getBackground().setColorFilter(null);
+            B_subject_color.setTextColor(Color.BLACK);
+        }
+        else{
+            try {
+                String filename = "SUBJECT-" + selected_subject + ".srl";
+                ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+                Subject subject = (Subject) input.readObject();
+
+                TF_subject.setText(subject.getName());
+                TF_room.setText(subject.getRoom());
+                TF_teacher.setText(subject.getTeacher());
+
+                selectedColorRGB = subject.getColor();
+                B_subject_color.getBackground().setColorFilter(subject.getColor(), PorterDuff.Mode.MULTIPLY);
+                if(isColorDark(selectedColorRGB))B_subject_color.setTextColor(Color.WHITE);
+                else B_subject_color.setTextColor(Color.BLACK);
+
+                input.close();
+            } catch(ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setDay(int input_change){
@@ -135,15 +189,6 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         saved_change = saved_change + input_change;
         c.add(Calendar.DAY_OF_YEAR, saved_change);
-
-
-        /*/Check if tomorrow has to be shown
-        if(c.get(Calendar.HOUR_OF_DAY) > 18){
-            c.add(Calendar.DAY_OF_YEAR, +1);
-            saved_change++;
-        }*/
-
-
         selected_day_of_week = getDay_of_week(c);
 
         int extra_change = 0;
@@ -172,17 +217,7 @@ public class MainActivity extends AppCompatActivity {
         TextView TV_selected_date = (TextView) findViewById(R.id.TV_selected_date);
         if(editing_mode) TV_selected_date.setText("");
         else{
-            Calendar c_today = Calendar.getInstance();
-
-            Calendar c_tomorrow = Calendar.getInstance();
-            c_tomorrow.add(Calendar.DAY_OF_YEAR, +1);
-
-            Calendar c_yesterday = Calendar.getInstance();
-            c_tomorrow.add(Calendar.DAY_OF_YEAR, -1);
-
-            if(getDay_of_week(c_today) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_today));
-            else if(getDay_of_week(c_tomorrow) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_tomorrow));
-            else if(getDay_of_week(c_yesterday) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_yesterday));
+            if(getDay_of_week(Calendar.getInstance()) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_today));
             else{
                 DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
                 String string_date = DATE_FORMAT.format(c.getTime());
@@ -297,51 +332,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void createNewSubject(){
-        setContentView(R.layout.activity_subject);
-
-        EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
-        EditText TF_room = (EditText) findViewById(R.id.TF_room);
-        EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
-        Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
-
-        TF_subject.setText("");
-        TF_room.setText("");
-        TF_teacher.setText("");
-
-        selectedColorRGB = R.color.Color_B_hour;
-        B_subject_color.getBackground().setColorFilter(null);
-        B_subject_color.setTextColor(Color.BLACK);
-    }
-
-    private void showSubject(){
-        setContentView(R.layout.activity_subject);
-        try {
-            String filename = "SUBJECT-" + selected_subject + ".srl";
+    private void update_activityOptions(){
+        String filename = "SETTINGS.srl";
+        Settings settings = new Settings(1, 5, 11, false);
+        try{
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-            Subject subject = (Subject) input.readObject();
-
-            EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
-            EditText TF_room = (EditText) findViewById(R.id.TF_room);
-            EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
-            Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
-
-            TF_subject.setText(subject.getName());
-            TF_room.setText(subject.getRoom());
-            TF_teacher.setText(subject.getTeacher());
-
-            selectedColorRGB = subject.getColor();
-            B_subject_color.getBackground().setColorFilter(subject.getColor(), PorterDuff.Mode.MULTIPLY);
-            if(isColorDark(selectedColorRGB))B_subject_color.setTextColor(Color.WHITE);
-            else B_subject_color.setTextColor(Color.BLACK);
-
-            input.close();
-        } catch(ClassNotFoundException | IOException e) {
+            settings = (Settings) input.readObject();
+        } catch(ClassNotFoundException | IOException e){
             e.printStackTrace();
         }
-    }
 
-    private void update_activityOptions(Settings settings){
         String [] days = getResources().getStringArray(R.array.days);
         Button B_startDay = (Button) findViewById(R.id.B_opt_startDay);
         Button B_endDay = (Button) findViewById(R.id.B_opt_endDay);
@@ -361,8 +361,6 @@ public class MainActivity extends AppCompatActivity {
             RB_yes.setChecked(false);
             RB_no.setChecked(true);
         }
-
-
     }
 
     //Clickers ---------------------------------------------------------------------------------
@@ -383,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
         else if(view == findViewById(R.id.h11)) selected_hour = 11;
 
         if(!editing_mode){
-            showSubject();
+            setActivity_subject(false);
         }
         else{
             File[] files = getSubjectFiles();
@@ -401,34 +399,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else{
-                createNewSubject();
+                setActivity_subject(true);
             }
         }
     }
 
     public  void clickB_main_editMode(View view){
-        setContentView(R.layout.activity_main);
         if(!editing_mode){
             editing_mode = true;
-            setDay(0);
+            setActivity_main();
         }
         else{
             editing_mode = false;
-            setCurDay();
+            saved_change = 0;
+            setActivity_main();
         }
     }
 
     public void clickB_main_options(View view){
-        setContentView(R.layout.activity_options);
-        Settings settings = new Settings(1, 5, 11, false);
-        try{
-            String filename = "SETTINGS.srl";
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-            settings = (Settings) input.readObject();
-        } catch(ClassNotFoundException | IOException e){
-            e.printStackTrace();
-        }
-        update_activityOptions(settings);
+        setActivity_options();
     }
 
     public void clickB_opt_startDay(View view){
@@ -465,7 +454,12 @@ public class MainActivity extends AppCompatActivity {
         } catch(IOException e){
             e.printStackTrace();
         }
-        update_activityOptions(settings);
+        update_activityOptions();
+    }
+
+    public void  clickB_opt_help(View view){
+        Dialog tutorial = help();
+        tutorial.show();
     }
 
     public void clickB_opt_deleteSubject(View view){
@@ -479,10 +473,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void  clickB_opt_help(View view){
-        Dialog tutorial = help();
-        tutorial.show();
-    }
+
 
     public void clickB_sub_color(View view){
         final ColorPicker cp = new ColorPicker(MainActivity.this, Color.red(selectedColorRGB), Color.green(selectedColorRGB), Color.blue(selectedColorRGB));
@@ -523,14 +514,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(! name.equals("") && ! name.equals("+")){
             Subject subject = new Subject(name, room, teacher, selectedColorRGB);
-            /*/delete the subject if it already exists
-            try {
-                File dir = getFilesDir();
-                File file = new File(dir, "SUBJECT-" + name + ".srl");
-                file.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
 
             try {
                 String filename = "SUBJECT-" + subject.getName() + ".srl";
@@ -583,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
                     select_subject.show();
                 }
                 else if(which == 1){
-                    createNewSubject();
+                    setActivity_subject(true);
                 }
                 else if(which == 2){
                     try {
@@ -707,7 +690,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
-                update_activityOptions(settings);
+                update_activityOptions();
                 dialog.cancel();
             }
         });
@@ -738,7 +721,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
-                update_activityOptions(settings);
+                update_activityOptions();
                 dialog.cancel();
             }
         });

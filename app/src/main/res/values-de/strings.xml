@@ -56,5 +56,5 @@
     <string name="date_today">(heute)</string>
     <string name="date_tomorrow">(morgen)</string>
     <string name="date_yesterday">(gestern)</string>
-    <string name="Toast_need_name">BItte gebe dem Fach einen Namen</string>
+    <string name="Toast_need_name">Der Name des Faches fehlt</string>
 </resources>

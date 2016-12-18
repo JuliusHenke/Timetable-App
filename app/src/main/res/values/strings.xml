@@ -81,5 +81,5 @@
     <string name="date_today">(today)</string>
     <string name="date_tomorrow">(tomorrow)</string>
     <string name="date_yesterday">(yesterday)</string>
-    <string name="Toast_need_name">Please give the subject a name</string>
+    <string name="Toast_need_name">The subject\'s name is missing</string>
 </resources>
