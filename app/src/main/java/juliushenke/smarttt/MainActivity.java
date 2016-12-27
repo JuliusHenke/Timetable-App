@@ -217,12 +217,9 @@ public class MainActivity extends AppCompatActivity {
         TextView TV_selected_date = (TextView) findViewById(R.id.TV_selected_date);
         if(editing_mode) TV_selected_date.setText("");
         else{
-            if(getDay_of_week(Calendar.getInstance()) == selected_day_of_week) TV_selected_date.setText(r.getString(R.string.date_today));
-            else{
-                DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
-                String string_date = DATE_FORMAT.format(c.getTime());
-                TV_selected_date.setText(string_date);
-            }
+            DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+            String string_date = DATE_FORMAT.format(c.getTime());
+            TV_selected_date.setText(string_date);
         }
 
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
@@ -283,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                     Subject s = (Subject) input.readObject();
 
                     Bts[i].setVisibility(View.VISIBLE);
-                    if((i != 9 && editing_mode && ! settings.getTwo_week_system()) || (! s.getName().equals(hours[i-1]))) TVs_room[i].setText(s.getRoom());
+                    if(! (i == 9 && settings.getTwo_week_system()) && ! s.getName().equals(hours[i-1]) && ! editing_mode) TVs_room[i].setText(s.getRoom());
                     Bts[i].setText(s.getName());
                     Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
                     if(isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);

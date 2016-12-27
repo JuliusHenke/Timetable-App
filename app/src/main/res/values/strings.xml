@@ -11,7 +11,7 @@
     <string name="sunday">Sunday</string>
 
     <string name="dialog1_title">What do you want to do?</string>
-    <string name="dialog2_title">Edit %1$d. hour:</string>
+    <string name="dialog2_title">Edit hour %1$d:</string>
     <string name="dialog3_title_1">Subject for hour %1$d:</string>
     <string name="dialog3_title_2">Delete this subject?</string>
 
@@ -32,7 +32,7 @@
 
 
     <string-array name="days">
-        <item> </item>
+        <item>@string/placeholder</item>
         <item>@string/monday</item>
         <item>@string/tuesday</item>
         <item>@string/wednesday</item>
@@ -82,4 +82,5 @@
     <string name="date_tomorrow">(tomorrow)</string>
     <string name="date_yesterday">(yesterday)</string>
     <string name="Toast_need_name">The subject\'s name is missing</string>
+    <string name="placeholder">" "</string>
 </resources>
