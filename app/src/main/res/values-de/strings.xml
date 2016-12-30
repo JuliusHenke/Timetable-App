@@ -27,10 +27,10 @@
     <string name="B_opt_delete">Ein Fach löschen</string>
     <string name="B_opt_supp_app">Diese App unterstützen</string>
     <string name="No">Nein</string>
-    <string name="TV_opt_1">Welche Tage willst du managen?</string>
-    <string name="TV_opt_1_to">bis</string>
+    <string name="TV_opt_1">Diese Tage managen:</string>
+    <string name="to">bis</string>
     <string name="TV_opt_2">Maximale Stunden pro Tag</string>
-    <string name="TV_opt_3">Gerade/ungerade Wochensystem für 8/9 Stunde</string>
+    <string name="Switch_opt_weekSystem">Gerade/ungerade Wochensystem</string>
     <string name="TV_opt_4">Weitere Aktionen</string>
     <string name="Yes">Ja</string>
     <string name="D_createSubject">Neues Fach erstellen</string>
@@ -42,26 +42,41 @@
                             \n\n© Julius Henke 2016</string>
     <string name="B_opt_aboutApp">Credits</string>
 
-    <string name="D_title_help">Tutorial</string>
-    <string name="D_help">Hi, danke, dass du meine App benutzt!
-                            \n\n1. Um zwischen den Tagen zu wecheseln wische einfach nach rechts oder links.
-                            \n\n2. Passe die Einsellungen des Stundenplans nach deinen Preferenzen ein indem du auf [Optionen] drückst.
-                            \n\n3. Du kannst deinen Plan jederzeit bearbeiten indem du auf [Plan bearbeiten] drückst.
-                            \n\nBei weiteren Fragen oder Anregungen kannst du gerne ein Kommentar im Play Store hinterlassen.</string>
-    <string name="B_opt_help">Hilfe</string>
+    <string name="D_introInfo_title">Hallo</string>
+    <string name="D_introInfo">Danke, dass du diese App heruntergeladen hast.
+                               \n\nJetzt sind es nur noch wenige Schritte, bis dein Stundenplan eigerichtet ist.</string>
 
-    <string name="rateApp">Bewerte diese App</string>
-    <string name="watchAd">Schaue einen kurzen Werbeclip um meine Arbeit zu unterstützen</string>
-    <string name="commentApp">Geb mir Feedback im Play Store</string>
-    <string name="date_today">(heute)</string>
-    <string name="date_tomorrow">(morgen)</string>
-    <string name="date_yesterday">(gestern)</string>
+    <string name="D_introWeekSystem_title">Einstellungen</string>
+    <string name="D_introWeekSystem">Willst du das gerade/ungerade-Wochen Feature benutzen?
+                                    \n\nDieses Feature ermöglicht es dir den Stundenplan für gerade und ungerade Wochen unterschiedlich zu gestalten.</string>
+
     <string name="Toast_need_name">Der Name des Faches fehlt</string>
     <string name="placeholder">" "</string>
     <string name="save">Speichern</string>
     <string name="settings">Einstellungen</string>
-    <string name="finish_editing">Bearbeitung beenden</string>
     <string name="date_left"><![CDATA[<----]]></string>
     <string name="date_right"><![CDATA[---->]]></string>
     <string name="actions">Aktionen</string>
+    <string name="text">Text</string>
+    <string name="Toast_finishedEditing">Bearbeitung fertig</string>
+    <string name="Toast_startedEditing">Bearbeitungsmodus aktiviert</string>
+    <string name="finish_edit">Bearbeitung beenden</string>
+    <string name="number9">9</string>
+    <string name="number8">8</string>
+    <string name="number7">7</string>
+    <string name="number6">6</string>
+    <string name="number5">5</string>
+    <string name="number4">4</string>
+    <string name="number3">3</string>
+    <string name="number2">2</string>
+    <string name="number11">11</string>
+    <string name="number10">10</string>
+    <string name="number1">1</string>
+    <string name="week">Woche</string>
+    <string name="oddWeek">Ungerade Wochen</string>
+    <string name="evenWeek">Gerade Wochen</string>
+    <string name="copyOddWeek">Ungerade Woche kopieren</string>
+    <string name="copyEvenWeek">Gerade Woche kopieren</string>
+    <string name="Switch_opt_showWeek">Woche des Jahres anzeigen</string>
+    <string name="OK">OK</string>
 </resources>
