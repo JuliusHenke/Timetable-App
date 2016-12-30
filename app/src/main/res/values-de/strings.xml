@@ -58,4 +58,10 @@
     <string name="date_yesterday">(gestern)</string>
     <string name="Toast_need_name">Der Name des Faches fehlt</string>
     <string name="placeholder">" "</string>
+    <string name="save">Speichern</string>
+    <string name="settings">Einstellungen</string>
+    <string name="finish_editing">Bearbeitung beenden</string>
+    <string name="date_left"><![CDATA[<----]]></string>
+    <string name="date_right"><![CDATA[---->]]></string>
+    <string name="actions">Aktionen</string>
 </resources>

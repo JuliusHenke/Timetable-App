@@ -9,13 +9,15 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
@@ -53,6 +55,47 @@ public class MainActivity extends AppCompatActivity {
         setActivity_main();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.act_editMode:
+                editMode();
+                return true;
+
+            case R.id.act_settings:
+                setActivity_options();
+                return true;
+
+            case R.id.act_deleteSub:
+                Dialog select_subject = select_subject(true);
+                select_subject.show();
+                return true;
+
+            case R.id.act_help:
+                Dialog tutorial = help();
+                tutorial.show();
+                return true;
+
+            case R.id.act_aboutApp:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(null).setMessage(getResources().getString(R.string.aboutApp));
+                builder.show();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(editing_mode){
@@ -81,6 +124,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         main_activity_selected = true;
         setDay(0);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
     }
 
     private void setActivity_options(){
@@ -103,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             TF_room.setText("");
             TF_teacher.setText("");
 
-            selectedColorRGB = R.color.Color_B_hour;
+            selectedColorRGB = R.color.color_B_hour;
             B_subject_color.getBackground().setColorFilter(null);
             B_subject_color.setTextColor(Color.BLACK);
         }
@@ -131,36 +177,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDay(int input_change){
         Resources r = getResources();
-
-        //Adding a TouchListener for swiping
-        ScrollView mParentLayout = (ScrollView) findViewById(R.id.scrollview);
-        mParentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        mParentLayout.setOnTouchListener(new OnSwipeTouchListener() {
-            @Override
-            public boolean onSwipeLeft() {
-                setDay(+1);
-                return true;
-            }
-
-            @Override
-            public boolean onSwipeRight() {
-                setDay(-1);
-                return true;
-            }
-
-            @Override
-            public boolean onSwipeBottom() {
-                return true;
-            }
-            @Override
-            public boolean onSwipeTop() {
-                return true;
-            }
-        });
 
         //Reading settings
         String filename = "SETTINGS.srl";
@@ -214,12 +230,15 @@ public class MainActivity extends AppCompatActivity {
         TextView TV_day = (TextView) findViewById(R.id.TV_day);
         TV_day.setText(days[selected_day_of_week]);
 
-        TextView TV_selected_date = (TextView) findViewById(R.id.TV_selected_date);
-        if(editing_mode) TV_selected_date.setText("");
+        Button dateCenter = (Button) findViewById(R.id.dateCenter);
+        if(editing_mode){
+            dateCenter.setText(R.string.finish_editing);
+            dateCenter.setTextColor(Color.BLUE);
+        }
         else{
             DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             String string_date = DATE_FORMAT.format(c.getTime());
-            TV_selected_date.setText(string_date);
+            dateCenter.setText(string_date);
         }
 
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
@@ -280,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     Subject s = (Subject) input.readObject();
 
                     Bts[i].setVisibility(View.VISIBLE);
-                    if(! (i == 9 && settings.getTwo_week_system()) && ! s.getName().equals(hours[i-1]) && ! editing_mode) TVs_room[i].setText(s.getRoom());
+                    if(! (i == 9 && settings.getTwo_week_system()) && ! s.getName().equals(hours[i-1])) TVs_room[i].setText(s.getRoom());
                     Bts[i].setText(s.getName());
                     Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
                     if(isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
@@ -314,19 +333,6 @@ public class MainActivity extends AppCompatActivity {
         } catch(ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
-
-        Button B_mode = (Button) findViewById(R.id.B_mode);
-        Button B_options = (Button) findViewById(R.id.B_options);
-        if(!editing_mode){
-            B_mode.getBackground().setColorFilter(null);
-            B_mode.setText(R.string.B_mode_view);
-            B_options.setVisibility(View.VISIBLE);
-        }
-        else{
-            B_mode.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
-            B_mode.setText(R.string.B_mode);
-            B_options.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void update_activityOptions(){
@@ -357,6 +363,18 @@ public class MainActivity extends AppCompatActivity {
         else{
             RB_yes.setChecked(false);
             RB_no.setChecked(true);
+        }
+    }
+
+    public  void editMode(){
+        if(!editing_mode){
+            editing_mode = true;
+            setActivity_main();
+        }
+        else{
+            editing_mode = false;
+            saved_change = 0;
+            setActivity_main();
         }
     }
 
@@ -401,22 +419,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public  void clickB_main_editMode(View view){
-        if(!editing_mode){
-            editing_mode = true;
-            setActivity_main();
-        }
-        else{
-            editing_mode = false;
-            saved_change = 0;
-            setActivity_main();
-        }
-    }
-
-    public void clickB_main_options(View view){
-        setActivity_options();
-    }
-
     public void clickB_opt_startDay(View view){
         Dialog manage_days = manage_days(true);
         manage_days.show();
@@ -453,24 +455,6 @@ public class MainActivity extends AppCompatActivity {
         }
         update_activityOptions();
     }
-
-    public void  clickB_opt_help(View view){
-        Dialog tutorial = help();
-        tutorial.show();
-    }
-
-    public void clickB_opt_deleteSubject(View view){
-        Dialog select_subject = select_subject(true);
-        select_subject.show();
-    }
-
-    public void  clickB_opt_aboutApp(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(null).setMessage(getResources().getString(R.string.aboutApp));
-        builder.show();
-    }
-
-
 
     public void clickB_sub_color(View view){
         final ColorPicker cp = new ColorPicker(MainActivity.this, Color.red(selectedColorRGB), Color.green(selectedColorRGB), Color.blue(selectedColorRGB));
@@ -542,12 +526,33 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-            setContentView(R.layout.activity_main);
-            setDay(0);
+            setActivity_main();
         }
         else Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_need_name), Toast.LENGTH_LONG).show();
     }
 
+    public void click_dateLeft(View view){
+        setDay(-1);
+        setActivity_main();
+    }
+
+    public void click_dateCenter(View view){
+        Button btn = (Button) findViewById(R.id.dateCenter);
+
+        if(editing_mode){
+            editMode();
+            btn.setTextColor(Color.BLACK);
+        }
+        else{
+            saved_change = 0;
+        }
+        setActivity_main();
+    }
+
+    public void click_dateRight(View view){
+        setDay(+1);
+        setActivity_main();
+    }
     //Dialogs ---------------------------------------------------------------------------------
     private Dialog edit_hour(String [] options) {
 
@@ -632,7 +637,6 @@ public class MainActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_saved), Toast.LENGTH_SHORT).show();
                             dialog.cancel();
-                            setDay(0);
                         } catch(IOException e) {
                             e.printStackTrace();
                         }
@@ -651,6 +655,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     dialog.cancel();
                 }
+                setActivity_main();
                 dialog.cancel();
             }
         });

@@ -1,497 +1,558 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="20dp"
-    android:clipToPadding="false">
-    <LinearLayout
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linear_layout"
-        >
+        android:layout_height="fill_parent"
+        android:clipToPadding="false"
+        android:padding="20dp"
+        android:layout_below="@+id/app_bar">
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right">
-
-                <Button
-                    android:text="@string/B_options"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/B_options"
-                    android:textAllCaps="false"
-                    android:layout_gravity="right"
-                    android:onClick="clickB_main_options"
-                    android:textSize="18sp"
-                    android:padding="15dp" />
-
-                <Button
-                    android:text="@string/B_mode_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/B_mode"
-                    android:textAllCaps="false"
-                    android:layout_gravity="right"
-                    android:onClick="clickB_main_editMode"
-                    android:textSize="18sp"
-                    android:padding="15dp"/>
-            </TableRow>
-        </TableLayout>
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/TV_day"
-                    android:layout_gravity="top"
-                    android:textAlignment="viewStart"
-                    android:textStyle="bold"
-                    android:textColor="#619c35"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="Monday"
-                    android:textSize="30sp" />
-
-                <Space
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/TV_selected_date"
-                    android:layout_gravity="left|top"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="#619c35"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:textSize="18sp"
-                    android:text="08.09.2016" />
-            </TableRow>
-
-        </TableLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TableLayout
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|bottom">
+            android:orientation="vertical">
 
-            <TableRow
+            <TextView
+                android:id="@+id/TV_day"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:fontFamily="sans-serif"
+                android:text="Monday"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FF342D2D"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:text="1"
-                    android:id="@+id/n1"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/dateLeft"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/h1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
                     android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:layout_width="150dp"
-                    android:backgroundTint="@color/Color_B_hour" />
+                    android:textSize="24sp"
+                    android:layout_weight="1"
+                    android:onClick="click_dateLeft"
+                    android:background="@android:color/transparent"
+                    android:text="@string/date_left"
+                    android:paddingBottom="30dp" />
 
-                <TextView
+                <Button
+                    android:id="@+id/dateCenter"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r1"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:fontFamily="monospace"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
+                    android:layout_weight="0"
+                    android:onClick="click_dateCenter"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="30dp"
                     android:textStyle="normal|bold"
-                    android:padding="8dp"
-                    android:layout_width="wrap_content" />
+                    android:textAlignment="center" />
 
-            </TableRow>
+                <Button
+                    android:id="@+id/dateRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    android:layout_weight="1"
+                    android:onClick="click_dateRight"
+                    android:background="@android:color/transparent"
+                    android:text="@string/date_right"
+                    android:paddingBottom="30dp" />
 
-            <TableRow
+            </LinearLayout>
+
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom">
 
-                <TextView
-                    android:text="2"
-                    android:id="@+id/n2"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <Button
+                    <TextView
+                        android:id="@+id/n1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:text="1"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:text="2"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n3"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="3"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n4"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="4"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n5"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="5"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r5"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n6"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="6"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r6"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n7"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="7"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r7"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n8"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="8"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r8"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/n9"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="9"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/h9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <TextView
+                        android:id="@+id/r9"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h2"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r2"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
+                    <TextView
+                        android:id="@+id/n10"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="10"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
 
-            </TableRow>
+                    <Button
+                        android:id="@+id/h10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/r10"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
 
-                <TextView
-                    android:text="3"
-                    android:id="@+id/n3"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
+                </TableRow>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h3"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r3"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
+                    <TextView
+                        android:id="@+id/n11"
+                        android:layout_width="wrap_content"
+                        android:layout_column="0"
+                        android:text="11"
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textStyle="normal|bold" />
 
-            </TableRow>
+                    <Button
+                        android:id="@+id/h11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_B_hour"
+                        android:onClick="clickB_main_hour"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:layout_weight="0"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/r11"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:fontFamily="monospace"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="?attr/colorControlNormal"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_weight="1"
+                        android:textAlignment="center" />
 
-                <TextView
-                    android:text="4"
-                    android:id="@+id/n4"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
+                </TableRow>
+            </TableLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h4"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
+        </LinearLayout>
+    </ScrollView>
 
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r4"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp"/>
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="5"
-                    android:id="@+id/n5"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h5"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r5"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="6"
-                    android:id="@+id/n6"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h6"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r6"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="7"
-                    android:id="@+id/n7"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h7"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r7"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="8"
-                    android:id="@+id/n8"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h8"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r8"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="9"
-                    android:id="@+id/n9"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h9"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r9"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="10"
-                    android:id="@+id/n10"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h10"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r10"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="11"
-                    android:id="@+id/n11"
-                    android:layout_column="0"
-                    android:textSize="30dp"
-                    android:layout_width="50dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/h11"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="22sp"
-                    android:textColor="@android:color/black"
-                    android:onClick="clickB_main_hour"
-                    android:backgroundTint="@color/Color_B_hour" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/r11"
-                    android:layout_gravity="top|left"
-                    android:textAlignment="viewStart"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textSize="18sp"
-                    android:textStyle="normal|bold"
-                    android:padding="8dp" />
-
-            </TableRow>
-        </TableLayout>
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>
