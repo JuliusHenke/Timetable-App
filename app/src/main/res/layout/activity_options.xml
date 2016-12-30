@@ -1,169 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="10dp"
-    android:clipToPadding="false">
-    <LinearLayout
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linear_layout">
+        android:layout_height="fill_parent"
+        android:clipToPadding="false"
+        android:padding="20dp">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="10dp" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            android:layout_weight="1"
-            android:text="@string/TV_opt_1"
-            android:textSize="24sp"
-            android:textColor="@color/materialcolorpicker__black" />
+            android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="10dp" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TableRow
+            <TextView
+                android:id="@+id/TV_opt_headline"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:text="@string/settings"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#FF342D2D"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/TV_opt_1"
+                android:textColor="@color/materialcolorpicker__black"
+                android:textSize="24sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
 
                 <Button
-                    android:text="Monday"
+                    android:id="@+id/B_opt_startDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/B_opt_startDay"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"
                     android:onClick="clickB_opt_startDay"
+                    android:text="@string/monday"
+                    android:textAllCaps="false"
                     android:textColor="@color/materialcolorpicker__black"
-                    android:fontFamily="sans-serif" />
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:text="@string/TV_opt_1_to"
+                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView3"
                     android:layout_weight="1"
-                    android:textSize="18sp"
+                    android:text="@string/TV_opt_1_to"
                     android:textAlignment="center"
-                    android:textColor="@color/materialcolorpicker__black" />
+                    android:textColor="@color/materialcolorpicker__black"
+                    android:textSize="18sp" />
 
                 <Button
-                    android:text="Friday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/B_opt_endDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
-                    android:onClick="clickB_opt_endDay"
-                    android:textColor="@color/materialcolorpicker__black"
-                    android:fontFamily="sans-serif" />
-
-            </TableRow>
-        </TableLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView6"
-            android:layout_weight="1"
-            android:text="@string/TV_opt_3"
-            android:textSize="24sp"
-            android:textColor="@color/materialcolorpicker__black" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="10dp" />
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <RadioButton
-                    android:text="@string/Yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/RB_opt_yes"
-                    android:onClick="clickRB_opt_twoWeekSystem"
-                    android:textColor="@color/materialcolorpicker__black"
-                    android:textSize="18sp"
                     android:fontFamily="sans-serif"
-                    android:checked="false" />
-
-                <Space
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content" />
-
-                <RadioButton
-                    android:text="@string/No"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/RB_opt_no"
-                    android:onClick="clickRB_opt_twoWeekSystem"
+                    android:onClick="clickB_opt_endDay"
+                    android:text="@string/friday"
+                    android:textAllCaps="false"
                     android:textColor="@color/materialcolorpicker__black"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif" />
+                    android:textSize="18sp" />
+            </LinearLayout>
 
-            </TableRow>
-        </TableLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="50dp" />
+            <Switch
+                android:text="@string/Switch_opt_weekSystem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Switch_opt_weekSystem"
+                android:layout_weight="1"
+                android:textSize="24sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            android:layout_weight="1"
-            android:text="@string/TV_opt_2"
-            android:textSize="24sp"
-            android:textColor="@color/materialcolorpicker__black" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="25dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="10dp" />
+            <Switch
+                android:text="@string/Switch_opt_showWeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Switch_opt_showWeek"
+                android:layout_weight="1"
+                android:textSize="24sp" />
 
-        <Button
-            android:text="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/B_opt_maxHours"
-            android:layout_weight="1"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:layout_gravity="center_horizontal"
-            android:onClick="clickB_opt_maxHours"
-            android:textColor="@color/materialcolorpicker__black"
-            android:fontFamily="sans-serif" />
+        </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

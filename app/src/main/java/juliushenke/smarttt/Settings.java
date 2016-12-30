@@ -8,21 +8,21 @@ class Settings implements Serializable {
 
     private int start_day;
     private int end_day;
-    private boolean two_week_system;
-    private int max_hours;
+    private boolean weekSystem;
+    private boolean showWeek;
 
-    Settings(int start_day, int end_day, int max_hours, boolean two_week_system) {
-        this.start_day = start_day;
-        this.end_day = end_day;
-        this.max_hours = max_hours;
-        this.two_week_system = two_week_system;
+    Settings() {
+        this.start_day = 1;
+        this.end_day = 5;
+        this.weekSystem = false;
+        this.showWeek = false;
     }
 
     //Getters
     int getStart_day(){return start_day;}
     int getEnd_day(){return end_day;}
-    boolean getTwo_week_system(){return two_week_system;}
-    int getMax_hours(){return max_hours;}
+    boolean getWeekSystem(){return weekSystem;}
+    boolean getShowWeek(){return showWeek;}
 
     //Setters
     void setStart_day(int input_day){
@@ -33,6 +33,6 @@ class Settings implements Serializable {
         this.end_day = input_day;
         if(start_day > end_day) start_day = end_day;
     }
-    void setTwo_week_system(boolean two_week_system){this.two_week_system = two_week_system;}
-    void setMax_hours(int max_hours){this.max_hours = max_hours;}
+    void setWeekSystem(boolean weekSystem){this.weekSystem = weekSystem;}
+    void setShowWeek(boolean showWeek){this.showWeek = showWeek;}
 }

@@ -1,93 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scrollview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="10dp"
-    android:clipToPadding="false">
-    <LinearLayout
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linear_layout">
+        android:layout_height="fill_parent"
+        android:clipToPadding="false"
+        android:padding="20dp">
 
-        <EditText
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/TF_subject"
-            android:textSize="24sp"
-            android:hint="@string/TF_subject" />
+            android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            <EditText
+                android:id="@+id/TF_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/TF_subject"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/TF_room"
-            android:textSize="24sp"
-            android:hint="@string/TF_room" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            <EditText
+                android:id="@+id/TF_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/TF_room"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/TF_teacher"
-            android:textSize="24sp"
-            android:hint="@string/TF_teacher" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_weight="1" />
+            <EditText
+                android:id="@+id/TF_teacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/TF_teacher"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
 
-        <Button
-            android:text="@string/B_subject_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/B_subject_color"
-            android:fontFamily="sans-serif"
-            android:layout_gravity="center"
-            android:padding="20dp"
-            android:onClick="clickB_sub_color"
-            android:textAllCaps="false"
-            android:textSize="24sp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            <Button
+                android:id="@+id/B_subject_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:onClick="clickB_sub_color"
+                android:padding="20dp"
+                android:text="@string/B_subject_color"
+                android:textAllCaps="false"
+                android:textSize="24sp" />
 
-        <Button
-            style="@style/Base.ThemeOverlay.AppCompat.Dark"
-            android:layout_width="match_parent"
-            android:text="@string/B_subject_save"
-            android:id="@+id/B_subject_save"
-            android:layout_gravity="end|top"
-            android:textSize="24sp"
-            android:onClick="clickB_sub_save"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:fontFamily="sans-serif"
-            android:layout_height="70dp"
-            android:textAllCaps="false"
-            android:textStyle="normal|bold" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_weight="1" />
+            <Button
+                android:id="@+id/B_subject_save"
+                style="@style/Base.ThemeOverlay.AppCompat.Dark"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="end|top"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:onClick="clickB_sub_save"
+                android:text="@string/B_subject_save"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
 
-    </LinearLayout>
-</ScrollView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

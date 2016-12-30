@@ -28,7 +28,7 @@
     <string name="TF_teacher">Teacher</string>
     <string name="TF_room">Room</string>
     <string name="TF_subject">Subject</string>
-    <string name="TF_notes" >Notes</string>
+    <string name="TF_notes">Notes</string>
 
 
     <string-array name="days">
@@ -42,23 +42,11 @@
         <item>@string/sunday</item>
     </string-array>
 
-    <string-array name="suppAppChoices">
-        <item>@string/rateApp</item>
-        <item>@string/watchAd</item>
-        <item>@string/commentApp</item>
-    </string-array>
-
-    <string name="rateApp">Rate this App</string>
-    <string name="watchAd">Watch an short ad to support my work</string>
-    <string name="commentApp">Leave feedback in the Play Store</string>
-
-    <string name="TV_opt_1">Which days do you want to manage?</string>
+    <string name="TV_opt_1">Manage these days:</string>
     <string name="TV_opt_1_to">to</string>
-    <string name="TV_opt_2">What are the maximum hours a day should have?</string>
-    <string name="TV_opt_3">Use even/odd week system for 8/9th hour</string>
+    <string name="Switch_opt_weekSystem">Even/odd week system</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
-    <string name="TV_opt_4">More actions:</string>
 
     <string name="B_opt_delete">Delete a subject</string>
     <string name="B_opt_supp_app">Support this app</string>
@@ -84,9 +72,25 @@
     <string name="Toast_need_name">The subject\'s name is missing</string>
     <string name="placeholder">" "</string>
     <string name="settings">Settings</string>
-    <string name="actions">Actions</string>
     <string name="date_left"><![CDATA[<----]]></string>
     <string name="date_right"><![CDATA[---->]]></string>
     <string name="save">Save</string>
-    <string name="finish_editing">Finish editing</string>
+    <string name="finish_edit">Finish editing</string>
+    <string name="evenWeek">Even weeks</string>
+    <string name="oddWeek">Odd weeks</string>
+    <string name="copyEvenWeek">Copy even week</string>
+    <string name="copyOddWeek">Copy odd week</string>
+    <string name="week">week</string>
+    <string name="number1">1</string>
+    <string name="number2">2</string>
+    <string name="number3">3</string>
+    <string name="number4">4</string>
+    <string name="number5">5</string>
+    <string name="number6">6</string>
+    <string name="number7">7</string>
+    <string name="number8">8</string>
+    <string name="number9" >9</string>
+    <string name="number10">10</string>
+    <string name="number11">11</string>
+    <string name="Switch_opt_showWeek">Show week of year</string>
 </resources>
