@@ -29,9 +29,7 @@
     <string name="No">Nein</string>
     <string name="TV_opt_1">Diese Tage managen:</string>
     <string name="to">bis</string>
-    <string name="TV_opt_2">Maximale Stunden pro Tag</string>
     <string name="Switch_opt_weekSystem">Gerade/ungerade Wochensystem</string>
-    <string name="TV_opt_4">Weitere Aktionen</string>
     <string name="Yes">Ja</string>
     <string name="D_createSubject">Neues Fach erstellen</string>
     <string name="D_select_subject">Fach aus Auswahl</string>
@@ -40,7 +38,7 @@
     <string name="aboutApp">Programmierung: \n- Julius Henke
                             \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
                             \n\n© Julius Henke 2016</string>
-    <string name="B_opt_aboutApp">Credits</string>
+    <string name="B_opt_aboutApp">Über die App</string>
 
     <string name="D_introInfo_title">Hallo</string>
     <string name="D_introInfo">Danke, dass du diese App heruntergeladen hast.
@@ -56,10 +54,6 @@
     <string name="settings">Einstellungen</string>
     <string name="date_left"><![CDATA[<----]]></string>
     <string name="date_right"><![CDATA[---->]]></string>
-    <string name="actions">Aktionen</string>
-    <string name="text">Text</string>
-    <string name="Toast_finishedEditing">Bearbeitung fertig</string>
-    <string name="Toast_startedEditing">Bearbeitungsmodus aktiviert</string>
     <string name="finish_edit">Bearbeitung beenden</string>
     <string name="number9">9</string>
     <string name="number8">8</string>
@@ -73,10 +67,12 @@
     <string name="number10">10</string>
     <string name="number1">1</string>
     <string name="week">Woche</string>
-    <string name="oddWeek">Ungerade Wochen</string>
-    <string name="evenWeek">Gerade Wochen</string>
+    <string name="oddWeek">in ungeraden Wochen</string>
+    <string name="evenWeek">in geraden Wochen</string>
     <string name="copyOddWeek">Ungerade Woche kopieren</string>
     <string name="copyEvenWeek">Gerade Woche kopieren</string>
     <string name="Switch_opt_showWeek">Woche des Jahres anzeigen</string>
     <string name="OK">OK</string>
+    <string name="D_copyEvenWeek">Möchtest du den Stundenplan der geraden Woche für diesen Tag kopieren?\\nDu kannst den Tag anschließend immer noch bearbeiten.</string>
+    <string name="D_delete_thisSubject">Möchtest du dieses Fach wirklich löschen?</string>
 </resources>

@@ -55,11 +55,15 @@
     <string name="D_select_subject">Select subject</string>
     <string name="D_freeHour">Set free hour</string>
     <string name="D_delete_subject">Which subject do you want to delete?</string>
+    <string name="D_delete_thisSubject">Do you really want to delete this subject?</string>
     <string name="aboutApp">Programming: \n- Julius Henke
                             \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
                             \n\n© Julius Henke 2016</string>
     <string name="B_opt_aboutApp">About the app</string>
 
+
+    <string name="D_copyEvenWeek">Do you want to copy the timetable of the even weeks for this day.
+                                    \nYou can still edit the day afterwards.</string>
     <string name="D_introInfo_title">Hello</string>
     <string name="D_introInfo">Thank you for downloading this app.
                                \nThere are only a few quick steps to set your timetable up.</string>
@@ -75,8 +79,8 @@
     <string name="date_right"><![CDATA[---->]]></string>
     <string name="save">Save</string>
     <string name="finish_edit">Finish editing</string>
-    <string name="evenWeek">Even weeks</string>
-    <string name="oddWeek">Odd weeks</string>
+    <string name="evenWeek">in even weeks</string>
+    <string name="oddWeek">in odd weeks</string>
     <string name="copyEvenWeek">Copy even week</string>
     <string name="copyOddWeek">Copy odd week</string>
     <string name="week">week</string>

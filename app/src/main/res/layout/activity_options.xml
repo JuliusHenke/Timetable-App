@@ -57,7 +57,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:orientation="horizontal">
 
 
@@ -102,24 +102,24 @@
                 android:layout_weight="1" />
 
             <Switch
-                android:text="@string/Switch_opt_weekSystem"
+                android:id="@+id/Switch_opt_weekSystem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/Switch_opt_weekSystem"
                 android:layout_weight="1"
+                android:text="@string/Switch_opt_weekSystem"
                 android:textSize="24sp" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="25dp" />
+                android:layout_height="25dp"
+                android:layout_weight="1" />
 
             <Switch
-                android:text="@string/Switch_opt_showWeek"
+                android:id="@+id/Switch_opt_showWeek"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/Switch_opt_showWeek"
                 android:layout_weight="1"
+                android:text="@string/Switch_opt_showWeek"
                 android:textSize="24sp" />
 
         </LinearLayout>

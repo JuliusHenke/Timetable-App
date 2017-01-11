@@ -21,14 +21,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/TF_subject"
-                android:layout_width="match_parent"
+            <LinearLayout
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/TF_subject"
-                android:inputType="textPersonName"
-                android:textSize="24sp" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/TF_subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/TF_subject"
+                    android:inputType="textPersonName"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/B_subject_delete"
+                    style="?android:attr/buttonBarStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:drawable/ic_delete"
+                    android:onClick="clickB_sub_delete"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean week_isOdd = false;
 
     private boolean editing_mode = false;
-    private boolean days_changed = false;
 
     private boolean selected_activity_main = false;
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActivity_main();
-}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.act_deleteSub:
-                Dialog select_subject = select_subject(true);
+                Dialog select_subject = D_select_subject(true);
                 select_subject.show();
                 return true;
 
@@ -104,14 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 if (editing_mode) {
                     changeMode();
                 } else finish();
-            } else {
-                setActivity_main();
-                if (days_changed) {
-                    days_changed = false;
-                    saved_change = 0;
-                    setActivity_main();
-                }
-            }
+            } else setActivity_main();
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -147,8 +141,11 @@ public class MainActivity extends AppCompatActivity {
         EditText TF_room = (EditText) findViewById(R.id.TF_room);
         EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
         Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
+        Button B_subject_delete = (Button) findViewById(R.id.B_subject_delete);
 
         if (newSubject) {
+            TF_subject.setEnabled(true);
+            TF_subject.setTypeface(Typeface.DEFAULT);
             TF_subject.setText("");
             TF_room.setText("");
             TF_teacher.setText("");
@@ -156,7 +153,12 @@ public class MainActivity extends AppCompatActivity {
             selectedColorRGB = R.color.color_B_hour;
             B_subject_color.getBackground().setColorFilter(null);
             B_subject_color.setTextColor(Color.BLACK);
+            B_subject_delete.setVisibility(View.GONE);
         } else {
+            TF_subject.setEnabled(false);
+            TF_subject.setTextColor(Color.BLACK);
+            TF_subject.setTypeface(Typeface.DEFAULT_BOLD);
+            B_subject_delete.setVisibility(View.VISIBLE);
             try {
                 String filename = "SUBJECT-" + selected_subject + ".srl";
                 ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
@@ -167,9 +169,12 @@ public class MainActivity extends AppCompatActivity {
                 TF_teacher.setText(subject.getTeacher());
 
                 selectedColorRGB = subject.getColor();
-                B_subject_color.getBackground().setColorFilter(subject.getColor(), PorterDuff.Mode.MULTIPLY);
-                if (isColorDark(selectedColorRGB)) B_subject_color.setTextColor(Color.WHITE);
-                else B_subject_color.setTextColor(Color.BLACK);
+                B_subject_color.setBackgroundColor(selectedColorRGB);
+                if (isColorDark(selectedColorRGB))
+                    B_subject_color.setTextColor(Color.WHITE);
+                else
+                    B_subject_color.setTextColor(Color.BLACK);
+
 
                 input.close();
             } catch (ClassNotFoundException | IOException e) {
@@ -227,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button B_main_dateCenter = (Button) findViewById(R.id.B_main_dateCenter);
         Button B_main_weekType = (Button) findViewById(R.id.B_main_weekType);
-        Button B_main_copyWeek = (Button) findViewById(R.id.B_main_copyWeek);
 
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
         week_isOdd = isOdd(date_week);
@@ -237,17 +241,13 @@ public class MainActivity extends AppCompatActivity {
             B_main_dateCenter.setTextColor(Color.BLUE);
             if (settings.getWeekSystem()) {
                 B_main_weekType.setVisibility(View.VISIBLE);
-                B_main_copyWeek.setVisibility(View.VISIBLE);
                 if (selected_evenWeeks) {
                     B_main_weekType.setText(R.string.evenWeek);
-                    B_main_copyWeek.setText(R.string.copyOddWeek);
                 } else {
                     B_main_weekType.setText(R.string.oddWeek);
-                    B_main_copyWeek.setText(R.string.copyEvenWeek);
                 }
             } else {
                 B_main_weekType.setVisibility(View.GONE);
-                B_main_copyWeek.setVisibility(View.GONE);
             }
         } else {
             DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
@@ -257,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
             else B_main_dateCenter.setText(string_date);
             B_main_dateCenter.setTextColor(Color.BLACK);
             B_main_weekType.setVisibility(View.GONE);
-            B_main_copyWeek.setVisibility(View.GONE);
         }
 
         final TextView[] TVs_room = {null,
@@ -328,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
             String[] hours = new String[12];
 
             if (filename.equals("ODD-DAY-" + selected_day_of_week + ".srl"))
-                overwriteEvenDay(false);
+                D_copyEvenWeek().show();
             else {
                 try {
                     ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
@@ -428,23 +427,21 @@ public class MainActivity extends AppCompatActivity {
     private void changeMode() {
         if (!editing_mode) {
             editing_mode = true;
+            selected_evenWeeks = true;
             setActivity_main();
         } else {
             editing_mode = false;
-            saved_change = 0;
+            int act_day_of_week = getDay_of_week(Calendar.getInstance());
+            saved_change = selected_day_of_week - act_day_of_week;
             setActivity_main();
         }
     }
 
-    private void overwriteEvenDay(boolean overwrite_evenDay) {
+    private void copyEvenDay() {
         String[] hours = new String[12];
 
         String inputName = "DAY-" + selected_day_of_week + ".srl";
         String outputName = "ODD-DAY-" + selected_day_of_week + ".srl";
-        if (overwrite_evenDay) {
-            inputName = "ODD-DAY-" + selected_day_of_week + ".srl";
-            outputName = "DAY-" + selected_day_of_week + ".srl";
-        }
 
         //read the input
         try {
@@ -466,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showIntro() {
         editing_mode = true;
-        Dialog introInfo = introInfo();
+        Dialog introInfo = D_introInfo();
         introInfo.show();
     }
 
@@ -495,11 +492,11 @@ public class MainActivity extends AppCompatActivity {
                 Resources r = getResources();
                 if (selected_subject.equals("+") || selected_subject.equals("")) {
                     String[] options = {r.getString(R.string.D_select_subject), r.getString(R.string.D_createSubject)};
-                    Dialog edit_hour = edit_hour(options);
+                    Dialog edit_hour = D_edit_hour(options);
                     edit_hour.show();
                 } else {
                     String[] options = {r.getString(R.string.D_select_subject), r.getString(R.string.D_createSubject), r.getString(R.string.D_freeHour)};
-                    Dialog edit_hour = edit_hour(options);
+                    Dialog edit_hour = D_edit_hour(options);
                     edit_hour.show();
                 }
             } else {
@@ -509,13 +506,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickB_opt_startDay(View view) {
-        Dialog manage_days = manage_days(true);
+        Dialog manage_days = D_manage_days(true);
         manage_days.show();
     }
 
     public void clickB_opt_endDay(View view) {
-        Dialog manage_days = manage_days(false);
+        Dialog manage_days = D_manage_days(false);
         manage_days.show();
+    }
+
+    public void clickB_sub_delete(View view) {
+        D_deleteThisSubject().show();
     }
 
     public void clickB_sub_color(View view) {
@@ -615,11 +616,6 @@ public class MainActivity extends AppCompatActivity {
         popup.show();
     }
 
-    public void click_B_main_copyWeek(View view) {
-        if (selected_evenWeeks) overwriteEvenDay(true);
-        else overwriteEvenDay(false);
-    }
-
     public void click_dateLeft(View view) {
         setDay(-1);
         setActivity_main();
@@ -643,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Dialogs ---------------------------------------------------------------------------------
-    private Dialog edit_hour(String[] options) {
+    private Dialog D_edit_hour(String[] options) {
 
         //Initialize the Alert Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -653,7 +649,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    Dialog select_subject = select_subject(false);
+                    Dialog select_subject = D_select_subject(false);
                     select_subject.show();
                 } else if (which == 1) {
                     setActivity_subject(true);
@@ -684,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private Dialog select_subject(final boolean delete) {
+    private Dialog D_select_subject(final boolean delete) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         File[] files = getSubjectFiles();
@@ -747,7 +743,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private Dialog manage_days(final boolean startDay) {
+    private Dialog D_manage_days(final boolean startDay) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] days = getResources().getStringArray(R.array.days);
         String[] options = {days[1], days[2], days[3], days[4], days[5], days[6], days[7]};
@@ -771,7 +767,6 @@ public class MainActivity extends AppCompatActivity {
                     out.writeObject(settings);
                     out.close();
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_saved), Toast.LENGTH_SHORT).show();
-                    days_changed = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -782,21 +777,21 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private Dialog introInfo() {
+    private Dialog D_introInfo() {
         Resources r = getResources();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(r.getString(R.string.D_introInfo_title)).setMessage(r.getString(R.string.D_introInfo)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-                Dialog introWeekSystem = introWeekSystem();
+                Dialog introWeekSystem = D_introWeekSystem();
                 introWeekSystem.show();
             }
         });
         return builder.create();
     }
 
-    private Dialog introWeekSystem() {
+    private Dialog D_introWeekSystem() {
         Resources r = getResources();
         final Settings settings = new Settings();
 
@@ -832,6 +827,56 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         setActivity_main();
+                    }
+                });
+        return builder.create();
+    }
+
+    private Dialog D_copyEvenWeek() {
+        Resources r = getResources();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(r.getString(R.string.D_copyEvenWeek))
+                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        copyEvenDay();
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        return builder.create();
+    }
+
+    private Dialog D_deleteThisSubject() {
+        Resources r = getResources();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(r.getString(R.string.D_delete_thisSubject))
+                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            File dir = getFilesDir();
+                            File file = new File(dir, "SUBJECT-" + selected_subject + ".srl");
+                            boolean deleted = file.delete();
+                            if (deleted)
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_deleted), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
                     }
                 });
         return builder.create();
