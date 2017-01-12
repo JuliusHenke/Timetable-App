@@ -52,8 +52,8 @@
     <string name="placeholder">" "</string>
     <string name="save">Speichern</string>
     <string name="settings">Einstellungen</string>
-    <string name="date_left"><![CDATA[<----]]></string>
-    <string name="date_right"><![CDATA[---->]]></string>
+    <string name="date_left">←</string>
+    <string name="date_right">→</string>
     <string name="finish_edit">Bearbeitung beenden</string>
     <string name="number9">9</string>
     <string name="number8">8</string>
