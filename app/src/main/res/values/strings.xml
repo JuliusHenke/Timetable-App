@@ -28,8 +28,6 @@
     <string name="TF_teacher">Teacher</string>
     <string name="TF_room">Room</string>
     <string name="TF_subject">Subject</string>
-    <string name="TF_notes">Notes</string>
-
 
     <string-array name="days">
         <item>@string/placeholder</item>
@@ -50,38 +48,31 @@
     <string name="OK">OK</string>
 
     <string name="B_opt_delete">Delete a subject</string>
-    <string name="B_opt_supp_app">Support this app</string>
     <string name="D_createSubject">Create new subject</string>
-    <string name="D_select_subject">Select subject</string>
+    <string name="D_select_subject">Pick subject</string>
+    <string name="D_edit_subject">Edit subject</string>
     <string name="D_freeHour">Set free hour</string>
     <string name="D_delete_subject">Which subject do you want to delete?</string>
-    <string name="D_delete_thisSubject">Do you really want to delete this subject?</string>
     <string name="aboutApp">Programming: \n- Julius Henke
                             \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
                             \n\n© Julius Henke 2016</string>
-    <string name="B_opt_aboutApp">About the app</string>
-
-
-    <string name="D_copyEvenWeek">Do you want to copy the timetable of the even weeks for this day.
-                                    \nYou can still edit the day afterwards.</string>
+    <string name="B_opt_aboutApp">About app</string>
     <string name="D_introInfo_title">Hello</string>
     <string name="D_introInfo">Thank you for downloading this app.
                                \nThere are only a few quick steps to set your timetable up.</string>
 
     <string name="D_introWeekSystem_title">Settings</string>
-    <string name="D_introWeekSystem">Do you want to use the "even/odd - week" feature?
+    <string name="D_introWeekSystem">Do you want to use the "even/odd - weeks" detection?
                                     \n\nThis enables you to configure the timetable for even and odd weeks separately.</string>
 
-    <string name="Toast_need_name">The subject\'s name is missing</string>
+    <string name="Toast_nameNeeded">Subject\'s name missing</string>
+    <string name="Toast_nameAlreadyTaken">Subject\'s name already taken</string>
     <string name="placeholder">" "</string>
     <string name="settings">Settings</string>
     <string name="date_right">→</string>
     <string name="save">Save</string>
-    <string name="finish_edit">Finish editing</string>
     <string name="evenWeek">in even weeks</string>
     <string name="oddWeek">in odd weeks</string>
-    <string name="copyEvenWeek">Copy even week</string>
-    <string name="copyOddWeek">Copy odd week</string>
     <string name="week">week</string>
     <string name="number1">1</string>
     <string name="number2">2</string>
@@ -96,4 +87,5 @@
     <string name="number11">11</string>
     <string name="Switch_opt_showWeek">Show week of year</string>
     <string name="date_left">←</string>
+    <string name="D_warn_manageDays">Now your week only consists of 1 day!</string>
 </resources>

@@ -73,7 +73,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/materialcolorpicker__black"
                     android:textSize="18sp"
-                    android:background="@drawable/button_shadow"/>
+                    android:background="@drawable/button_shadow" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -96,7 +96,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/materialcolorpicker__black"
                     android:textSize="18sp"
-                    android:background="@drawable/button_shadow"/>
+                    android:background="@drawable/button_shadow" />
             </LinearLayout>
 
             <Space

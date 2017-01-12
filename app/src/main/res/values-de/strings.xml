@@ -23,9 +23,7 @@
     <string name="B_options">Optionen</string>
     <string name="B_mode_view">Plan bearbeiten</string>
     <string name="B_mode">Fertigstellen</string>
-    <string name="TF_notes">Notizen</string>
     <string name="B_opt_delete">Ein Fach löschen</string>
-    <string name="B_opt_supp_app">Diese App unterstützen</string>
     <string name="No">Nein</string>
     <string name="TV_opt_1">Diese Tage managen:</string>
     <string name="to">bis</string>
@@ -45,16 +43,15 @@
                                \n\nJetzt sind es nur noch wenige Schritte, bis dein Stundenplan eigerichtet ist.</string>
 
     <string name="D_introWeekSystem_title">Einstellungen</string>
-    <string name="D_introWeekSystem">Willst du das gerade/ungerade-Wochen Feature benutzen?
-                                    \n\nDieses Feature ermöglicht es dir den Stundenplan für gerade und ungerade Wochen unterschiedlich zu gestalten.</string>
+    <string name="D_introWeekSystem">Möchtest du die „gerade/ungerade Wochen Erkennung“ benutzen?
+                                    \n\nDadurch kannst du für gerade und ungerade Wochen unterschiedliche Pläne anlegen.</string>
 
-    <string name="Toast_need_name">Der Name des Faches fehlt</string>
+    <string name="Toast_nameNeeded">Der Name des Faches fehlt</string>
     <string name="placeholder">" "</string>
     <string name="save">Speichern</string>
     <string name="settings">Einstellungen</string>
     <string name="date_left">←</string>
     <string name="date_right">→</string>
-    <string name="finish_edit">Bearbeitung beenden</string>
     <string name="number9">9</string>
     <string name="number8">8</string>
     <string name="number7">7</string>
@@ -69,10 +66,9 @@
     <string name="week">Woche</string>
     <string name="oddWeek">in ungeraden Wochen</string>
     <string name="evenWeek">in geraden Wochen</string>
-    <string name="copyOddWeek">Ungerade Woche kopieren</string>
-    <string name="copyEvenWeek">Gerade Woche kopieren</string>
     <string name="Switch_opt_showWeek">Woche des Jahres anzeigen</string>
     <string name="OK">OK</string>
-    <string name="D_copyEvenWeek">Möchtest du den Stundenplan der geraden Woche für diesen Tag kopieren?\\nDu kannst den Tag anschließend immer noch bearbeiten.</string>
-    <string name="D_delete_thisSubject">Möchtest du dieses Fach wirklich löschen?</string>
+    <string name="D_edit_subject">Fach bearbeiten</string>
+    <string name="Toast_nameAlreadyTaken">Name des Faches wurde bereits verwendet</string>
+    <string name="D_warn_manageDays">Jetzt besteht deine Woche nur noch aus 1 Tag!</string>
 </resources>
