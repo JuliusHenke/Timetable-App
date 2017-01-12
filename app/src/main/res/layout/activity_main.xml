@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -13,7 +14,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clipToPadding="false"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="@drawable/background_gradient"
+        >
 
         <LinearLayout
             android:id="@+id/linear_layout"
@@ -62,17 +65,18 @@
                     android:id="@+id/dateLeft"
                     style="?android:attr/buttonBarStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.00"
                     android:background="@android:color/transparent"
                     android:onClick="click_dateLeft"
-                    android:paddingBottom="30dp"
+                    android:paddingBottom="0dp"
                     android:text="@string/date_left"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="48sp"
                     android:ellipsize="end"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:elevation="0dp" />
 
                 <Button
                     android:id="@+id/B_main_dateCenter"
@@ -82,13 +86,13 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:onClick="click_dateCenter"
-                    android:paddingBottom="30dp"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="normal|bold"
-                    android:ellipsize="end" />
+                    android:ellipsize="end"
+                    android:layout_gravity="center" />
 
                 <Button
                     android:id="@+id/dateRight"
@@ -98,11 +102,10 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:onClick="click_dateRight"
-                    android:paddingBottom="30dp"
                     android:text="@string/date_right"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="48sp"
                     android:ellipsize="end"
                     android:maxLines="1" />
 
@@ -116,7 +119,8 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    >
 
                     <TextView
                         android:id="@+id/n1"
@@ -145,7 +149,10 @@
                         android:textSize="22sp"
                         android:ellipsize="end"
                         android:layout_weight="2"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"
+                    />
+
 
                     <TextView
                         android:id="@+id/r1"
@@ -161,6 +168,14 @@
                         android:layout_weight="1"
                         android:maxLines="1"
                         android:layout_width="0dp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_1">
 
                 </TableRow>
 
@@ -195,7 +210,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r2"
@@ -211,6 +227,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_2">
 
                 </TableRow>
 
@@ -245,7 +269,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r3"
@@ -261,6 +286,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_3">
 
                 </TableRow>
 
@@ -295,7 +328,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r4"
@@ -311,6 +345,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_4">
 
                 </TableRow>
 
@@ -345,7 +387,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r5"
@@ -361,6 +404,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_5">
 
                 </TableRow>
 
@@ -395,7 +446,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r6"
@@ -411,6 +463,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_6">
 
                 </TableRow>
 
@@ -445,7 +505,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r7"
@@ -461,6 +522,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_7">
 
                 </TableRow>
 
@@ -495,7 +564,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r8"
@@ -511,6 +581,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_8">
 
                 </TableRow>
 
@@ -545,7 +623,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r9"
@@ -561,6 +640,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_9">
 
                 </TableRow>
 
@@ -595,7 +682,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r10"
@@ -611,6 +699,14 @@
                         android:ellipsize="end"
                         android:layout_weight="1"
                         android:maxLines="1" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="5dp"
+                    android:id="@+id/table_space_10">
 
                 </TableRow>
 
@@ -645,7 +741,8 @@
                         android:ellipsize="end"
                         android:layout_weight="2"
                         android:onClick="clickB_main_hour"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:background="@drawable/button_shadow"/>
 
                     <TextView
                         android:id="@+id/r11"
