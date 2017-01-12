@@ -73,6 +73,6 @@
     <string name="copyEvenWeek">Gerade Woche kopieren</string>
     <string name="Switch_opt_showWeek">Woche des Jahres anzeigen</string>
     <string name="OK">OK</string>
-    <string name="D_copyEvenWeek">Möchtest du den Stundenplan der geraden Woche für diesen Tag kopieren?\\nDu kannst den Tag anschließend immer noch bearbeiten.</string>
+    <string name="D_copyEvenWeek">Möchtest du den Stundenplan der geraden Woche für diesen Tag übernehmen?</string>
     <string name="D_delete_thisSubject">Möchtest du dieses Fach wirklich löschen?</string>
 </resources>

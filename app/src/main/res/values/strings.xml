@@ -52,7 +52,8 @@
     <string name="B_opt_delete">Delete a subject</string>
     <string name="B_opt_supp_app">Support this app</string>
     <string name="D_createSubject">Create new subject</string>
-    <string name="D_select_subject">Select subject</string>
+    <string name="D_select_subject">Pick subject</string>
+    <string name="D_edit_subject">Edit subject</string>
     <string name="D_freeHour">Set free hour</string>
     <string name="D_delete_subject">Which subject do you want to delete?</string>
     <string name="D_delete_thisSubject">Do you really want to delete this subject?</string>
@@ -62,8 +63,7 @@
     <string name="B_opt_aboutApp">About the app</string>
 
 
-    <string name="D_copyEvenWeek">Do you want to copy the timetable of the even weeks for this day.
-                                    \nYou can still edit the day afterwards.</string>
+    <string name="D_copyEvenWeek">Do you want to apply the timetable of even weeks for this day.</string>
     <string name="D_introInfo_title">Hello</string>
     <string name="D_introInfo">Thank you for downloading this app.
                                \nThere are only a few quick steps to set your timetable up.</string>

@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
         EditText TF_room = (EditText) findViewById(R.id.TF_room);
         EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
         Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
-        Button B_subject_delete = (Button) findViewById(R.id.B_subject_delete);
 
         if (newSubject) {
             TF_subject.setEnabled(true);
@@ -153,12 +152,10 @@ public class MainActivity extends AppCompatActivity {
             selectedColorRGB = R.color.color_B_hour;
             B_subject_color.getBackground().setColorFilter(null);
             B_subject_color.setTextColor(Color.BLACK);
-            B_subject_delete.setVisibility(View.GONE);
         } else {
             TF_subject.setEnabled(false);
             TF_subject.setTextColor(Color.BLACK);
             TF_subject.setTypeface(Typeface.DEFAULT_BOLD);
-            B_subject_delete.setVisibility(View.VISIBLE);
             try {
                 String filename = "SUBJECT-" + selected_subject + ".srl";
                 ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
@@ -492,12 +489,10 @@ public class MainActivity extends AppCompatActivity {
                 Resources r = getResources();
                 if (selected_subject.equals("+") || selected_subject.equals("")) {
                     String[] options = {r.getString(R.string.D_select_subject), r.getString(R.string.D_createSubject)};
-                    Dialog edit_hour = D_edit_hour(options);
-                    edit_hour.show();
+                    D_edit_hour(options).show();
                 } else {
-                    String[] options = {r.getString(R.string.D_select_subject), r.getString(R.string.D_createSubject), r.getString(R.string.D_freeHour)};
-                    Dialog edit_hour = D_edit_hour(options);
-                    edit_hour.show();
+                    String[] options = {r.getString(R.string.D_select_subject), r.getString(R.string.D_createSubject), r.getString(R.string.D_freeHour), r.getString(R.string.D_edit_subject)};
+                    D_edit_hour(options).show();
                 }
             } else {
                 setActivity_subject(true);
@@ -513,10 +508,6 @@ public class MainActivity extends AppCompatActivity {
     public void clickB_opt_endDay(View view) {
         Dialog manage_days = D_manage_days(false);
         manage_days.show();
-    }
-
-    public void clickB_sub_delete(View view) {
-        D_deleteThisSubject().show();
     }
 
     public void clickB_sub_color(View view) {
@@ -673,6 +664,8 @@ public class MainActivity extends AppCompatActivity {
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
+                } else if (which == 3) {
+                    setActivity_subject(false);
                 }
                 dialog.cancel();
             }
@@ -709,7 +702,7 @@ public class MainActivity extends AppCompatActivity {
                         ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                         String[] hours = (String[]) input.readObject();
                         hours[selected_hour] = subject_names[which];
-                        if ((selected_hour == 1 || selected_hour == 3 || selected_hour == 5) && (hours[selected_hour + 1].equals("") || hours[selected_hour + 1] == null)) {
+                        if ((selected_hour == 1 || selected_hour == 3 || selected_hour == 5 || selected_hour == 8 || selected_hour == 10) && (hours[selected_hour + 1].equals("") || hours[selected_hour + 1] == null)) {
                             hours[selected_hour + 1] = subject_names[which];
                         }
                         input.close();
@@ -841,35 +834,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         copyEvenDay();
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        return builder.create();
-    }
-
-    private Dialog D_deleteThisSubject() {
-        Resources r = getResources();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(r.getString(R.string.D_delete_thisSubject))
-                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            File dir = getFilesDir();
-                            File file = new File(dir, "SUBJECT-" + selected_subject + ".srl");
-                            boolean deleted = file.delete();
-                            if (deleted)
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_deleted), Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                         dialog.cancel();
                     }
                 })
