@@ -6,15 +6,15 @@
 
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
+        layout="@layout/toolbar" />
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="@drawable/background_gradient"
         android:clipToPadding="false"
-        android:padding="20dp"
-        android:background="@drawable/background_gradient">
+        android:padding="20dp">
 
         <LinearLayout
             android:id="@+id/linear_layout"
@@ -23,32 +23,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/TV_opt_headline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif"
-                android:text="@string/settings"
-                android:textAlignment="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#FF342D2D"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
-
-            <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/TV_opt_1"
+                android:text="@string/TV_settings_manageDays"
                 android:textColor="@color/materialcolorpicker__black"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -64,16 +45,17 @@
 
                 <Button
                     android:id="@+id/B_opt_startDay"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
                     android:fontFamily="sans-serif"
                     android:onClick="clickB_opt_startDay"
                     android:text="@string/monday"
                     android:textAllCaps="false"
                     android:textColor="@color/materialcolorpicker__black"
-                    android:textSize="18sp"
-                    android:background="@drawable/button_shadow" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -87,16 +69,17 @@
 
                 <Button
                     android:id="@+id/B_opt_endDay"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
                     android:fontFamily="sans-serif"
                     android:onClick="clickB_opt_endDay"
                     android:text="@string/friday"
                     android:textAllCaps="false"
                     android:textColor="@color/materialcolorpicker__black"
-                    android:textSize="18sp"
-                    android:background="@drawable/button_shadow" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <Space
@@ -109,9 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/Switch_opt_weekSystem"
-                android:textSize="24sp"
-                />
+                android:text="@string/Switch_settings_weekSystem"
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -123,10 +105,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/Switch_opt_showWeek"
-                android:textSize="24sp" />
+                android:text="@string/Switch_settings_showWeek"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>
 
 </LinearLayout>
+

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="grey_brown">#FF342D2D</color>
-    <color name="color_B_hour">#dfdfdf</color>
-    <color name="colorAppBar">#262626</color>
+    <color name="colorAppBar">#f33f01</color>
+    <color name="colorSubjectDefault">#cacaca</color>
+
+    <color name="grey_brown">#342d2d</color>
     <color name="hint_foreground_material_light">#dfdfdf</color>
 </resources>

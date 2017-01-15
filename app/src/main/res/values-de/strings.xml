@@ -8,50 +8,31 @@
     <string name="thursday">Donnerstag</string>
     <string name="tuesday">Dienstag</string>
     <string name="wednesday">Mittwoch</string>
-    <string name="dialog2_title">%1$d. Stunde bearbeiten:</string>
-    <string name="dialog1_title">Was möchtest du machen?</string>
-    <string name="dialog3_title_2">Welches Fach möchtest du löschen?</string>
-    <string name="dialog3_title_1">Fach für Stunde %1$d:</string>
-    <string name="Toast_saved">Gespeichert</string>
-    <string name="Toast_deleted">Gelöscht</string>
-    <string name="TF_teacher">Leher/in</string>
-    <string name="TF_subject">Fach</string>
-    <string name="TF_room">Raum</string>
+    <string name="D_editHour_title">Wähle ein Fach</string>
+    <string name="Saved">Gespeichert</string>
+    <string name="Deleted">Gelöscht</string>
     <string name="B_subject_save">Speichern</string>
     <string name="B_subject_delete">Fach löschen</string>
-    <string name="B_subject_color">Farbe</string>
-    <string name="B_options">Optionen</string>
-    <string name="B_mode_view">Plan bearbeiten</string>
-    <string name="B_mode">Fertigstellen</string>
-    <string name="B_opt_delete">Ein Fach löschen</string>
+    <string name="B_subject_color">Farbe auswählen</string>
     <string name="No">Nein</string>
-    <string name="TV_opt_1">Diese Tage managen:</string>
+    <string name="TV_settings_manageDays">Diese Tage managen:</string>
     <string name="to">bis</string>
-    <string name="Switch_opt_weekSystem">Gerade/ungerade Wochensystem</string>
+    <string name="Switch_settings_weekSystem">Gerade/ungerade Wochensystem</string>
     <string name="Yes">Ja</string>
-    <string name="D_createSubject">Neues Fach erstellen</string>
-    <string name="D_select_subject">Fach aus Auswahl</string>
-    <string name="D_freeHour">Freistunde festlegen</string>
-    <string name="D_delete_subject">Welches Fach willst du löschen?</string>
-    <string name="aboutApp">Programmierung: \n- Julius Henke
-                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
-                            \n\n© Julius Henke 2016</string>
-    <string name="B_opt_aboutApp">Über die App</string>
+    <string name="D_aboutApp_content">Programmierung: \n- Julius Henke
+                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers \n- https://material.io/icons/
+                            \n\n© Julius Henke</string>
+    <string name="Menu_aboutApp">Über die App</string>
 
-    <string name="D_introInfo_title">Hallo</string>
-    <string name="D_introInfo">Danke, dass du diese App heruntergeladen hast.
-                               \n\nJetzt sind es nur noch wenige Schritte, bis dein Stundenplan eigerichtet ist.</string>
+    <string name="D_intro_title">Willkommen!</string>
+    <string name="D_intro_content">Beginne damit deinen Stundenplan einzugeben. Für weitere Optionen öffne die Einstellungen.</string>
 
-    <string name="D_introWeekSystem_title">Einstellungen</string>
-    <string name="D_introWeekSystem">Möchtest du die „gerade/ungerade Wochen Erkennung“ benutzen?
-                                    \n\nDadurch kannst du für gerade und ungerade Wochen unterschiedliche Pläne anlegen.</string>
-
-    <string name="Toast_nameNeeded">Der Name des Faches fehlt</string>
+    <string name="Toast_nameNeeded">Name fehlt</string>
     <string name="placeholder">" "</string>
-    <string name="save">Speichern</string>
-    <string name="settings">Einstellungen</string>
-    <string name="date_left">←</string>
-    <string name="date_right">→</string>
+    <string name="Save">Speichern</string>
+    <string name="Settings">Einstellungen</string>
+    <string name="B_main_dateLeft">←</string>
+    <string name="B_main_dateRight">→</string>
     <string name="number9">9</string>
     <string name="number8">8</string>
     <string name="number7">7</string>
@@ -64,11 +45,25 @@
     <string name="number10">10</string>
     <string name="number1">1</string>
     <string name="week">Woche</string>
-    <string name="oddWeek">in ungeraden Wochen</string>
-    <string name="evenWeek">in geraden Wochen</string>
-    <string name="Switch_opt_showWeek">Woche des Jahres anzeigen</string>
+    <string name="Menu_oddWeek">in ungeraden Wochen</string>
+    <string name="Menu_evenWeek">in geraden Wochen</string>
+    <string name="Switch_settings_showWeek">Woche des Jahres anzeigen</string>
     <string name="OK">OK</string>
-    <string name="D_edit_subject">Fach bearbeiten</string>
-    <string name="Toast_nameAlreadyTaken">Name des Faches wurde bereits verwendet</string>
-    <string name="D_warn_manageDays">Jetzt besteht deine Woche nur noch aus 1 Tag!</string>
+    <string name="Toast_nameAlreadyTaken">Name schon verwendet</string>
+    <string name="D_warnManageDays_content">Jetzt besteht deine Woche nur noch aus 1 Tag!</string>
+    <string name="Subject">Fach</string>
+    <string name="D_intro_btnYES">Auf gehts!</string>
+    <string name="D_editHour_NO">Freistunde</string>
+    <string name="D_editHour_YES">Neues Fach</string>
+    <string name="TV_subject_room">Raum:</string>
+    <string name="TV_subject_teacher">Leher:</string>
+    <string name="Editing">Bearbeitung</string>
+    <string name="TF_subject_optional">(optional)</string>
+    <string name="Menu_deleteSubject">Fach löschen</string>
+    <string name="Menu_editSubject">Fach bearbeiten</string>
+    <string name="Menu_editTable">Plan bearbeiten</string>
+    <string name="TF_subject_name">Name des Faches</string>
+    <string name="D_editSubject_title">Wähle ein Fach zum bearbeiten</string>
+    <string name="Cancel">Abrechen</string>
+    <string name="D_deleteSubject_title">Wähle ein Fach zum löschen</string>
 </resources>

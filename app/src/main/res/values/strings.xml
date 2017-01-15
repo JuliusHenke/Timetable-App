@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //App name ----------------------------------------------------------------------
     <string name="app_name">Timetable</string>
+
+    //Single words ------------------------------------------------------------------
+    <string name="Saved">Saved</string>
+    <string name="Deleted">Deleted</string>
+    <string name="to">to</string>
+    <string name="No">No</string>
+    <string name="OK">OK</string>
+    <string name="Yes">Yes</string>
+    <string name="week">week</string>
+    <string name="Save">Save</string>
+    <string name="Settings">Settings</string>
+    <string name="Subject">Subject</string>
+    <string name="Editing">Editing</string>
+    <string name="Cancel">Cancel</string>
+
+    <string name="number1">1</string>
+    <string name="number2">2</string>
+    <string name="number3">3</string>
+    <string name="number4">4</string>
+    <string name="number5">5</string>
+    <string name="number6">6</string>
+    <string name="number7">7</string>
+    <string name="number8">8</string>
+    <string name="number9">9</string>
+    <string name="number10">10</string>
+    <string name="number11">11</string>
 
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
@@ -9,25 +36,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
-
-    <string name="dialog1_title">What do you want to do?</string>
-    <string name="dialog2_title">Edit hour %1$d:</string>
-    <string name="dialog3_title_1">Subject for hour %1$d:</string>
-    <string name="dialog3_title_2">Delete this subject?</string>
-
-    <string name="Toast_saved">Saved</string>
-    <string name="Toast_deleted">Deleted</string>
-
-    <string name="B_options">Options</string>
-    <string name="B_subject_color">Color</string>
-
-    <string name="B_mode">Finished</string>
-    <string name="B_mode_view">Edit plan</string>
-    <string name="B_subject_delete">Delete subject</string>
-    <string name="B_subject_save">Save</string>
-    <string name="TF_teacher">Teacher</string>
-    <string name="TF_room">Room</string>
-    <string name="TF_subject">Subject</string>
 
     <string-array name="days">
         <item>@string/placeholder</item>
@@ -40,52 +48,59 @@
         <item>@string/sunday</item>
     </string-array>
 
-    <string name="TV_opt_1">Manage these days:</string>
-    <string name="to">to</string>
-    <string name="Switch_opt_weekSystem">Even/odd week system</string>
-    <string name="Yes">Yes</string>
-    <string name="No">No</string>
-    <string name="OK">OK</string>
+    //Buttons -------------------------------------------------------------------------------
+    <string name="B_subject_color">Select color</string>
+    <string name="B_subject_delete">Delete subject</string>
+    <string name="B_subject_save">Save</string>
 
-    <string name="B_opt_delete">Delete a subject</string>
-    <string name="D_createSubject">Create new subject</string>
-    <string name="D_select_subject">Pick subject</string>
-    <string name="D_edit_subject">Edit subject</string>
-    <string name="D_freeHour">Set free hour</string>
-    <string name="D_delete_subject">Which subject do you want to delete?</string>
-    <string name="aboutApp">Programming: \n- Julius Henke
-                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers
-                            \n\n© Julius Henke 2016</string>
-    <string name="B_opt_aboutApp">About app</string>
-    <string name="D_introInfo_title">Hello</string>
-    <string name="D_introInfo">Thank you for downloading this app.
-                               \nThere are only a few quick steps to set your timetable up.</string>
+    <string name="B_main_dateRight">→</string>
+    <string name="B_main_dateLeft">←</string>
 
-    <string name="D_introWeekSystem_title">Settings</string>
-    <string name="D_introWeekSystem">Do you want to use the "even/odd - weeks" detection?
-                                    \n\nThis enables you to configure the timetable for even and odd weeks separately.</string>
+    //Text Views ----------------------------------------------------------------------------
+    <string name="TV_settings_manageDays">Manage these days:</string>
+    <string name="TV_subject_room">Room:</string>
+    <string name="TV_subject_teacher">Teacher:</string>
 
-    <string name="Toast_nameNeeded">Subject\'s name missing</string>
-    <string name="Toast_nameAlreadyTaken">Subject\'s name already taken</string>
+    //Text Field ----------------------------------------------------------------------------
+    <string name="TF_subject_optional">(optional)</string>
+    <string name="TF_subject_name">Subject name</string>
+
+    //Switch --------------------------------------------------------------------------------
+    <string name="Switch_settings_weekSystem">Even/odd week system</string>
+    <string name="Switch_settings_showWeek">Show week of year</string>
+
+    //Menu items ----------------------------------------------------------------------------
+    <string name="Menu_aboutApp">About app</string>
+    <string name="Menu_evenWeek">in even weeks</string>
+    <string name="Menu_oddWeek">in odd weeks</string>
+    <string name="Menu_editTable">Edit timetable</string>
+    <string name="Menu_deleteSubject">Delete subject</string>
+    <string name="Menu_editSubject">Edit subject</string>
+
+    //Toasts --------------------------------------------------------------------------------
+    <string name="Toast_nameNeeded">Name missing</string>
+    <string name="Toast_nameAlreadyTaken">Name already taken</string>
+
+    //Dialogs --------------------------------------------------------------------------
+    <string name="D_intro_title">Welcome!</string>
+    <string name="D_intro_content">Begin by filling in your timetable. \nYou can enable advanced features in the settings.</string>
+    <string name="D_intro_btnYES">Here we go!</string>
+
+    <string name="D_editHour_title">Pick a subject</string>
+    <string name="D_editHour_NO">Free hour</string>
+    <string name="D_editHour_YES">New subject</string>
+
+    <string name="D_aboutApp_content">Programming: \n- Julius Henke
+                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers \n- https://material.io/icons/
+                            \n\n© Julius Henke</string>
+
+    <string name="D_warnManageDays_content">Now your week only consists of 1 day!</string>
+
+    <string name="D_editSubject_title">Pick a subject to edit</string>
+
+    <string name="D_deleteSubject_title">Pick a subject to delete</string>
+
+    //New Values (unsorted) ------------------------------------------------------------------#
     <string name="placeholder">" "</string>
-    <string name="settings">Settings</string>
-    <string name="date_right">→</string>
-    <string name="save">Save</string>
-    <string name="evenWeek">in even weeks</string>
-    <string name="oddWeek">in odd weeks</string>
-    <string name="week">week</string>
-    <string name="number1">1</string>
-    <string name="number2">2</string>
-    <string name="number3">3</string>
-    <string name="number4">4</string>
-    <string name="number5">5</string>
-    <string name="number6">6</string>
-    <string name="number7">7</string>
-    <string name="number8">8</string>
-    <string name="number9">9</string>
-    <string name="number10">10</string>
-    <string name="number11">11</string>
-    <string name="Switch_opt_showWeek">Show week of year</string>
-    <string name="date_left">←</string>
-    <string name="D_warn_manageDays">Now your week only consists of 1 day!</string>
+
 </resources>
