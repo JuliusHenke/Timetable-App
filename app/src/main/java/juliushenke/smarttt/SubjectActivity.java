@@ -50,6 +50,7 @@ public class SubjectActivity extends AppCompatActivity {
 
         if (MainActivity.getNewSubject()) {
             TF_subject.setEnabled(true);
+            TF_subject.setFocusable(true);
             TF_subject.setTypeface(Typeface.DEFAULT);
             TF_subject.setText("");
             TF_room.setText("");
@@ -61,6 +62,7 @@ public class SubjectActivity extends AppCompatActivity {
             else B_subject_color.setTextColor(Color.BLACK);
         } else {
             TF_subject.setEnabled(false);
+            TF_subject.setFocusable(false);
             TF_subject.setTextColor(Color.BLACK);
             TF_subject.setTypeface(Typeface.DEFAULT_BOLD);
             try {

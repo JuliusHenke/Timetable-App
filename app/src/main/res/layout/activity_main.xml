@@ -21,6 +21,12 @@
         android:paddingStart="5dp"
         android:paddingTop="15dp">
 
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -673,5 +679,6 @@
 
                 </TableRow>
             </TableLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
