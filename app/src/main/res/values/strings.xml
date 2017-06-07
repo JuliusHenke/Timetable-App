@@ -49,9 +49,9 @@
     </string-array>
 
     //Buttons -------------------------------------------------------------------------------
-    <string name="B_subject_color">Select color</string>
+    <string name="B_subject_color">Color</string>
     <string name="B_subject_delete">Delete subject</string>
-    <string name="B_subject_save">Save</string>
+    <string name="B_subject_save">Save everything</string>
 
     <string name="B_main_dateRight">→</string>
     <string name="B_main_dateLeft">←</string>
@@ -62,12 +62,14 @@
     <string name="TV_subject_teacher">Teacher:</string>
 
     //Text Field ----------------------------------------------------------------------------
-    <string name="TF_subject_optional">(optional)</string>
-    <string name="TF_subject_name">Subject name</string>
+    <string name="TF_subject_name">Subject</string>
+    <string name="TF_subject_room">Room (optional)</string>
+    <string name="TF_subject_teacher">Teacher (optional)</string>
 
     //Switch --------------------------------------------------------------------------------
     <string name="Switch_settings_weekSystem">Even/odd week system</string>
     <string name="Switch_settings_showWeek">Show week of year</string>
+    <string name="Switch_settings_darkDesign">Dark design</string>
 
     //Menu items ----------------------------------------------------------------------------
     <string name="Menu_aboutApp">About app</string>
@@ -100,7 +102,12 @@
 
     <string name="D_deleteSubject_title">Pick a subject to delete</string>
 
+    <string name="D_editColor_preset">Color preset</string>
+    <string name="D_editColor_custom">Create color manually</string>
+    <string name="D_editColor_preset_title">Pick a color</string>
+
     //New Values (unsorted) ------------------------------------------------------------------#
     <string name="placeholder">" "</string>
+
 
 </resources>

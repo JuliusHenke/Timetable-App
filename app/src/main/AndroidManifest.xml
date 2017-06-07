@@ -17,6 +17,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="https"
+                    android:host="www.juliushenke.de"
+                    android:pathPrefix="/timetable" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+            </intent-filter>
         </activity>
         <activity
             android:name="juliushenke.smarttt.SettingsActivity"
@@ -27,7 +38,8 @@
             android:name="juliushenke.smarttt.SubjectActivity"
             android:label="@string/Subject"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName="juliushenke.smarttt.MainActivity"/>
+            android:parentActivityName="juliushenke.smarttt.MainActivity"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

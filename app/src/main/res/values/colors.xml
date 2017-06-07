@@ -4,9 +4,11 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorAppBar">#f33f01</color>
+    <color name="colorAppBar">#ce4818</color>
+    <color name="colorAppBarDark">#303030</color>
     <color name="colorSubjectDefault">#cacaca</color>
 
     <color name="grey_brown">#342d2d</color>
     <color name="hint_foreground_material_light">#dfdfdf</color>
+    
 </resources>

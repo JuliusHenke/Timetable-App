@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -28,9 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        updateDesign();
         updateActivitySettings();
     }
 
@@ -46,74 +45,98 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         String[] days = getResources().getStringArray(R.array.days);
-        Button B_startDay = (Button) findViewById(R.id.B_opt_startDay);
-        Button B_endDay = (Button) findViewById(R.id.B_opt_endDay);
-        Switch Switch_opt_weekSystem = (Switch) findViewById(R.id.Switch_opt_weekSystem);
-        Switch Switch_opt_showWeek = (Switch) findViewById(R.id.Switch_opt_showWeek);
+        Button B_startDay = (Button) findViewById(R.id.B_settings_startDay);
+        Button B_endDay = (Button) findViewById(R.id.B_settings_endDay);
+        Switch Switch_evenOddWeekSystem = (Switch) findViewById(R.id.Switch_evenOddWeekSystem);
+        Switch Switch_weekDisplay = (Switch) findViewById(R.id.Switch_weekDisplay);
+        Switch Switch_darkDesign = (Switch) findViewById(R.id.Switch_darkDesign);
 
-        B_startDay.setText(days[settings.getStart_day()]);
-        B_endDay.setText(days[settings.getEnd_day()]);
-        if (settings.getWeekSystem()) Switch_opt_weekSystem.setChecked(true);
-        else Switch_opt_weekSystem.setChecked(false);
-        if (settings.getShowWeek()) Switch_opt_showWeek.setChecked(true);
-        else Switch_opt_showWeek.setChecked(false);
+        B_startDay.setText(days[settings.getStartDay()]);
+        B_endDay.setText(days[settings.getEndDay()]);
+        if (settings.isEvenOddWeekSystem()) Switch_evenOddWeekSystem.setChecked(true);
+        else Switch_evenOddWeekSystem.setChecked(false);
+        if (settings.isWeekDisplay()) Switch_weekDisplay.setChecked(true);
+        else Switch_weekDisplay.setChecked(false);
+        if (settings.isDarkDesign()) Switch_darkDesign.setChecked(true);
+        else Switch_darkDesign.setChecked(false);
 
-        Switch_opt_weekSystem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Switch_evenOddWeekSystem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String filename = "SETTINGS.srl";
-                Settings settings = new Settings();
-                try {
-                    ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                    settings = (Settings) input.readObject();
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (isChecked) {
-                    settings.setWeekSystem(true);
-                } else {
-                    settings.setWeekSystem(false);
-                }
-
-                try {
-                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                    out.writeObject(settings);
-                    out.close();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                saveSettings();
             }
         });
-        Switch_opt_showWeek.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Switch_weekDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String filename = "SETTINGS.srl";
-                Settings settings = new Settings();
-                try {
-                    ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                    settings = (Settings) input.readObject();
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (isChecked) {
-                    settings.setShowWeek(true);
-                } else {
-                    settings.setShowWeek(false);
-                }
-
-                try {
-                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                    out.writeObject(settings);
-                    out.close();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                saveSettings();
             }
         });
+        Switch_darkDesign.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveSettings();
+                updateDesign();
+            }
+        });
+    }
+
+    public void updateDesign(){
+        Settings settings = new Settings();
+        try {
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl")));
+            settings = (Settings) input.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("");
+
+        if(settings.isDarkDesign()) {
+            scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
+            toolbar.setBackgroundResource(R.color.colorAppBarDark);
+        }
+        else{
+            scrollView.setBackgroundResource(R.drawable.background_gradient);
+            toolbar.setBackgroundResource(R.color.colorAppBar);
+        }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void saveSettings(){
+        Switch Switch_evenOddWeekSystem = (Switch) findViewById(R.id.Switch_evenOddWeekSystem);
+        Switch Switch_weekDisplay = (Switch) findViewById(R.id.Switch_weekDisplay);
+        Switch Switch_darkDesign = (Switch) findViewById(R.id.Switch_darkDesign);
+
+        String filename = "SETTINGS.srl";
+        Settings settings = new Settings();
+        try {
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+            settings = (Settings) input.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
+        if (Switch_evenOddWeekSystem.isChecked()) settings.setEvenOddWeekSystem(true);
+        else settings.setEvenOddWeekSystem(false);
+
+        if (Switch_weekDisplay.isChecked()) settings.setWeekDisplay(true);
+        else settings.setWeekDisplay(false);
+
+        if (Switch_darkDesign.isChecked()) settings.setDarkDesign(true);
+        else settings.setDarkDesign(false);
+
+        try {
+            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
+            out.writeObject(settings);
+            out.close();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Clickers ---------------------------------------------------------------------------------
@@ -143,10 +166,10 @@ public class SettingsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (startDay){
-                    settings.setStart_day(which + 1);
+                    settings.setStartDay(which + 1);
                 }
                 else{
-                    settings.setEnd_day(which + 1);
+                    settings.setEndDay(which + 1);
                 }
 
                 try {
@@ -159,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 updateActivitySettings();
                 dialog.cancel();
-                if(settings.getStart_day() == settings.getEnd_day()) D_warn_manageDays().show();
+                if(settings.getStartDay() == settings.getEndDay()) D_warn_manageDays().show();
             }
         });
         return builder.create();

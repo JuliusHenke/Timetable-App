@@ -13,7 +13,7 @@
     <string name="Deleted">Gelöscht</string>
     <string name="B_subject_save">Speichern</string>
     <string name="B_subject_delete">Fach löschen</string>
-    <string name="B_subject_color">Farbe auswählen</string>
+    <string name="B_subject_color">Farbe</string>
     <string name="No">Nein</string>
     <string name="TV_settings_manageDays">Diese Tage managen:</string>
     <string name="to">bis</string>
@@ -58,7 +58,6 @@
     <string name="TV_subject_room">Raum:</string>
     <string name="TV_subject_teacher">Leher:</string>
     <string name="Editing">Bearbeitung</string>
-    <string name="TF_subject_optional">(optional)</string>
     <string name="Menu_deleteSubject">Fach löschen</string>
     <string name="Menu_editSubject">Fach bearbeiten</string>
     <string name="Menu_editTable">Plan bearbeiten</string>
@@ -66,4 +65,10 @@
     <string name="D_editSubject_title">Wähle ein Fach zum bearbeiten</string>
     <string name="Cancel">Abrechen</string>
     <string name="D_deleteSubject_title">Wähle ein Fach zum löschen</string>
+    <string name="TF_subject_room">Raum (optional)</string>
+    <string name="TF_subject_teacher">Leher/in (optional)</string>
+    <string name="D_editColor_custom">Farbe selbst erstellen</string>
+    <string name="D_editColor_preset">Standard Farben</string>
+    <string name="D_editColor_preset_title">Wähle eine Farbe</string>
+    <string name="Switch_settings_darkDesign">Dunkles Design</string>
 </resources>

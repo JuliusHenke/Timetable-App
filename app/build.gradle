@@ -7,8 +7,8 @@ android {
         applicationId 'juliushenke.smarttt'
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 8
-        versionName '1.6'
+        versionCode 9
+        versionName '1.7'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -26,7 +26,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.pes.materialcolorpicker:library:1.0.2'
-    compile 'com.jrummyapps:colorpicker:2.0.0'
+    compile 'org.xdty.preference:color-picker:0.0.5'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'

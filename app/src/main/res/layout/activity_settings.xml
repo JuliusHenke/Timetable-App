@@ -22,6 +22,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <Switch
+                android:id="@+id/Switch_evenOddWeekSystem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Switch_settings_weekSystem"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_weight="1" />
+
+            <Switch
+                android:id="@+id/Switch_weekDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Switch_settings_showWeek"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_weight="1" />
+
+            <Switch
+                android:id="@+id/Switch_darkDesign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Switch_settings_darkDesign"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1" />
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
@@ -44,12 +83,11 @@
 
 
                 <Button
-                    android:id="@+id/B_opt_startDay"
+                    android:id="@+id/B_settings_startDay"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_blue_dark"
                     android:fontFamily="sans-serif"
                     android:onClick="clickB_opt_startDay"
                     android:text="@string/monday"
@@ -68,12 +106,11 @@
                     android:textSize="18sp" />
 
                 <Button
-                    android:id="@+id/B_opt_endDay"
+                    android:id="@+id/B_settings_endDay"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_blue_dark"
                     android:fontFamily="sans-serif"
                     android:onClick="clickB_opt_endDay"
                     android:text="@string/friday"
@@ -81,32 +118,6 @@
                     android:textColor="@color/materialcolorpicker__black"
                     android:textSize="18sp" />
             </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
-
-            <Switch
-                android:id="@+id/Switch_opt_weekSystem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/Switch_settings_weekSystem"
-                android:textSize="18sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_weight="1" />
-
-            <Switch
-                android:id="@+id/Switch_opt_showWeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/Switch_settings_showWeek"
-                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>

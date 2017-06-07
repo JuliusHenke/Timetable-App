@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private static int selected_day_of_week = 0;
-    private int saved_change = 0;
+    private static int saved_change = 0;
 
     private static int selected_hour = 1;
     private static String selected_subject = "";
@@ -54,10 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-
+        updateDesign();
         selected_activity_main = true;
         updateActivityMain();
     }
@@ -66,12 +64,14 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         selected_activity_main = true;
+        updateDesign();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         selected_activity_main = true;
+        updateDesign();
     }
 
     @Override
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (selected_activity_main) {
@@ -157,6 +158,30 @@ public class MainActivity extends AppCompatActivity {
     //Voids --------------------------------------------------------------------------------
     private void updateActivityMain() {
         setDay(0);
+    }
+
+    private void updateDesign(){
+        Settings settings = new Settings();
+        try {
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl")));
+            settings = (Settings) input.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar.setTitle("");
+
+        if(settings.isDarkDesign()) {
+            scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
+            toolbar.setBackgroundResource(R.color.colorAppBarDark);
+        }
+        else{
+            scrollView.setBackgroundResource(R.drawable.background_gradient);
+            toolbar.setBackgroundResource(R.color.colorAppBar);
+        }
+        setSupportActionBar(toolbar);
     }
 
     private void setActivitySettings() {
@@ -182,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
                 ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl"));
                 out.writeObject(settings);
                 out.close();
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
@@ -193,6 +217,8 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+        //Mathematical calculation of the new date ------------------------------------------------------------------
         Calendar c = Calendar.getInstance();
         saved_change = saved_change + input_change;
         c.add(Calendar.DAY_OF_YEAR, saved_change);
@@ -201,17 +227,17 @@ public class MainActivity extends AppCompatActivity {
         int extra_change = 0;
         //positive change - into the future
         if (input_change >= 0) {
-            if (selected_day_of_week < settings.getStart_day())
-                extra_change = settings.getStart_day() - selected_day_of_week;
-            else if (selected_day_of_week > settings.getEnd_day())
-                extra_change = 7 - selected_day_of_week + settings.getStart_day();
+            if (selected_day_of_week < settings.getStartDay())
+                extra_change = settings.getStartDay() - selected_day_of_week;
+            else if (selected_day_of_week > settings.getEndDay())
+                extra_change = 7 - selected_day_of_week + settings.getStartDay();
         }
         //negative change - into the past
         else if (input_change < 0) {
-            if (selected_day_of_week < settings.getStart_day())
-                extra_change = -selected_day_of_week - (7 - settings.getEnd_day());
-            else if (selected_day_of_week > settings.getEnd_day())
-                extra_change = settings.getEnd_day() - selected_day_of_week;
+            if (selected_day_of_week < settings.getStartDay())
+                extra_change = -selected_day_of_week - (7 - settings.getEndDay());
+            else if (selected_day_of_week > settings.getEndDay())
+                extra_change = settings.getEndDay() - selected_day_of_week;
         }
         //update the Calendar
         c.add(Calendar.DAY_OF_YEAR, extra_change);
@@ -232,17 +258,17 @@ public class MainActivity extends AppCompatActivity {
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
         week_isOdd = isIntOdd(date_week);
 
-        //updating views of activity_main --------------------------------------------------------------------------------
+        //updating views of activity_main -------------------------------------------------------------------------------
         B_main_dateLeft.setVisibility(View.VISIBLE);
         B_main_dateRight.setVisibility(View.VISIBLE);
         if (editing_mode) {
             B_main_dateCenter.setVisibility(View.INVISIBLE);
-            if (selected_day_of_week == settings.getStart_day())
+            if (selected_day_of_week == settings.getStartDay())
                 B_main_dateLeft.setVisibility(View.INVISIBLE);
-            if (selected_day_of_week == settings.getEnd_day())
+            if (selected_day_of_week == settings.getEndDay())
                 B_main_dateRight.setVisibility(View.INVISIBLE);
             B_main_dateCenter.setText("");
-            if (settings.getWeekSystem()) {
+            if (settings.isEvenOddWeekSystem()) {
                 B_main_dateCenter.setVisibility(View.GONE);
                 B_main_weekType.setVisibility(View.VISIBLE);
                 if (selected_evenWeeks) {
@@ -256,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             String string_date = DATE_FORMAT.format(c.getTime());
-            if (settings.getShowWeek())
+            if (settings.isWeekDisplay())
                 B_main_dateCenter.setText(string_date + " (" + r.getString(R.string.week) + " " + date_week + ")");
             else B_main_dateCenter.setText(string_date);
             B_main_dateCenter.setVisibility(View.VISIBLE);
@@ -647,7 +673,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (settings.getWeekSystem()) {
+        if (settings.isEvenOddWeekSystem()) {
             if (editing_mode && !selected_evenWeeks)
                 return "ODD-DAY-" + selected_day_of_week + ".srl";
             else if (!editing_mode && week_isOdd) return "ODD-DAY-" + selected_day_of_week + ".srl";
@@ -667,7 +693,7 @@ public class MainActivity extends AppCompatActivity {
         return  selected_subject;
     }
 
-    public static boolean getNewSubject() {
+    public static boolean isNewSubject() {
         return newSubject;
     }
 

@@ -27,15 +27,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|bottom">
-
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
 
                     <TextView
@@ -50,7 +46,7 @@
                         android:text="@string/monday"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/grey_brown"
+                        android:textColor="@android:color/black"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -83,7 +79,7 @@
                         android:text="@string/Menu_evenWeek"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:visibility="visible" />
 
                 </TableRow>
@@ -144,6 +140,7 @@
                         android:maxWidth="50dp"
                         android:text="@string/number1"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -173,7 +170,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -195,6 +192,7 @@
                         android:maxLines="1"
                         android:text="@string/number2"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -223,7 +221,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -245,6 +243,7 @@
                         android:maxLines="1"
                         android:text="@string/number3"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -273,7 +272,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -295,6 +294,7 @@
                         android:maxLines="1"
                         android:text="@string/number4"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -323,7 +323,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -345,6 +345,7 @@
                         android:maxLines="1"
                         android:text="@string/number5"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -373,7 +374,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -395,6 +396,7 @@
                         android:maxLines="1"
                         android:text="@string/number6"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -423,7 +425,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -445,6 +447,7 @@
                         android:maxLines="1"
                         android:text="@string/number7"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -473,7 +476,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -495,6 +498,7 @@
                         android:maxLines="1"
                         android:text="@string/number8"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -523,7 +527,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -545,6 +549,7 @@
                         android:maxLines="1"
                         android:text="@string/number9"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -573,7 +578,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -595,6 +600,7 @@
                         android:maxLines="1"
                         android:text="@string/number10"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -623,7 +629,7 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -645,6 +651,7 @@
                         android:maxLines="1"
                         android:text="@string/number11"
                         android:textAlignment="center"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
@@ -673,12 +680,11 @@
                         android:maxLines="1"
                         android:textAlignment="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="?attr/colorControlNormal"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="normal|bold" />
 
                 </TableRow>
-            </TableLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
