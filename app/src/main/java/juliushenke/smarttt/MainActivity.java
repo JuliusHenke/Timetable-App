@@ -37,7 +37,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private static int selected_day_of_week = 0;
-    private int saved_change = 0;
+    private static int saved_change = 0;
 
     private static int selected_hour = 1;
     private static String selected_subject = "";
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (selected_activity_main) {
