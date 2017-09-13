@@ -51,11 +51,11 @@ public class SettingsActivity extends AppCompatActivity {
         Switch Switch_weekDisplay = (Switch) findViewById(R.id.Switch_weekDisplay);
         Switch Switch_darkDesign = (Switch) findViewById(R.id.Switch_darkDesign);
 
-        B_startDay.setText(days[settings.getStartDay()]);
-        B_endDay.setText(days[settings.getEndDay()]);
-        if (settings.isEvenOddWeekSystem()) Switch_evenOddWeekSystem.setChecked(true);
+        B_startDay.setText(days[settings.getStart_day()]);
+        B_endDay.setText(days[settings.getEnd_day()]);
+        if (settings.getWeekSystem()) Switch_evenOddWeekSystem.setChecked(true);
         else Switch_evenOddWeekSystem.setChecked(false);
-        if (settings.isWeekDisplay()) Switch_weekDisplay.setChecked(true);
+        if (settings.getShowWeek()) Switch_weekDisplay.setChecked(true);
         else Switch_weekDisplay.setChecked(false);
         if (settings.isDarkDesign()) Switch_darkDesign.setChecked(true);
         else Switch_darkDesign.setChecked(false);
@@ -120,11 +120,11 @@ public class SettingsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (Switch_evenOddWeekSystem.isChecked()) settings.setEvenOddWeekSystem(true);
-        else settings.setEvenOddWeekSystem(false);
+        if (Switch_evenOddWeekSystem.isChecked()) settings.setWeekSystem(true);
+        else settings.setWeekSystem(false);
 
-        if (Switch_weekDisplay.isChecked()) settings.setWeekDisplay(true);
-        else settings.setWeekDisplay(false);
+        if (Switch_weekDisplay.isChecked()) settings.setShowWeek(true);
+        else settings.setShowWeek(false);
 
         if (Switch_darkDesign.isChecked()) settings.setDarkDesign(true);
         else settings.setDarkDesign(false);
@@ -166,10 +166,10 @@ public class SettingsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (startDay){
-                    settings.setStartDay(which + 1);
+                    settings.setStart_day(which + 1);
                 }
                 else{
-                    settings.setEndDay(which + 1);
+                    settings.setEnd_day(which + 1);
                 }
 
                 try {
@@ -182,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 updateActivitySettings();
                 dialog.cancel();
-                if(settings.getStartDay() == settings.getEndDay()) D_warn_manageDays().show();
+                if(settings.getStart_day() == settings.getEnd_day()) D_warn_manageDays().show();
             }
         });
         return builder.create();

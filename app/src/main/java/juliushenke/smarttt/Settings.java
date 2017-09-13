@@ -6,37 +6,37 @@ class Settings implements Serializable {
 
     private static final long serialVersionUID = -29238982928391L;
 
-    private int startDay;
-    private int endDay;
-    private boolean evenOddWeekSystem;
-    private boolean weekDisplay;
+    private int start_day;
+    private int end_day;
+    private boolean weekSystem;
+    private boolean showWeek;
     private boolean darkDesign;
 
     Settings() {
-        this.startDay = 1;
-        this.endDay = 5;
-        this.evenOddWeekSystem = false;
-        this.weekDisplay = false;
+        this.start_day = 1;
+        this.end_day = 5;
+        this.weekSystem = false;
+        this.showWeek = false;
         this.darkDesign = false;
     }
 
     //Getters
-    int getStartDay(){return startDay;}
-    int getEndDay(){return endDay;}
-    boolean isEvenOddWeekSystem(){return evenOddWeekSystem;}
-    boolean isWeekDisplay(){return weekDisplay;}
+    int getStart_day(){return start_day;}
+    int getEnd_day(){return end_day;}
+    boolean getWeekSystem(){return weekSystem;}
+    boolean getShowWeek(){return showWeek;}
     boolean isDarkDesign(){return darkDesign;}
 
     //Setters
-    void setStartDay(int input_day){
-        this.startDay = input_day;
-        if(endDay < startDay) endDay = startDay;
+    void setStart_day(int input_day){
+        this.start_day = input_day;
+        if(end_day < start_day) end_day = start_day;
     }
-    void setEndDay(int input_day){
-        this.endDay = input_day;
-        if(startDay > endDay) startDay = endDay;
+    void setEnd_day(int input_day){
+        this.end_day = input_day;
+        if(start_day > end_day) start_day = end_day;
     }
-    void setEvenOddWeekSystem(boolean evenOddWeekSystem){this.evenOddWeekSystem = evenOddWeekSystem;}
-    void setWeekDisplay(boolean weekDisplay){this.weekDisplay = weekDisplay;}
+    void setWeekSystem(boolean weekSystem){this.weekSystem = weekSystem;}
+    void setShowWeek(boolean showWeek){this.showWeek = showWeek;}
     void setDarkDesign(boolean darkDesign){this.darkDesign = darkDesign;}
 }

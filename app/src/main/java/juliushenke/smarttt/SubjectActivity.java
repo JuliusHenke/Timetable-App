@@ -30,12 +30,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.util.Arrays;
 
 import static android.graphics.Color.BLACK;
 
@@ -142,7 +140,6 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     public void clickB_sub_save(View view) {
-        int selected_hour = MainActivity.getSelected_hour();
         EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
         EditText TF_room = (EditText) findViewById(R.id.TF_room);
         EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
@@ -151,14 +148,11 @@ public class SubjectActivity extends AppCompatActivity {
         String room = TF_room.getText().toString().trim();
         String teacher = TF_teacher.getText().toString().trim();
 
-        boolean isNameCorrect = true;
-        String[] subjectNames = getSubjectNames();
-        for (String subjectName : subjectNames) if (subjectName.equals(name)) isNameCorrect = false;
+        Subject subject = new Subject(name, room, teacher, selectedColor);
 
-        if (!name.equals("") && !name.equals("+")) {
-            if (!MainActivity.isNewSubject() || isNameCorrect) {
-                Subject subject = new Subject(name, room, teacher, selectedColor);
-
+        if(MainActivity.isNewSubject()){
+            int selected_hour = MainActivity.getSelected_hour();
+            if (!name.equals("") && !name.equals("+")) {
                 try {
                     String filename = "SUBJECT-" + subject.getName() + ".srl";
                     ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
@@ -174,27 +168,40 @@ public class SubjectActivity extends AppCompatActivity {
                         out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
                         out.writeObject(hours);
                         out.close();
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
+
+                    //Change Activity
+                    if (changeActivity) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //Hide keyboard
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            } else Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_nameNeeded), Toast.LENGTH_SHORT).show();
+        }
+        else{
+            try {
+                String filename = "SUBJECT-" + subject.getName() + ".srl";
+                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
+                out.writeObject(subject);
+                out.close();
 
                 //Change Activity
-                if(changeActivity) {
+                if (changeActivity) {
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                 }
-            } else
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_nameAlreadyTaken), Toast.LENGTH_SHORT).show();
-        } else
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_nameNeeded), Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //Hide keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
         changeActivity = true;
     }
 
@@ -270,31 +277,6 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     //Getters ---------------------------------------------------------------------------------
-    private String[] getSubjectNames() {
-        File[] files = getFilesDir().listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.startsWith("SUBJECT-");
-            }
-        });
-        Arrays.sort(files);
-
-        String[] subject_names = new String[files.length];
-        for (int i = 0; i < files.length; i++) {
-            try {
-                String filename = files[i].getName();
-                ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-
-                Subject subject = (Subject) input.readObject();
-                subject_names[i] = subject.getName();
-                input.close();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return subject_names;
-    }
-
     private String getFilenameForDay() {
         String filename = "SETTINGS.srl";
         Settings settings = new Settings();
@@ -314,7 +296,7 @@ public class SubjectActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (settings.isEvenOddWeekSystem()) {
+        if (settings.getWeekSystem()) {
             if (MainActivity.getEditing_mode() && !MainActivity.getSelected_evenWeeks())
                 return "ODD-DAY-" + MainActivity.getSelected_day_of_week() + ".srl";
             else if (!MainActivity.getEditing_mode() && MainActivity.getWeek_isOdd()) return "ODD-DAY-" + MainActivity.getSelected_day_of_week() + ".srl";

@@ -16,6 +16,8 @@
     <string name="Subject">Subject</string>
     <string name="Editing">Editing</string>
     <string name="Cancel">Cancel</string>
+    <string name="free_period">Free period</string>
+    <string name="different_subject">Different subject</string>
 
     <string name="number1">1</string>
     <string name="number2">2</string>
@@ -51,7 +53,7 @@
     //Buttons -------------------------------------------------------------------------------
     <string name="B_subject_color">Color</string>
     <string name="B_subject_delete">Delete subject</string>
-    <string name="B_subject_save">Save everything</string>
+    <string name="B_subject_save">Save</string>
 
     <string name="B_main_dateRight">→</string>
     <string name="B_main_dateLeft">←</string>
@@ -88,9 +90,8 @@
     <string name="D_intro_content">Begin by filling in your timetable. \nYou can enable advanced features in the settings.</string>
     <string name="D_intro_btnYES">Here we go!</string>
 
-    <string name="D_editHour_title">Pick a subject</string>
-    <string name="D_editHour_NO">Free hour</string>
-    <string name="D_editHour_YES">New subject</string>
+    <string name="D_editEmptyHour_title">Pick a subject</string>
+    <string name="D_editEmptyHour_YES">New subject</string>
 
     <string name="D_aboutApp_content">Programming: \n- Julius Henke
                             \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers \n- https://material.io/icons/
@@ -102,9 +103,46 @@
 
     <string name="D_deleteSubject_title">Pick a subject to delete</string>
 
-    <string name="D_editColor_preset">Color preset</string>
-    <string name="D_editColor_custom">Create color manually</string>
+    <string name="D_editColor_preset">Preset</string>
+    <string name="D_editColor_custom">Custom</string>
     <string name="D_editColor_preset_title">Pick a color</string>
+
+    //Subject names --------------------------------------------------------------------------
+    <string name="Art">Art</string>
+    <string name="Biology">Biology</string>
+    <string name="Chemistry">Chemistry</string>
+    <string name="English">English</string>
+    <string name="French">French</string>
+    <string name="Geography">Geography</string>
+    <string name="German">German</string>
+    <string name="History">History</string>
+    <string name="Math">Math</string>
+    <string name="Music">Music</string>
+    <string name="Politics">Politics</string>
+    <string name="Religion">Religion</string>
+    <string name="Spanish">Spanish</string>
+    <string name="Sport">Sport</string>
+    <string name="Physics">Physics</string>
+
+
+
+    <string-array name="subject_names">
+        <item>@string/Art</item>
+        <item>@string/Biology</item>
+        <item>@string/Chemistry</item>
+        <item>@string/English</item>
+        <item>@string/French</item>
+        <item>@string/Geography</item>
+        <item>@string/German</item>
+        <item>@string/History</item>
+        <item>@string/Math</item>
+        <item>@string/Music</item>
+        <item>@string/Politics</item>
+        <item>@string/Religion</item>
+        <item>@string/Spanish</item>
+        <item>@string/Sport</item>
+        <item>@string/Physics</item>
+    </string-array>
 
     //New Values (unsorted) ------------------------------------------------------------------#
     <string name="placeholder">" "</string>

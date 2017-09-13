@@ -25,4 +25,9 @@ class Subject implements Serializable {
     int getColor(){
         return color;
     }
+
+    //Setters
+    void setTeacher(String teacher){
+        this.teacher = teacher;
+    }
 }
