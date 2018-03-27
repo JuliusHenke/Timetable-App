@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -93,15 +92,18 @@ public class SettingsActivity extends AppCompatActivity {
         ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("");
+        try {
+            if (settings.isDarkDesign()) {
+                scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
+                toolbar.setBackgroundResource(R.color.colorAppBarDark);
+            } else {
+                scrollView.setBackgroundResource(R.drawable.background_gradient);
+                toolbar.setBackgroundResource(R.color.colorAppBar);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
 
-        if(settings.isDarkDesign()) {
-            scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
-            toolbar.setBackgroundResource(R.color.colorAppBarDark);
-        }
-        else{
-            scrollView.setBackgroundResource(R.drawable.background_gradient);
-            toolbar.setBackgroundResource(R.color.colorAppBar);
-        }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -133,7 +135,6 @@ public class SettingsActivity extends AppCompatActivity {
             ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
             out.writeObject(settings);
             out.close();
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -176,7 +177,6 @@ public class SettingsActivity extends AppCompatActivity {
                     ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl"));
                     out.writeObject(settings);
                     out.close();
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

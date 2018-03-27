@@ -122,13 +122,16 @@ public class SubjectActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("");
 
-        if(settings.isDarkDesign()) {
-            scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
-            toolbar.setBackgroundResource(R.color.colorAppBarDark);
-        }
-        else{
-            scrollView.setBackgroundResource(R.drawable.background_gradient);
-            toolbar.setBackgroundResource(R.color.colorAppBar);
+        try {
+            if (settings.isDarkDesign()) {
+                scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
+                toolbar.setBackgroundResource(R.color.colorAppBarDark);
+            } else {
+                scrollView.setBackgroundResource(R.drawable.background_gradient);
+                toolbar.setBackgroundResource(R.color.colorAppBar);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

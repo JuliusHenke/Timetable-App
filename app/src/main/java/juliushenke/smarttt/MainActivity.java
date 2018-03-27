@@ -55,6 +55,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         updateActivityMain();
+
+        final Button[] Bts = {null,
+                (Button) findViewById(R.id.h1), (Button) findViewById(R.id.h2), (Button) findViewById(R.id.h3),
+                (Button) findViewById(R.id.h4), (Button) findViewById(R.id.h5), (Button) findViewById(R.id.h6),
+                (Button) findViewById(R.id.h7), (Button) findViewById(R.id.h8), (Button) findViewById(R.id.h9),
+                (Button) findViewById(R.id.h10), (Button) findViewById(R.id.h11)};
+
+        for(int i=1; i <= 11; i++){
+            Bts[i].setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    selected_subject = getButtonName(v);
+                    newSubject = selected_subject.equals("+");
+                    setActivitySubject();
+                    return true;
+                }
+            });
+        }
     }
 
     @Override
@@ -169,14 +187,16 @@ public class MainActivity extends AppCompatActivity {
         ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         toolbar.setTitle("");
-
-        if(settings.isDarkDesign()) {
-            scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
-            toolbar.setBackgroundResource(R.color.colorAppBarDark);
-        }
-        else{
-            scrollView.setBackgroundResource(R.drawable.background_gradient);
-            toolbar.setBackgroundResource(R.color.colorAppBar);
+        try {
+            if (settings.isDarkDesign()) {
+                scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
+                toolbar.setBackgroundResource(R.color.colorAppBarDark);
+            } else {
+                scrollView.setBackgroundResource(R.drawable.background_gradient);
+                toolbar.setBackgroundResource(R.color.colorAppBar);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
         }
         setSupportActionBar(toolbar);
     }
@@ -468,8 +488,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickB_main_editHour(View view) {
-        Button button = (Button) view;
-        selected_subject = button.getText().toString();
+        selected_subject = getButtonName(view);
 
         if (view == findViewById(R.id.h1)) selected_hour = 1;
         else if (view == findViewById(R.id.h2)) selected_hour = 2;
@@ -534,8 +553,6 @@ public class MainActivity extends AppCompatActivity {
                             ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
                             out.writeObject(hours);
                             out.close();
-
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -598,7 +615,6 @@ public class MainActivity extends AppCompatActivity {
                                     ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
                                     out.writeObject(hours);
                                     out.close();
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                                     updateActivityMain();
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -765,6 +781,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static boolean getEditing_mode() { return editing_mode; }
+
+    private String getButtonName(View v){
+        Button btn = (Button) v;
+        return btn.getText().toString();
+    }
 
 }
 
