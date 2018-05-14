@@ -95,9 +95,9 @@ public class SubjectActivity extends AppCompatActivity {
     public void updateActivitySubject() {
         util.updateDesign(this, true);
 
-        EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
-        EditText TF_room = (EditText) findViewById(R.id.TF_room);
-        EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
+        EditText TF_subject = findViewById(R.id.TF_subject);
+        EditText TF_room = findViewById(R.id.TF_room);
+        EditText TF_teacher = findViewById(R.id.TF_teacher);
 
         if (MainActivity.isNewSubject()) {
             TF_subject.setEnabled(true);
@@ -135,9 +135,9 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     public void clickB_sub_save(View view) {
-        EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
-        EditText TF_room = (EditText) findViewById(R.id.TF_room);
-        EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
+        EditText TF_subject = findViewById(R.id.TF_subject);
+        EditText TF_room = findViewById(R.id.TF_room);
+        EditText TF_teacher = findViewById(R.id.TF_teacher);
 
         String name = TF_subject.getText().toString().trim();
         String room = TF_room.getText().toString().trim();
@@ -187,13 +187,12 @@ public class SubjectActivity extends AppCompatActivity {
         }
         //Hide keyboard
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
+        if (imm != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         finishActivity = true;
     }
 
     private void changeColorButton(){
-        Button B_subject_color = (Button) findViewById(R.id.B_subject_color);
+        Button B_subject_color = findViewById(R.id.B_subject_color);
         GradientDrawable bgShape = (GradientDrawable) B_subject_color.getBackground().getCurrent();
         bgShape.setColor(selectedColor);
 
@@ -238,7 +237,7 @@ public class SubjectActivity extends AppCompatActivity {
                         else if(which == 1){
                             final ColorPicker cp = new ColorPicker(SubjectActivity.this, Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
                             cp.show();
-                            Button okColor = (Button) cp.findViewById(R.id.okColorButton);
+                            Button okColor = cp.findViewById(R.id.okColorButton);
                             okColor.setText(R.string.OK);
                             okColor.setOnClickListener(new View.OnClickListener() {
                                 @Override

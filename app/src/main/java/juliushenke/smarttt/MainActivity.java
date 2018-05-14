@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         updateActivityMain();
 
         final Button[] Bts = {null,
-                (Button) findViewById(R.id.h1), (Button) findViewById(R.id.h2), (Button) findViewById(R.id.h3),
-                (Button) findViewById(R.id.h4), (Button) findViewById(R.id.h5), (Button) findViewById(R.id.h6),
-                (Button) findViewById(R.id.h7), (Button) findViewById(R.id.h8), (Button) findViewById(R.id.h9),
-                (Button) findViewById(R.id.h10), (Button) findViewById(R.id.h11)};
+                findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
+                findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
+                findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
+                findViewById(R.id.h10), findViewById(R.id.h11)};
 
         for(int i=1; i <= 11; i++){
             Bts[i].setOnLongClickListener(new View.OnLongClickListener() {
@@ -171,14 +171,14 @@ public class MainActivity extends AppCompatActivity {
 
         int extra_change = 0;
         //positive change - into the future
-        if (shift >= 0) {
+        if (0 <= shift) {
             if (selected_day_of_week < settings.getStart_day())
                 extra_change = settings.getStart_day() - selected_day_of_week;
             else if (selected_day_of_week > settings.getEnd_day())
                 extra_change = 7 - selected_day_of_week + settings.getStart_day();
         }
         //negative change - into the past
-        else if (shift < 0) {
+        else{
             if (selected_day_of_week < settings.getStart_day())
                 extra_change = -selected_day_of_week - (7 - settings.getEnd_day());
             else if (selected_day_of_week > settings.getEnd_day())
@@ -192,13 +192,13 @@ public class MainActivity extends AppCompatActivity {
         selected_day_of_week = getDayOfWeek(c);
 
         String[] days = r.getStringArray(R.array.days);
-        TextView TV_main_day = (TextView) findViewById(R.id.TV_main_day);
+        TextView TV_main_day = findViewById(R.id.TV_main_day);
         TV_main_day.setText(days[selected_day_of_week]);
 
-        Button B_main_dateLeft = (Button) findViewById(R.id.B_main_dateLeft);
-        Button B_main_dateCenter = (Button) findViewById(R.id.B_main_dateCenter);
-        Button B_main_dateRight = (Button) findViewById(R.id.B_main_dateRight);
-        Button B_main_weekType = (Button) findViewById(R.id.B_main_weekType);
+        Button B_main_dateLeft = findViewById(R.id.B_main_dateLeft);
+        Button B_main_dateCenter = findViewById(R.id.B_main_dateCenter);
+        Button B_main_dateRight = findViewById(R.id.B_main_dateRight);
+        Button B_main_weekType = findViewById(R.id.B_main_weekType);
 
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
         week_isOdd = util.isIntOdd(date_week);
@@ -227,30 +227,30 @@ public class MainActivity extends AppCompatActivity {
         } else {
             DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             String string_date = DATE_FORMAT.format(c.getTime());
-            if (settings.getShowWeek())
-                B_main_dateCenter.setText(string_date + " (" + r.getString(R.string.week) + " " + date_week + ")");
+            String s = string_date + " (" + r.getString(R.string.week) + " " + date_week + ")";
+            if (settings.getShowWeek()) B_main_dateCenter.setText(s);
             else B_main_dateCenter.setText(string_date);
             B_main_dateCenter.setVisibility(View.VISIBLE);
             B_main_weekType.setVisibility(View.GONE);
         }
 
         final TextView[] TVs_room = {null,
-                (TextView) findViewById(R.id.r1), (TextView) findViewById(R.id.r2), (TextView) findViewById(R.id.r3),
-                (TextView) findViewById(R.id.r4), (TextView) findViewById(R.id.r5), (TextView) findViewById(R.id.r6),
-                (TextView) findViewById(R.id.r7), (TextView) findViewById(R.id.r8), (TextView) findViewById(R.id.r9),
-                (TextView) findViewById(R.id.r10), (TextView) findViewById(R.id.r11)};
+                findViewById(R.id.r1), findViewById(R.id.r2), findViewById(R.id.r3),
+                findViewById(R.id.r4), findViewById(R.id.r5), findViewById(R.id.r6),
+                findViewById(R.id.r7), findViewById(R.id.r8), findViewById(R.id.r9),
+                findViewById(R.id.r10), findViewById(R.id.r11)};
 
         final TextView[] TVs_hour = {null,
-                (TextView) findViewById(R.id.n1), (TextView) findViewById(R.id.n2), (TextView) findViewById(R.id.n3),
-                (TextView) findViewById(R.id.n4), (TextView) findViewById(R.id.n5), (TextView) findViewById(R.id.n6),
-                (TextView) findViewById(R.id.n7), (TextView) findViewById(R.id.n8), (TextView) findViewById(R.id.n9),
-                (TextView) findViewById(R.id.n10), (TextView) findViewById(R.id.n11)};
+                findViewById(R.id.n1), findViewById(R.id.n2), findViewById(R.id.n3),
+                findViewById(R.id.n4), findViewById(R.id.n5), findViewById(R.id.n6),
+                findViewById(R.id.n7), findViewById(R.id.n8), findViewById(R.id.n9),
+                findViewById(R.id.n10), findViewById(R.id.n11)};
 
         final Button[] Bts = {null,
-                (Button) findViewById(R.id.h1), (Button) findViewById(R.id.h2), (Button) findViewById(R.id.h3),
-                (Button) findViewById(R.id.h4), (Button) findViewById(R.id.h5), (Button) findViewById(R.id.h6),
-                (Button) findViewById(R.id.h7), (Button) findViewById(R.id.h8), (Button) findViewById(R.id.h9),
-                (Button) findViewById(R.id.h10), (Button) findViewById(R.id.h11)};
+                findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
+                findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
+                findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
+                findViewById(R.id.h10), findViewById(R.id.h11)};
 
         for (int i = 1; i <= 11; i++) {
             TVs_room[i].setText("");
@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Clickers ---------------------------------------------------------------------------------
     public void click_B_main_weekType(View view) {
-        Button B_main_weekType = (Button) findViewById(R.id.B_main_weekType);
+        Button B_main_weekType = findViewById(R.id.B_main_weekType);
 
         PopupMenu popup = new PopupMenu(MainActivity.this, B_main_weekType);
         //Inflating the Popup using xml file

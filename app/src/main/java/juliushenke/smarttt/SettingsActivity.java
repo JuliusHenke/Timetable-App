@@ -42,11 +42,11 @@ public class SettingsActivity extends AppCompatActivity {
         final AppCompatActivity a = this;
 
         String[] days = getResources().getStringArray(R.array.days);
-        Button B_startDay = (Button) findViewById(R.id.B_settings_startDay);
-        Button B_endDay = (Button) findViewById(R.id.B_settings_endDay);
-        Switch Switch_evenOddWeekSystem = (Switch) findViewById(R.id.Switch_evenOddWeekSystem);
-        Switch Switch_weekDisplay = (Switch) findViewById(R.id.Switch_weekDisplay);
-        Switch Switch_darkDesign = (Switch) findViewById(R.id.Switch_darkDesign);
+        Button B_startDay = findViewById(R.id.B_settings_startDay);
+        Button B_endDay = findViewById(R.id.B_settings_endDay);
+        Switch Switch_evenOddWeekSystem = findViewById(R.id.Switch_evenOddWeekSystem);
+        Switch Switch_weekDisplay = findViewById(R.id.Switch_weekDisplay);
+        Switch Switch_darkDesign = findViewById(R.id.Switch_darkDesign);
 
         B_startDay.setText(days[settings.getStart_day()]);
         B_endDay.setText(days[settings.getEnd_day()]);
