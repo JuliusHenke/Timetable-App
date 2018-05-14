@@ -4,13 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.view.ContextThemeWrapper;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
@@ -28,7 +27,6 @@ import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,22 +37,33 @@ import static android.graphics.Color.BLACK;
 
 public class SubjectActivity extends AppCompatActivity {
 
+    private static Util util = new Util();
     private int selectedColor = BLACK;
-    private boolean changeActivity = true;
+    private boolean finishActivity = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Settings settings = util.readSettings(this);
+        if(settings.isDarkDesign()) setTheme(R.style.AppThemeDark);
+        else setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_subject);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        updateDesign();
         updateActivitySubject();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_subject, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        Settings settings = util.readSettings(this);
+        MenuItem item = menu.findItem(R.id.menu_saveSubject);
+        if(settings.isDarkDesign()) item.setIcon(R.drawable.ic_done_white_24dp);
+        else item.setIcon(R.drawable.ic_done_black_24dp);
         return true;
     }
 
@@ -73,8 +82,19 @@ public class SubjectActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     //Voids --------------------------------------------------------------------------------
     public void updateActivitySubject() {
+        util.updateDesign(this, true);
+
         EditText TF_subject = (EditText) findViewById(R.id.TF_subject);
         EditText TF_room = (EditText) findViewById(R.id.TF_room);
         EditText TF_teacher = (EditText) findViewById(R.id.TF_teacher);
@@ -86,10 +106,11 @@ public class SubjectActivity extends AppCompatActivity {
             TF_subject.setText("");
             TF_room.setText("");
             TF_teacher.setText("");
-        } else {
+        }
+        else {
             TF_subject.setEnabled(false);
             TF_subject.setFocusable(false);
-            TF_subject.setTextColor(BLACK);
+            TF_subject.setTextColor(Color.BLACK);
             TF_subject.setTypeface(Typeface.DEFAULT_BOLD);
             try {
                 String filename = "SUBJECT-" + MainActivity.getSelected_subject() + ".srl";
@@ -100,41 +121,12 @@ public class SubjectActivity extends AppCompatActivity {
                 TF_room.setText(subject.getRoom());
                 TF_teacher.setText(subject.getTeacher());
                 selectedColor = subject.getColor();
-
                 input.close();
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
             }
         }
         changeColorButton();
-    }
-
-    public void updateDesign(){
-        Settings settings = new Settings();
-        try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl")));
-            settings = (Settings) input.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("");
-
-        try {
-            if (settings.isDarkDesign()) {
-                scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
-                toolbar.setBackgroundResource(R.color.colorAppBarDark);
-            } else {
-                scrollView.setBackgroundResource(R.drawable.background_gradient);
-                toolbar.setBackgroundResource(R.color.colorAppBar);
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //Clickers ---------------------------------------------------------------------------------
@@ -162,7 +154,7 @@ public class SubjectActivity extends AppCompatActivity {
                     out.writeObject(subject);
                     out.close();
                     try {
-                        filename = getFilenameForDay();
+                        filename = util.getFilenameForDay(this);
                         ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                         String[] hours = (String[]) input.readObject();
                         input.close();
@@ -175,11 +167,7 @@ public class SubjectActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    //Change Activity
-                    if (changeActivity) {
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                    }
+                    if (finishActivity) finish();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -192,11 +180,7 @@ public class SubjectActivity extends AppCompatActivity {
                 out.writeObject(subject);
                 out.close();
 
-                //Change Activity
-                if (changeActivity) {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                }
+                if (finishActivity) finish();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -205,7 +189,7 @@ public class SubjectActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-        changeActivity = true;
+        finishActivity = true;
     }
 
     private void changeColorButton(){
@@ -213,13 +197,13 @@ public class SubjectActivity extends AppCompatActivity {
         GradientDrawable bgShape = (GradientDrawable) B_subject_color.getBackground().getCurrent();
         bgShape.setColor(selectedColor);
 
-        if (MainActivity.isColorDark(selectedColor)) B_subject_color.setTextColor(Color.WHITE);
+        if (util.isColorDark(selectedColor)) B_subject_color.setTextColor(Color.WHITE);
         else B_subject_color.setTextColor(BLACK);
     }
 
     //Dialogs
     private Dialog D_editColor() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
         final String[] options = {getString(R.string.D_editColor_preset), getString(R.string.D_editColor_custom)};
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -244,7 +228,7 @@ public class SubjectActivity extends AppCompatActivity {
                                 public void onColorSelected(int color) {
                                     selectedColor = color;
                                     changeColorButton();
-                                    changeActivity = false;
+                                    finishActivity = false;
                                     clickB_sub_save(findViewById(R.id.B_subject_save));
                                 }
 
@@ -261,7 +245,7 @@ public class SubjectActivity extends AppCompatActivity {
                                 public void onClick(View v) {
                                     selectedColor = cp.getColor();
                                     changeColorButton();
-                                    changeActivity = false;
+                                    finishActivity = false;
                                     clickB_sub_save(findViewById(R.id.B_subject_save));
                                     cp.dismiss();
                                 }
@@ -277,34 +261,6 @@ public class SubjectActivity extends AppCompatActivity {
                     }
                 });
         return builder.create();
-    }
-
-    //Getters ---------------------------------------------------------------------------------
-    private String getFilenameForDay() {
-        String filename = "SETTINGS.srl";
-        Settings settings = new Settings();
-        try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-            settings = (Settings) input.readObject();
-        } catch (FileNotFoundException e) {
-            try {
-                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                out.writeObject(settings);
-                out.close();
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-            e.printStackTrace();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-
-        if (settings.getWeekSystem()) {
-            if (MainActivity.getEditing_mode() && !MainActivity.getSelected_evenWeeks())
-                return "ODD-DAY-" + MainActivity.getSelected_day_of_week() + ".srl";
-            else if (!MainActivity.getEditing_mode() && MainActivity.getWeek_isOdd()) return "ODD-DAY-" + MainActivity.getSelected_day_of_week() + ".srl";
-        }
-        return "DAY-" + MainActivity.getSelected_day_of_week() + ".srl";
     }
 
 }

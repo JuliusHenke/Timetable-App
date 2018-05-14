@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ce4818</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="colorAppBar">#ce4818</color>
-    <color name="colorAppBarDark">#414141</color>
-    <color name="colorSubjectDefault">#cacaca</color>
-
+    <color name="colorPrimary">@color/colorAppBar</color>
+    <color name="colorPrimaryDark">@color/colorAppBarDark</color>
+    <color name="colorAppBar">#176cb6</color>
+    <color name="colorAppBarDark">#000000</color>
     <color name="hint_foreground_material_light">#dfdfdf</color>
 
     <color name="tomato">#d50000</color>

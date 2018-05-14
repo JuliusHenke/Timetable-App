@@ -4,15 +4,17 @@
 
     <item
         android:id="@+id/menu_editMode"
-        android:icon="@drawable/ic_mode_edit_black_24dp"
+        android:icon="@drawable/ic_edit_black_24dp"
         android:title="@string/Menu_editTable"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_settings"
-        android:title="@string/Settings" />
+        android:title="@string/Settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_editSubject"
-        android:title="@string/Menu_editSubject" />
+        android:title="@string/Menu_editSubject"
+        app:showAsAction="never" />
     <item
         android:id="@+id/menu_deleteSubject"
         android:title="@string/Menu_deleteSubject"

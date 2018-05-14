@@ -9,14 +9,13 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +33,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
-
 public class MainActivity extends AppCompatActivity {
 
+    private static Util util = new Util();
     private static int selected_day_of_week = 0;
     private static int saved_change = 0;
 
@@ -48,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private static boolean week_isOdd = false;
     private static boolean editing_mode = false;
 
-    private boolean selected_activity_main = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Settings settings = util.readSettings(this);
+        if(settings.isDarkDesign()) setTheme(R.style.AppThemeDark);
+        else setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
+        if(util.firstTimeRunning) initialSetup();
         updateActivityMain();
 
         final Button[] Bts = {null,
@@ -76,32 +77,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        updateActivityMain();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         updateActivityMain();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        selected_activity_main = false;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        selected_activity_main = false;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -112,12 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
+        Settings settings = util.readSettings(this);
+        MenuItem item = menu.findItem(R.id.menu_editMode);
         if (editing_mode) {
-            menu.findItem(R.id.menu_editMode).setIcon(R.drawable.ic_done_black_24dp);
-            getSupportActionBar().setTitle(R.string.Editing);
+            if(settings.isDarkDesign()) item.setIcon(R.drawable.ic_done_white_24dp);
+            else item.setIcon(R.drawable.ic_done_black_24dp);
         } else {
-            menu.findItem(R.id.menu_editMode).setIcon(R.drawable.ic_mode_edit_black_24dp);
-            getSupportActionBar().setTitle("");
+            if(settings.isDarkDesign()) item.setIcon(R.drawable.ic_edit_white_24dp);
+            else item.setIcon(R.drawable.ic_edit_black_24dp);
         }
         return true;
     }
@@ -142,9 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.menu_aboutApp:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(null).setMessage(getResources().getString(R.string.D_aboutApp_content));
-                builder.show();
+                D_aboutApp().show();
                 return true;
 
             default:
@@ -158,11 +136,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (selected_activity_main) {
-                if (editing_mode) {
-                    changeMode();
-                } else finish();
-            }
+            if (editing_mode) changeMode();
+            else finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -170,35 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Voids --------------------------------------------------------------------------------
     private void updateActivityMain(){
-        selected_activity_main = true;
-        updateDesign();
+        util.updateDesign(this, false);
         setDay(0);
-    }
-
-    private void updateDesign(){
-        Settings settings = new Settings();
-        try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl")));
-            settings = (Settings) input.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        toolbar.setTitle("");
-        try {
-            if (settings.isDarkDesign()) {
-                scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
-                toolbar.setBackgroundResource(R.color.colorAppBarDark);
-            } else {
-                scrollView.setBackgroundResource(R.drawable.background_gradient);
-                toolbar.setBackgroundResource(R.color.colorAppBar);
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        setSupportActionBar(toolbar);
     }
 
     private void setActivitySettings() {
@@ -211,46 +159,26 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void setDay(int input_change) {
+    private void setDay(int shift) {
         Resources r = getResources();
+        Settings settings = util.readSettings(this);
 
-        //Reading settings
-        Settings settings = new Settings();
-        try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl")));
-            settings = (Settings) input.readObject();
-        } catch (FileNotFoundException e) {
-            try {
-                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + "SETTINGS.srl"));
-                out.writeObject(settings);
-                out.close();
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-            //if the settings file doesen't exist (1st time App ever was opened) --> show the intro
-            showIntro();
-            e.printStackTrace();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //Mathematical calculation of the new date ------------------------------------------------------------------
+        //Mathematical calculation of the new date
         Calendar c = Calendar.getInstance();
-        saved_change = saved_change + input_change;
+        saved_change = saved_change + shift;
         c.add(Calendar.DAY_OF_YEAR, saved_change);
         selected_day_of_week = getDayOfWeek(c);
 
         int extra_change = 0;
         //positive change - into the future
-        if (input_change >= 0) {
+        if (shift >= 0) {
             if (selected_day_of_week < settings.getStart_day())
                 extra_change = settings.getStart_day() - selected_day_of_week;
             else if (selected_day_of_week > settings.getEnd_day())
                 extra_change = 7 - selected_day_of_week + settings.getStart_day();
         }
         //negative change - into the past
-        else if (input_change < 0) {
+        else if (shift < 0) {
             if (selected_day_of_week < settings.getStart_day())
                 extra_change = -selected_day_of_week - (7 - settings.getEnd_day());
             else if (selected_day_of_week > settings.getEnd_day())
@@ -273,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         Button B_main_weekType = (Button) findViewById(R.id.B_main_weekType);
 
         int date_week = c.get(Calendar.WEEK_OF_YEAR);
-        week_isOdd = isIntOdd(date_week);
+        week_isOdd = util.isIntOdd(date_week);
 
         //updating views of activity_main -------------------------------------------------------------------------------
         B_main_dateLeft.setVisibility(View.VISIBLE);
@@ -338,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         try {
-            String filename = getFilenameForDay();
+            String filename = util.getFilenameForDay(this);
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
             String[] hours = (String[]) input.readObject();
             for (int i = 1; i <= 11; i++) {
@@ -354,13 +282,13 @@ public class MainActivity extends AppCompatActivity {
                     Bts[i].setVisibility(View.VISIBLE);
                     Bts[i].setText(s.getName());
                     Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
-                    if (isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
+                    if(util.isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
                     else Bts[i].setTextColor(Color.BLACK);
 
                     //TextViews (subject room)
                     if (!s.getName().equals(hours[i - 1])) TVs_room[i].setText(s.getRoom());
                 } catch (FileNotFoundException e) {
-                    filename = getFilenameForDay();
+                    filename = util.getFilenameForDay(this);
                     try {
                         hours[i] = "";
                         ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
@@ -399,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void replaceDay() {
         String[] hours = new String[12];
-        String outputName = getFilenameForDay();
+        String outputName = util.getFilenameForDay(this);
         String inputName = "DAY-" + selected_day_of_week + ".srl";
 
         if (outputName.equals("DAY-" + selected_day_of_week + ".srl"))
@@ -423,7 +351,8 @@ public class MainActivity extends AppCompatActivity {
         updateActivityMain();
     }
 
-    private void showIntro() {
+    private void initialSetup() {
+        util.firstTimeRunning = false;
         changeMode();
         setDay(8 - selected_day_of_week);
 
@@ -523,8 +452,8 @@ public class MainActivity extends AppCompatActivity {
     //Dialogs ---------------------------------------------------------------------------------
     private Dialog D_intro() {
         Resources r = getResources();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(r.getString(R.string.D_intro_title)).setMessage(r.getString(R.string.D_intro_content)).setPositiveButton(R.string.D_intro_btnYES, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        builder.setTitle(r.getString(R.string.D_intro_title)).setMessage(r.getString(R.string.D_intro_content)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -534,15 +463,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_editEmptyHour() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
         final String[] subject_names = getSubjectNames();
+        final AppCompatActivity a = this;
 
         builder.setTitle(getResources().getString(R.string.D_editEmptyHour_title))
             .setItems(subject_names, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
-                        String filename = getFilenameForDay();
+                        String filename = util.getFilenameForDay(a);
                         ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                         String[] hours = (String[]) input.readObject();
                         input.close();
@@ -560,7 +490,6 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     dialog.cancel();
-                    updateActivityMain();
                     try {
                         String filename = "SUBJECT-" + selected_subject + ".srl";
                         ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
@@ -582,6 +511,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
+                    updateActivityMain();
                 }
             })
             .setPositiveButton(R.string.D_editEmptyHour_YES, new DialogInterface.OnClickListener() {
@@ -596,8 +526,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_editTakenHour() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
         final String[] options = {getResources().getString(R.string.free_period),getResources().getString(R.string.different_subject)};
+        final AppCompatActivity a = this;
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
@@ -605,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
                         if(which == 0){
                             dialog.cancel();
                             try {
-                                String filename = getFilenameForDay();
+                                String filename = util.getFilenameForDay(a);
                                 ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                                 String[] hours = (String[]) input.readObject();
                                 input.close();
@@ -633,7 +564,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_editSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
         final String[] subject_names = getSubjectNames();
 
         builder.setTitle(getResources().getString(R.string.D_editSubject_title))
@@ -656,7 +587,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_deleteSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
         final String[] subject_names = getSubjectNames();
 
         builder.setTitle(getResources().getString(R.string.D_deleteSubject_title))
@@ -685,14 +616,10 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    //Checkers ---------------------------------------------------------------------------------
-    public static boolean isIntOdd(int val) {
-        return (val & 0x01) != 0;
-    }
-
-    public static boolean isColorDark(int color) {
-        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-        return darkness >= 0.5;
+    private Dialog D_aboutApp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        builder.setTitle(null).setMessage(getResources().getString(R.string.D_aboutApp_content));
+        return builder.create();
     }
 
     //Getters ---------------------------------------------------------------------------------
@@ -728,34 +655,6 @@ public class MainActivity extends AppCompatActivity {
         return subject_names;
     }
 
-    private String getFilenameForDay() {
-        String filename = "SETTINGS.srl";
-        Settings settings = new Settings();
-        try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-            settings = (Settings) input.readObject();
-            input.close();
-        } catch (FileNotFoundException e) {
-            try {
-                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                out.writeObject(settings);
-                out.close();
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-            e.printStackTrace();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-
-        if (settings.getWeekSystem()) {
-            if (editing_mode && !selected_evenWeeks)
-                return "ODD-DAY-" + selected_day_of_week + ".srl";
-            else if (!editing_mode && week_isOdd) return "ODD-DAY-" + selected_day_of_week + ".srl";
-        }
-        return "DAY-" + selected_day_of_week + ".srl";
-    }
-
     public static int getSelected_day_of_week(){
         return selected_day_of_week;
     }
@@ -780,7 +679,7 @@ public class MainActivity extends AppCompatActivity {
         return week_isOdd;
     }
 
-    public static boolean getEditing_mode() { return editing_mode; }
+    public static boolean isEditingMode() { return editing_mode; }
 
     private String getButtonName(View v){
         Button btn = (Button) v;

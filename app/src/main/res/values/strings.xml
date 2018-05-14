@@ -86,9 +86,8 @@
     <string name="Toast_nameAlreadyTaken">Name already taken</string>
 
     //Dialogs --------------------------------------------------------------------------
-    <string name="D_intro_title">Welcome!</string>
-    <string name="D_intro_content">Begin by filling in your timetable. \nYou can enable advanced features in the settings.</string>
-    <string name="D_intro_btnYES">Here we go!</string>
+    <string name="D_intro_title">Welcome</string>
+    <string name="D_intro_content">Begin by filling in your timetable. \nYou can customize features in the settings.</string>
 
     <string name="D_editEmptyHour_title">Pick a subject</string>
     <string name="D_editEmptyHour_YES">New subject</string>

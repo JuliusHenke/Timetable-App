@@ -52,7 +52,6 @@
     <string name="Toast_nameAlreadyTaken">Name schon verwendet</string>
     <string name="D_warnManageDays_content">Jetzt besteht deine Woche nur noch aus 1 Tag!</string>
     <string name="Subject">Fach</string>
-    <string name="D_intro_btnYES">Auf gehts!</string>
     <string name="free_period">Freistunde</string>
     <string name="D_editEmptyHour_YES">Neues Fach</string>
     <string name="TV_subject_room">Raum:</string>
