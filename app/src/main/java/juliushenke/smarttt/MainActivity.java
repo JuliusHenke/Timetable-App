@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -50,12 +49,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Settings settings = util.readSettings(this);
-        if(settings.isDarkDesign()) setTheme(R.style.AppThemeDark);
-        else setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
-        if(util.firstTimeRunning) initialSetup();
+        if(util.isFirstTimeRunning(this)) initialSetup();
         updateActivityMain();
+        util.updateDesign(this, false);
 
         final Button[] Bts = {null,
                 findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
@@ -90,15 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        Settings settings = util.readSettings(this);
         MenuItem item = menu.findItem(R.id.menu_editMode);
-        if (editing_mode) {
-            if(settings.isDarkDesign()) item.setIcon(R.drawable.ic_done_white_24dp);
-            else item.setIcon(R.drawable.ic_done_black_24dp);
-        } else {
-            if(settings.isDarkDesign()) item.setIcon(R.drawable.ic_edit_white_24dp);
-            else item.setIcon(R.drawable.ic_edit_black_24dp);
-        }
+        if (editing_mode) item.setIcon(R.drawable.ic_done_white_24dp);
+        else item.setIcon(R.drawable.ic_edit_white_24dp);
         return true;
     }
 
@@ -145,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Voids --------------------------------------------------------------------------------
     private void updateActivityMain(){
-        util.updateDesign(this, false);
         setDay(0);
     }
 
@@ -304,7 +294,16 @@ public class MainActivity extends AppCompatActivity {
             }
             input.close();
         } catch (FileNotFoundException e) {
-            if (editing_mode) replaceDay();
+            String[] hours = new String[12];
+            String outputName = util.getFilenameForDay(this);
+            try {
+                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + outputName));
+                out.writeObject(hours);
+                out.close();
+            } catch (IOException e1) {
+                e.printStackTrace();
+            }
+            if (editing_mode && settings.getWeekSystem()) D_copyDay();
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -325,34 +324,7 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void replaceDay() {
-        String[] hours = new String[12];
-        String outputName = util.getFilenameForDay(this);
-        String inputName = "DAY-" + selected_day_of_week + ".srl";
-
-        if (outputName.equals("DAY-" + selected_day_of_week + ".srl"))
-            inputName = "ODD-DAY-" + selected_day_of_week + ".srl";
-
-        //read the input
-        try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + inputName)));
-            hours = (String[]) input.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-        //overwrite the output with input
-        try {
-            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + outputName));
-            out.writeObject(hours);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        updateActivityMain();
-    }
-
     private void initialSetup() {
-        util.firstTimeRunning = false;
         changeMode();
         setDay(8 - selected_day_of_week);
 
@@ -452,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
     //Dialogs ---------------------------------------------------------------------------------
     private Dialog D_intro() {
         Resources r = getResources();
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(r.getString(R.string.D_intro_title)).setMessage(r.getString(R.string.D_intro_content)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -462,8 +434,55 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    private void D_copyDay() {
+        Resources r = getResources();
+        final String outputName = util.getFilenameForDay(this);
+        String inputNameTemp = "DAY-" + selected_day_of_week + ".srl";
+        String title = r.getString(R.string.D_copyEvenDay);
+
+        if (outputName.equals("DAY-" + selected_day_of_week + ".srl")) {
+            inputNameTemp = "ODD-DAY-" + selected_day_of_week + ".srl";
+            title = r.getString(R.string.D_copyOddDay);
+        }
+        final String inputName = inputNameTemp;
+
+        File testFile = new File(new File(getFilesDir(), "") + File.separator + inputName);
+        if(testFile.exists()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(title).setMessage(null).setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String[] hours = new String[12];
+                    //read the input
+                    try {
+                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + inputName)));
+                        hours = (String[]) input.readObject();
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    //overwrite the output with input
+                    try {
+                        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + outputName));
+                        out.writeObject(hours);
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    updateActivityMain();
+                    dialog.cancel();
+                }
+            }).setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.create().show();
+        }
+    }
+
     private Dialog D_editEmptyHour() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] subject_names = getSubjectNames();
         final AppCompatActivity a = this;
 
@@ -526,7 +545,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_editTakenHour() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] options = {getResources().getString(R.string.free_period),getResources().getString(R.string.different_subject)};
         final AppCompatActivity a = this;
 
@@ -564,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_editSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] subject_names = getSubjectNames();
 
         builder.setTitle(getResources().getString(R.string.D_editSubject_title))
@@ -587,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_deleteSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] subject_names = getSubjectNames();
 
         builder.setTitle(getResources().getString(R.string.D_deleteSubject_title))
@@ -617,7 +636,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Dialog D_aboutApp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(null).setMessage(getResources().getString(R.string.D_aboutApp_content));
         return builder.create();
     }

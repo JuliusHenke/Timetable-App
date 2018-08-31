@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,12 +43,10 @@ public class SubjectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Settings settings = util.readSettings(this);
-        if(settings.isDarkDesign()) setTheme(R.style.AppThemeDark);
-        else setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_subject);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         updateActivitySubject();
+        util.updateDesign(this, true);
     }
 
     @Override
@@ -60,10 +57,8 @@ public class SubjectActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        Settings settings = util.readSettings(this);
         MenuItem item = menu.findItem(R.id.menu_saveSubject);
-        if(settings.isDarkDesign()) item.setIcon(R.drawable.ic_done_white_24dp);
-        else item.setIcon(R.drawable.ic_done_black_24dp);
+        item.setIcon(R.drawable.ic_done_white_24dp);
         return true;
     }
 
@@ -93,8 +88,6 @@ public class SubjectActivity extends AppCompatActivity {
 
     //Voids --------------------------------------------------------------------------------
     public void updateActivitySubject() {
-        util.updateDesign(this, true);
-
         EditText TF_subject = findViewById(R.id.TF_subject);
         EditText TF_room = findViewById(R.id.TF_room);
         EditText TF_teacher = findViewById(R.id.TF_teacher);
@@ -202,7 +195,7 @@ public class SubjectActivity extends AppCompatActivity {
 
     //Dialogs
     private Dialog D_editColor() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] options = {getString(R.string.D_editColor_preset), getString(R.string.D_editColor_custom)};
 
         builder.setItems(options, new DialogInterface.OnClickListener() {

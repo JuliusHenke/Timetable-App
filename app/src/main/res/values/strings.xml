@@ -75,8 +75,8 @@
 
     //Menu items ----------------------------------------------------------------------------
     <string name="Menu_aboutApp">About app</string>
-    <string name="Menu_evenWeek">in even weeks</string>
-    <string name="Menu_oddWeek">in odd weeks</string>
+    <string name="Menu_evenWeek">even weeks</string>
+    <string name="Menu_oddWeek">odd weeks</string>
     <string name="Menu_editTable">Edit timetable</string>
     <string name="Menu_deleteSubject">Delete subject</string>
     <string name="Menu_editSubject">Edit subject</string>
@@ -145,6 +145,8 @@
 
     //New Values (unsorted) ------------------------------------------------------------------#
     <string name="placeholder">" "</string>
+    <string name="D_copyEvenDay">Do you want to copy this day of the even week?</string>
+    <string name="D_copyOddDay">Do you want to copy this day of the odd week?</string>
 
 
 </resources>

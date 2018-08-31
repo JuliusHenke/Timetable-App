@@ -45,8 +45,8 @@
     <string name="number10">10</string>
     <string name="number1">1</string>
     <string name="week">Woche</string>
-    <string name="Menu_oddWeek">in ungeraden Wochen</string>
-    <string name="Menu_evenWeek">in geraden Wochen</string>
+    <string name="Menu_oddWeek">ungerade Wochen</string>
+    <string name="Menu_evenWeek">gerade Wochen</string>
     <string name="Switch_settings_showWeek">Woche des Jahres anzeigen</string>
     <string name="OK">OK</string>
     <string name="Toast_nameAlreadyTaken">Name schon verwendet</string>
@@ -86,4 +86,6 @@
     <string name="Sport">Sport</string>
     <string name="different_subject">Anderes Fach</string>
     <string name="Art">Kunst</string>
+    <string name="D_copyEvenDay">Möchtest du diesen Tag aus der geraden Woche kopieren?</string>
+    <string name="D_copyOddDay">Möchtest du diesen Tag aus der ungeraden Woche kopieren?</string>
 </resources>

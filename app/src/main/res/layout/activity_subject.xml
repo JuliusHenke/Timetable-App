@@ -84,12 +84,10 @@
 
             <Button
                 android:id="@+id/B_subject_save"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|top"
                 android:layout_weight="1"
-                android:background="?attr/colorButtonNormal"
                 android:fontFamily="sans-serif"
                 android:onClick="clickB_sub_save"
                 android:text="@string/B_subject_save"
@@ -97,7 +95,7 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:textStyle="normal|bold" />
+                android:textStyle="normal" />
 
         </LinearLayout>
     </ScrollView>

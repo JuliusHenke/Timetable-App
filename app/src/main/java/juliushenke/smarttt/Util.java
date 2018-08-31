@@ -18,30 +18,28 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 class Util {
-    boolean firstTimeRunning = false;
-
     @SuppressWarnings("deprecation")
     void updateDesign(AppCompatActivity a, boolean homeAsUp){
-        Settings settings = readSettings(a);
-        ScrollView scrollView = (ScrollView) a.findViewById(R.id.scrollview);
-        Toolbar toolbar = (Toolbar) a.findViewById(R.id.app_bar);
+        ScrollView scrollView = a.findViewById(R.id.scrollview);
+        Toolbar toolbar = a.findViewById(R.id.app_bar);
         toolbar.setTitle("");
-        if (settings.isDarkDesign()) {
-            scrollView.setBackgroundResource(R.drawable.background_gradient_dark);
-            toolbar.setBackgroundResource(R.color.colorAppBarDark);
-        } else {
+        try {
             scrollView.setBackgroundResource(R.drawable.background_gradient);
             toolbar.setBackgroundResource(R.color.colorAppBar);
+        } catch (Exception e){
+            e.printStackTrace();
         }
         a.setSupportActionBar(toolbar);
-        if(homeAsUp) a.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            if(homeAsUp) a.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch(NullPointerException e){
+            e.printStackTrace();
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             Window window = a.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(a.getResources().getColor(R.color.colorAppBar));
-            if (settings.isDarkDesign()) window.setStatusBarColor(a.getResources().getColor(R.color.colorAppBarDark));
-            else window.setStatusBarColor(a.getResources().getColor(R.color.colorAppBar));
+            window.setStatusBarColor(a.getResources().getColor(R.color.colorStatusBar));
         }
     }
 
@@ -52,12 +50,16 @@ class Util {
             settings = (Settings) input.readObject();
         } catch (FileNotFoundException e) {
             saveSettings(a, settings);
-            firstTimeRunning = true;
             e.printStackTrace();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
         return settings;
+    }
+
+    boolean isFirstTimeRunning(AppCompatActivity a){
+        File testFile = new File(new File(a.getFilesDir(), "") + File.separator + "SETTINGS.srl");
+        return !testFile.exists();
     }
 
     void saveSettings(AppCompatActivity a, Settings settings){

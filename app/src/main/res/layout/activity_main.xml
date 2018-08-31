@@ -79,7 +79,7 @@
                         android:text="@string/Menu_evenWeek"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@android:color/black"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:visibility="visible" />
 
                 </TableRow>

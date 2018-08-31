@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +19,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Settings settings = util.readSettings(this);
-        if(settings.isDarkDesign()) setTheme(R.style.AppThemeDark);
-        else setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_settings);
         updateActivitySettings();
+        util.updateDesign(this, true);
     }
 
     @Override
@@ -46,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
         Button B_endDay = findViewById(R.id.B_settings_endDay);
         Switch Switch_evenOddWeekSystem = findViewById(R.id.Switch_evenOddWeekSystem);
         Switch Switch_weekDisplay = findViewById(R.id.Switch_weekDisplay);
-        Switch Switch_darkDesign = findViewById(R.id.Switch_darkDesign);
 
         B_startDay.setText(days[settings.getStart_day()]);
         B_endDay.setText(days[settings.getEnd_day()]);
@@ -55,8 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
         else Switch_evenOddWeekSystem.setChecked(false);
         if (settings.getShowWeek()) Switch_weekDisplay.setChecked(true);
         else Switch_weekDisplay.setChecked(false);
-        if (settings.isDarkDesign()) Switch_darkDesign.setChecked(true);
-        else Switch_darkDesign.setChecked(false);
 
         Switch_evenOddWeekSystem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -75,16 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
-        Switch_darkDesign.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) settings.setDarkDesign(true);
-                else settings.setDarkDesign(false);
-                util.saveSettings(a, settings);
-                a.recreate();
-            }
-        });
-        util.updateDesign(this, true);
     }
 
     //Clickers ---------------------------------------------------------------------------------
@@ -98,7 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     //Dialogs ---------------------------------------------------------------------------------
     private Dialog D_startDay(final boolean startDay) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String[] days = getResources().getStringArray(R.array.days);
         String[] options = {days[1], days[2], days[3], days[4], days[5], days[6], days[7]};
         final Settings settings = util.readSettings(this);
@@ -121,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Dialog D_warn_manageDays() {
         Resources r = getResources();
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(r.getString(R.string.D_warnManageDays_content)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
