@@ -35,6 +35,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private static Util util = new Util();
+    public static Resources res;
     private static int selected_day_of_week = 0;
     private static int saved_change = 0;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        res = getResources();
         if(util.isFirstTimeRunning(this)) initialSetup();
         updateActivityMain();
         util.updateDesign(this, false);
@@ -150,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDay(int shift) {
-        Resources r = getResources();
         Settings settings = util.readSettings(this);
 
         //Mathematical calculation of the new date
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         //update the day_of_week
         selected_day_of_week = getDayOfWeek(c);
 
-        String[] days = r.getStringArray(R.array.days);
+        String[] days = res.getStringArray(R.array.days);
         TextView TV_main_day = findViewById(R.id.TV_main_day);
         TV_main_day.setText(days[selected_day_of_week]);
 
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             String string_date = DATE_FORMAT.format(c.getTime());
-            String s = string_date + " (" + r.getString(R.string.week) + " " + date_week + ")";
+            String s = string_date + " (" + res.getString(R.string.week) + " " + date_week + ")";
             if (settings.getShowWeek()) B_main_dateCenter.setText(s);
             else B_main_dateCenter.setText(string_date);
             B_main_dateCenter.setVisibility(View.VISIBLE);
@@ -313,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
     private void changeMode() {
         if (!editing_mode) {
             editing_mode = true;
-            selected_evenWeeks = true;
 
         } else {
             editing_mode = false;
@@ -330,8 +330,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Setup preset subjects
         try {
-            String[] subject_names = getResources().getStringArray(R.array.subject_names);
-            int[] colors = getResources().getIntArray(R.array.subject_colors);
+            String[] subject_names = res.getStringArray(R.array.subject_names);
+            int[] colors = res.getIntArray(R.array.subject_colors);
             for (int i = 0; i < subject_names.length && subject_names.length <= colors.length; i++) {
                 Subject subject = new Subject(subject_names[i], null, null, colors[i]);
                 try {
@@ -423,9 +423,19 @@ public class MainActivity extends AppCompatActivity {
 
     //Dialogs ---------------------------------------------------------------------------------
     private Dialog D_intro() {
-        Resources r = getResources();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(r.getString(R.string.D_intro_title)).setMessage(r.getString(R.string.D_intro_content)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+        builder.setTitle(res.getString(R.string.D_intro_title)).setMessage(res.getString(R.string.D_intro_content)).setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Settings settings = util.readSettings(MainActivity.this);
+                settings.setWeekSystem(true);
+                settings.setShowWeek(true);
+                util.saveSettings(MainActivity.this, settings);
+
+                updateActivityMain();
+                dialog.cancel();
+            }
+        }).setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -435,31 +445,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void D_copyDay() {
-        Resources r = getResources();
         final String outputName = util.getFilenameForDay(this);
-        String inputNameTemp = "DAY-" + selected_day_of_week + ".srl";
-        String title = r.getString(R.string.D_copyEvenDay);
+        String inputName = "DAY-" + selected_day_of_week + ".srl";
+        String title = res.getString(R.string.D_copyEvenDay);
 
         if (outputName.equals("DAY-" + selected_day_of_week + ".srl")) {
-            inputNameTemp = "ODD-DAY-" + selected_day_of_week + ".srl";
-            title = r.getString(R.string.D_copyOddDay);
+            inputName = "ODD-DAY-" + selected_day_of_week + ".srl";
+            title = res.getString(R.string.D_copyOddDay);
         }
-        final String inputName = inputNameTemp;
 
-        File testFile = new File(new File(getFilesDir(), "") + File.separator + inputName);
-        if(testFile.exists()) {
+        String[] hoursTemp = new String[12];
+        boolean inputEmpty = true;
+        //read the input
+        try {
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + inputName)));
+            hoursTemp = (String[]) input.readObject();
+            for(String s : hoursTemp){
+                if(s != null && !s.equals("")){
+                    inputEmpty = false;
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+        final String [] hours = hoursTemp;
+
+        if(!inputEmpty) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(title).setMessage(null).setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String[] hours = new String[12];
-                    //read the input
-                    try {
-                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + inputName)));
-                        hours = (String[]) input.readObject();
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
-                    }
                     //overwrite the output with input
                     try {
                         ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + outputName));
@@ -486,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
         final String[] subject_names = getSubjectNames();
         final AppCompatActivity a = this;
 
-        builder.setTitle(getResources().getString(R.string.D_editEmptyHour_title))
+        builder.setTitle(res.getString(R.string.D_editEmptyHour_title))
             .setItems(subject_names, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -533,7 +549,7 @@ public class MainActivity extends AppCompatActivity {
                     updateActivityMain();
                 }
             })
-            .setPositiveButton(R.string.D_editEmptyHour_YES, new DialogInterface.OnClickListener() {
+            .setPositiveButton(res.getString(R.string.D_editEmptyHour_YES), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
@@ -546,7 +562,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Dialog D_editTakenHour() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] options = {getResources().getString(R.string.free_period),getResources().getString(R.string.different_subject)};
+        final String[] options = {res.getString(R.string.free_period), res.getString(R.string.different_subject)};
         final AppCompatActivity a = this;
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -586,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] subject_names = getSubjectNames();
 
-        builder.setTitle(getResources().getString(R.string.D_editSubject_title))
+        builder.setTitle(res.getString(R.string.D_editSubject_title))
                 .setItems(subject_names, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -609,7 +625,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final String[] subject_names = getSubjectNames();
 
-        builder.setTitle(getResources().getString(R.string.D_deleteSubject_title))
+        builder.setTitle(res.getString(R.string.D_deleteSubject_title))
                 .setItems(subject_names, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -618,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
                             File file = new File(dir, "SUBJECT-" + subject_names[which] + ".srl");
                             boolean deleted = file.delete();
                             if (deleted)
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), res.getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
                             updateActivityMain();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -637,7 +653,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Dialog D_aboutApp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(null).setMessage(getResources().getString(R.string.D_aboutApp_content));
+        builder.setTitle(null).setMessage(res.getString(R.string.D_aboutApp_content));
         return builder.create();
     }
 

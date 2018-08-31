@@ -25,7 +25,7 @@
     <string name="Menu_aboutApp">Über die App</string>
 
     <string name="D_intro_title">Willkommen!</string>
-    <string name="D_intro_content">Beginne damit deinen Stundenplan einzugeben. Für weitere Optionen öffne die Einstellungen.</string>
+    <string name="D_intro_content">Möchtest du das gerade/ungerade Wochensystem benutzen? \n(2 Stundenpläne)</string>
 
     <string name="Toast_nameNeeded">Name fehlt</string>
     <string name="placeholder">" "</string>
@@ -45,8 +45,8 @@
     <string name="number10">10</string>
     <string name="number1">1</string>
     <string name="week">Woche</string>
-    <string name="Menu_oddWeek">ungerade Wochen</string>
-    <string name="Menu_evenWeek">gerade Wochen</string>
+    <string name="Menu_oddWeek">ungerade Woche</string>
+    <string name="Menu_evenWeek">gerade Woche</string>
     <string name="Switch_settings_showWeek">Woche des Jahres anzeigen</string>
     <string name="OK">OK</string>
     <string name="Toast_nameAlreadyTaken">Name schon verwendet</string>

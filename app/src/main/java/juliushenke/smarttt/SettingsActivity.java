@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         final Settings settings = util.readSettings(this);
         final AppCompatActivity a = this;
 
-        String[] days = getResources().getStringArray(R.array.days);
+        String[] days = MainActivity.res.getStringArray(R.array.days);
         Button B_startDay = findViewById(R.id.B_settings_startDay);
         Button B_endDay = findViewById(R.id.B_settings_endDay);
         Switch Switch_evenOddWeekSystem = findViewById(R.id.Switch_evenOddWeekSystem);
@@ -83,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
     //Dialogs ---------------------------------------------------------------------------------
     private Dialog D_startDay(final boolean startDay) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] days = getResources().getStringArray(R.array.days);
+        String[] days = MainActivity.res.getStringArray(R.array.days);
         String[] options = {days[1], days[2], days[3], days[4], days[5], days[6], days[7]};
         final Settings settings = util.readSettings(this);
         final AppCompatActivity a = this;
@@ -104,7 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private Dialog D_warn_manageDays() {
-        Resources r = getResources();
+        Resources r = MainActivity.res;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(r.getString(R.string.D_warnManageDays_content)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override

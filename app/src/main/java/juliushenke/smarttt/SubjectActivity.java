@@ -164,7 +164,7 @@ public class SubjectActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else Toast.makeText(getApplicationContext(), getResources().getString(R.string.Toast_nameNeeded), Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(getApplicationContext(), MainActivity.res.getString(R.string.Toast_nameNeeded), Toast.LENGTH_SHORT).show();
         }
         else{
             try {
@@ -202,7 +202,7 @@ public class SubjectActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-                            int[] colors = getResources().getIntArray(R.array.default_rainbow);
+                            int[] colors = MainActivity.res.getIntArray(R.array.default_rainbow);
 
                             ColorPickerDialog colorDialog = ColorPickerDialog.newInstance(R.string.D_editColor_preset_title,
                                     colors,
