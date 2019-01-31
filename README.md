@@ -7,6 +7,3 @@ Features:
 - even/odd week detection
 - saveable subjects
 - a clean design
-
-Future plans:
-Our goal is to implement more features like managment of homework, grades and events. For a more detailed view take a look at the Projects-Section.
