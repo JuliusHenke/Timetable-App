@@ -261,36 +261,41 @@ public class MainActivity extends AppCompatActivity {
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
             String[] hours = (String[]) input.readObject();
             for (int i = 1; i <= 11; i++) {
-                try {
-                    filename = "SUBJECT-" + hours[i] + ".srl";
-                    input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                    Subject s = (Subject) input.readObject();
-
-                    //TextViews (number of hour)
-                    for (int a = 1; a <= i; a++) TVs_hour[a].setVisibility(View.VISIBLE);
-
-                    //Buttons (subject name)
-                    Bts[i].setVisibility(View.VISIBLE);
-                    Bts[i].setText(s.getName());
-                    Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
-                    if(util.isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
-                    else Bts[i].setTextColor(Color.BLACK);
-
-                    //TextViews (subject room)
-                    if (!s.getName().equals(hours[i - 1])) TVs_room[i].setText(s.getRoom());
-                } catch (FileNotFoundException e) {
-                    filename = util.getFilenameForDay(this);
+                if(hours[i] != null && !hours[i].equals("")) {
                     try {
-                        hours[i] = "";
-                        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                        out.writeObject(hours);
-                        out.close();
-                    } catch (IOException e2) {
-                        e2.printStackTrace();
+                        filename = "SUBJECT-" + hours[i] + ".srl";
+                        input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+                        Subject s = (Subject) input.readObject();
+
+                        //TextViews (number of hour)
+                        for (TextView view : TVs_hour) {
+                            if(view != null) view.setVisibility(View.VISIBLE);
+                        }
+
+
+                        //Buttons (subject name)
+                        Bts[i].setVisibility(View.VISIBLE);
+                        Bts[i].setText(s.getName());
+                        Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
+                        if (util.isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
+                        else Bts[i].setTextColor(Color.BLACK);
+
+                        //TextViews (subject room)
+                        if (!s.getName().equals(hours[i - 1])) TVs_room[i].setText(s.getRoom());
+                    } catch (FileNotFoundException e) {
+                        filename = util.getFilenameForDay(this);
+                        try {
+                            hours[i] = "";
+                            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
+                            out.writeObject(hours);
+                            out.close();
+                        } catch (IOException e2) {
+                            e2.printStackTrace();
+                        }
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
                     }
-                    e.printStackTrace();
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
                 }
             }
             input.close();
