@@ -31,7 +31,9 @@ class Util {
         }
         a.setSupportActionBar(toolbar);
         try{
-            if(homeAsUp) a.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if(homeAsUp && a.getSupportActionBar() != null) {
+                a.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         } catch(NullPointerException e){
             e.printStackTrace();
         }
