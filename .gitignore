@@ -6,10 +6,6 @@
 .DS_Store
 /build
 /captures
-_config.yml
-build.gradle
 gradle*
-settings.gradle
-proguard-rules.pro
-/app/build
-/app/release
+/projectFilesBackup
+/gradle
