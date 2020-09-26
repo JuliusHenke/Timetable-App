@@ -1,14 +1,11 @@
 package juliushenke.smarttt;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,10 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import androidx.appcompat.app.AppCompatActivity;
 
-import org.xdty.preference.colorpicker.ColorPickerDialog;
-import org.xdty.preference.colorpicker.ColorPickerSwatch;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorPickerView;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +30,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 import static android.graphics.Color.BLACK;
 
@@ -68,7 +69,7 @@ public class SubjectActivity extends AppCompatActivity {
             case R.id.menu_saveSubject:
                 clickB_sub_save(findViewById(R.id.B_subject_save));
                 return true;
-
+            // TODO add delete option
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -91,6 +92,7 @@ public class SubjectActivity extends AppCompatActivity {
         EditText TF_subject = findViewById(R.id.TF_subject);
         EditText TF_room = findViewById(R.id.TF_room);
         EditText TF_teacher = findViewById(R.id.TF_teacher);
+        EditText TF_notes = findViewById(R.id.TF_notes);
 
         if (MainActivity.isNewSubject()) {
             TF_subject.setEnabled(true);
@@ -99,6 +101,7 @@ public class SubjectActivity extends AppCompatActivity {
             TF_subject.setText("");
             TF_room.setText("");
             TF_teacher.setText("");
+            TF_notes.setText("");
         }
         else {
             TF_subject.setEnabled(false);
@@ -113,6 +116,7 @@ public class SubjectActivity extends AppCompatActivity {
                 TF_subject.setText(subject.getName());
                 TF_room.setText(subject.getRoom());
                 TF_teacher.setText(subject.getTeacher());
+                TF_notes.setText(subject.getNotes());
                 selectedColor = subject.getColor();
                 input.close();
             } catch (ClassNotFoundException | IOException e) {
@@ -124,19 +128,81 @@ public class SubjectActivity extends AppCompatActivity {
 
     //Clickers ---------------------------------------------------------------------------------
     public void clickB_sub_color(View view) {
-        D_editColor().show();
+        int[] colors = MainActivity.res.getIntArray(R.array.subject_colors);
+
+        final ColorPicker presetColorPicker = new ColorPicker(SubjectActivity.this);
+        presetColorPicker.setTitle(getString(R.string.D_editColor_preset_title))
+            .setColors(colors)
+            .setDefaultColorButton(selectedColor)
+            .disableDefaultButtons(true)
+            .setRoundColorButton(true)
+            .setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
+                    @Override
+                    public void setOnFastChooseColorListener(int position, int color) {
+                        selectedColor = color;
+                        changeColorButton();
+                        finishActivity = false;
+                        clickB_sub_save(findViewById(R.id.B_subject_save));
+                        presetColorPicker.dismissDialog();
+                    }
+
+                    @Override
+                    public void onCancel(){ }
+            })
+            .addListenerButton(getString(R.string.colorpicker_dialog_cancel), new ColorPicker.OnButtonListener() {
+                @Override
+                public void onClick(View v, int position, int color) {
+                    presetColorPicker.dismissDialog();
+                }
+            })
+            .addListenerButton(getString(R.string.D_editColor_custom), new ColorPicker.OnButtonListener() {
+                @Override
+                public void onClick(View v, int position, int color) {
+                    ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(SubjectActivity.this)
+                        .setTitle(getString(R.string.D_editColor_custom))
+                        .setPositiveButton(getString(R.string.colorpicker_dialog_ok),
+                                new ColorEnvelopeListener() {
+                                    @Override
+                                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                                        selectedColor = envelope.getColor();
+                                        System.out.println(selectedColor);
+                                        changeColorButton();
+                                        finishActivity = false;
+                                        clickB_sub_save(findViewById(R.id.B_subject_save));
+                                    }
+                                })
+                        .setNegativeButton(getString(R.string.colorpicker_dialog_cancel),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                        .attachAlphaSlideBar(false) // the default value is true.
+                        .attachBrightnessSlideBar(true)  // the default value is true.
+                        .setBottomSpace(12);
+                    ColorPickerView colorPickerView = builder.getColorPickerView();
+                    colorPickerView.setInitialColor(selectedColor);
+                    builder.show();
+                    presetColorPicker.dismissDialog();
+                }
+            })
+            .getDialogViewLayout().findViewById(R.id.buttons_layout).setVisibility(View.VISIBLE);
+        presetColorPicker.show();
     }
 
     public void clickB_sub_save(View view) {
         EditText TF_subject = findViewById(R.id.TF_subject);
         EditText TF_room = findViewById(R.id.TF_room);
         EditText TF_teacher = findViewById(R.id.TF_teacher);
+        EditText TF_notes = findViewById(R.id.TF_notes);
 
         String name = TF_subject.getText().toString().trim();
         String room = TF_room.getText().toString().trim();
         String teacher = TF_teacher.getText().toString().trim();
+        String notes = TF_notes.getText().toString().trim();
 
-        Subject subject = new Subject(name, room, teacher, selectedColor);
+        Subject subject = new Subject(name, selectedColor, room, teacher, notes);
 
         if(MainActivity.isNewSubject()){
             int selected_hour = MainActivity.getSelected_hour();
@@ -194,65 +260,64 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     //Dialogs
-    private Dialog D_editColor() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] options = {getString(R.string.D_editColor_preset), getString(R.string.D_editColor_custom)};
-
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){
-                            int[] colors = MainActivity.res.getIntArray(R.array.default_rainbow);
-
-                            ColorPickerDialog colorDialog = ColorPickerDialog.newInstance(R.string.D_editColor_preset_title,
-                                    colors,
-                                    selectedColor,
-                                    5, // Number of columns
-                                    ColorPickerDialog.SIZE_SMALL,
-                                    true, // True or False to enable or disable the serpentine effect
-                                    2, // stroke width
-                                    BLACK // stroke color
-                            );
-
-                            colorDialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-
-                                @Override
-                                public void onColorSelected(int color) {
-                                    selectedColor = color;
-                                    changeColorButton();
-                                    finishActivity = false;
-                                    clickB_sub_save(findViewById(R.id.B_subject_save));
-                                }
-
-                            });
-                            colorDialog.show(getFragmentManager(), "color_dialog_test");
-                        }
-                        else if(which == 1){
-                            final ColorPicker cp = new ColorPicker(SubjectActivity.this, Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-                            cp.show();
-                            Button okColor = cp.findViewById(R.id.okColorButton);
-                            okColor.setText(R.string.OK);
-                            okColor.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    selectedColor = cp.getColor();
-                                    changeColorButton();
-                                    finishActivity = false;
-                                    clickB_sub_save(findViewById(R.id.B_subject_save));
-                                    cp.dismiss();
-                                }
-                            });
-                        }
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        return builder.create();
-    }
+//    private Dialog D_editColor() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        final String[] options = {getString(R.string.D_editColor_preset), getString(R.string.D_editColor_custom)};
+//
+//        builder.setItems(options, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        if(which == 0){
+//
+//                            ColorPickerDialog colorDialog = ColorPickerDialog.newInstance(R.string.D_editColor_preset_title,
+//                                    colors,
+//                                    selectedColor,
+//                                    5, // Number of columns
+//                                    ColorPickerDialog.SIZE_SMALL,
+//                                    true, // True or False to enable or disable the serpentine effect
+//                                    2, // stroke width
+//                                    BLACK // stroke color
+//                            );
+//
+//                            colorDialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+//
+//                                @Override
+//                                public void onColorSelected(int color) {
+//                                    selectedColor = color;
+//                                    changeColorButton();
+//                                    finishActivity = false;
+//                                    clickB_sub_save(findViewById(R.id.B_subject_save));
+//                                }
+//
+//                            });
+//                            colorDialog.show(getFragmentManager(), "color_dialog_test");
+//                        }
+//                        else if(which == 1){
+//                            final ColorPicker cp = new ColorPicker(SubjectActivity.this, Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
+//                            cp.show();
+//                            Button okColor = cp.findViewById(R.id.okColorButton);
+//                            okColor.setText(R.string.OK);
+//                            okColor.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    selectedColor = cp.getColor();
+//                                    changeColorButton();
+//                                    finishActivity = false;
+//                                    clickB_sub_save(findViewById(R.id.B_subject_save));
+//                                    cp.dismiss();
+//                                }
+//                            });
+//                        }
+//                        dialog.cancel();
+//                    }
+//                })
+//                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        return builder.create();
+//    }
 
 }

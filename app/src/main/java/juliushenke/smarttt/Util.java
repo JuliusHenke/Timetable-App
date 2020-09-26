@@ -2,8 +2,8 @@ package juliushenke.smarttt;
 
 import android.graphics.Color;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ScrollView;
@@ -18,7 +18,6 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 class Util {
-    @SuppressWarnings("deprecation")
     void updateDesign(AppCompatActivity a, boolean homeAsUp){
         ScrollView scrollView = a.findViewById(R.id.scrollview);
         Toolbar toolbar = a.findViewById(R.id.app_bar);

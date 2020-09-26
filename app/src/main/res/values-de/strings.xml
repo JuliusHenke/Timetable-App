@@ -54,18 +54,16 @@
     <string name="Subject">Fach</string>
     <string name="free_period">Freistunde</string>
     <string name="D_editEmptyHour_YES">Neues Fach</string>
-    <string name="TV_subject_room">Raum:</string>
-    <string name="TV_subject_teacher">Leher:</string>
+    <string name="TV_subject_room">Raum</string>
+    <string name="TV_subject_teacher">Leher</string>
     <string name="Editing">Bearbeitung</string>
     <string name="Menu_deleteSubject">Fach löschen</string>
     <string name="Menu_editSubject">Fach bearbeiten</string>
     <string name="Menu_editTable">Plan bearbeiten</string>
-    <string name="TF_subject_name">Name des Faches</string>
+    <string name="TF_subject_name">Fach</string>
     <string name="D_editSubject_title">Wähle ein Fach zum bearbeiten</string>
     <string name="Cancel">Abrechen</string>
     <string name="D_deleteSubject_title">Wähle ein Fach zum löschen</string>
-    <string name="TF_subject_room">Raum (optional)</string>
-    <string name="TF_subject_teacher">Leher/in (optional)</string>
     <string name="D_editColor_custom">Benutzerdefiniert</string>
     <string name="D_editColor_preset">Vorlagen</string>
     <string name="D_editColor_preset_title">Wähle eine Farbe</string>
@@ -88,4 +86,6 @@
     <string name="Art">Kunst</string>
     <string name="D_copyEvenDay">Möchtest du diesen Tag aus der geraden Woche kopieren?</string>
     <string name="D_copyOddDay">Möchtest du diesen Tag aus der ungeraden Woche kopieren?</string>
+    <string name="notes">Notizen</string>
+    <string name="Switch_hour_times">Startzeiten für Stunden</string>
 </resources>

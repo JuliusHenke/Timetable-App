@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 30
     defaultConfig {
         applicationId 'juliushenke.smarttt'
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 30
         versionCode 17
         versionName '2.3'
         vectorDrawables.useSupportLibrary = true
@@ -23,12 +23,16 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.pes.materialcolorpicker:library:1.0.2'
-    implementation 'org.xdty.preference:color-picker:0.0.5'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:support-vector-drawable:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'com.android.support:design:27.1.1'
-    testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    testImplementation 'junit:junit:4.13'
+
+    // Color picking
+    implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
+    implementation "com.github.skydoves:colorpickerview:2.2.0"
+
+    // Support libraries for older android versions
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.android.support:appcompat-v7'
 }

@@ -8,8 +8,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,17 +54,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         res = getResources();
-        if(util.isFirstTimeRunning(this)) initialSetup();
+        if (util.isFirstTimeRunning(this)) initialSetup();
         updateActivityMain();
         util.updateDesign(this, false);
 
-        final Button[] Bts = {null,
-                findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
-                findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
-                findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
-                findViewById(R.id.h10), findViewById(R.id.h11)};
+        final Button[] Bts = getHourButtons();
 
-        for(int i=1; i <= 11; i++){
+        for (int i = 1; i <= 11; i++) {
             Bts[i].setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_editMode);
         if (editing_mode) item.setIcon(R.drawable.ic_done_white_24dp);
         else item.setIcon(R.drawable.ic_edit_white_24dp);
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Voids --------------------------------------------------------------------------------
-    private void updateActivityMain(){
+    private void updateActivityMain() {
         setDay(0);
     }
 
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 extra_change = 7 - selected_day_of_week + settings.getStart_day();
         }
         //negative change - into the past
-        else{
+        else {
             if (selected_day_of_week < settings.getStart_day())
                 extra_change = -selected_day_of_week - (7 - settings.getEnd_day());
             else if (selected_day_of_week > settings.getEnd_day())
@@ -225,23 +223,10 @@ public class MainActivity extends AppCompatActivity {
             B_main_weekType.setVisibility(View.GONE);
         }
 
-        final TextView[] TVs_room = {null,
-                findViewById(R.id.r1), findViewById(R.id.r2), findViewById(R.id.r3),
-                findViewById(R.id.r4), findViewById(R.id.r5), findViewById(R.id.r6),
-                findViewById(R.id.r7), findViewById(R.id.r8), findViewById(R.id.r9),
-                findViewById(R.id.r10), findViewById(R.id.r11)};
-
-        final TextView[] TVs_hour = {null,
-                findViewById(R.id.n1), findViewById(R.id.n2), findViewById(R.id.n3),
-                findViewById(R.id.n4), findViewById(R.id.n5), findViewById(R.id.n6),
-                findViewById(R.id.n7), findViewById(R.id.n8), findViewById(R.id.n9),
-                findViewById(R.id.n10), findViewById(R.id.n11)};
-
-        final Button[] Bts = {null,
-                findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
-                findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
-                findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
-                findViewById(R.id.h10), findViewById(R.id.h11)};
+        final TextView[] TVs_hour = getHourLabels();
+        final Button[] Bts = getHourButtons();
+        final TextView[] TVs_room = getHourRooms();
+        final String[] hourTimes = settings.getHourTimes();
 
         for (int i = 1; i <= 11; i++) {
             TVs_room[i].setText("");
@@ -255,25 +240,23 @@ public class MainActivity extends AppCompatActivity {
                 Bts[i].setVisibility(View.INVISIBLE);
                 TVs_hour[i].setVisibility(View.INVISIBLE);
             }
+            TVs_hour[i].setText(settings.getShowHourTimes() ? hourTimes[i-1] : String.valueOf(i));
         }
         try {
             String filename = util.getFilenameForDay(this);
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
             String[] hours = (String[]) input.readObject();
             for (int i = 1; i <= 11; i++) {
-                if(hours[i] != null && !hours[i].equals("")) {
+                if (hours[i] != null && !hours[i].equals("")) {
                     try {
                         filename = "SUBJECT-" + hours[i] + ".srl";
                         input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                         Subject s = (Subject) input.readObject();
 
-                        //TextViews (number of hour)
-                        for (TextView view : TVs_hour) {
-                            if(view != null) view.setVisibility(View.VISIBLE);
-                        }
+                        // TextViews (number/time of hour)
+                        TVs_hour[i].setVisibility(View.VISIBLE);
 
-
-                        //Buttons (subject name)
+                        // Buttons (subject name)
                         Bts[i].setVisibility(View.VISIBLE);
                         Bts[i].setText(s.getName());
                         Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
@@ -338,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             String[] subject_names = res.getStringArray(R.array.subject_names);
             int[] colors = res.getIntArray(R.array.subject_colors);
             for (int i = 0; i < subject_names.length && subject_names.length <= colors.length; i++) {
-                Subject subject = new Subject(subject_names[i], null, null, colors[i]);
+                Subject subject = new Subject(subject_names[i], colors[i]);
                 try {
                     String filename = "SUBJECT-" + subject.getName() + ".srl";
                     ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
@@ -351,8 +334,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        D_intro().show();
     }
 
     //Clickers ---------------------------------------------------------------------------------
@@ -412,43 +393,20 @@ public class MainActivity extends AppCompatActivity {
             newSubject = false;
             setActivitySubject();
         } else {
-            if(selected_subject.equals("+")){ //hour without subject
+            if (selected_subject.equals("+")) { //hour without subject
                 if (getSubjectNames().length > 0) {
                     D_editEmptyHour().show();
                 } else {
                     newSubject = true;
                     setActivitySubject();
                 }
-            }
-            else { //hour with subject
+            } else { //hour with subject
                 D_editTakenHour().show();
             }
         }
     }
 
     //Dialogs ---------------------------------------------------------------------------------
-    private Dialog D_intro() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(res.getString(R.string.D_intro_title)).setMessage(res.getString(R.string.D_intro_content)).setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Settings settings = util.readSettings(MainActivity.this);
-                settings.setWeekSystem(true);
-                settings.setShowWeek(true);
-                util.saveSettings(MainActivity.this, settings);
-
-                updateActivityMain();
-                dialog.cancel();
-            }
-        }).setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        return builder.create();
-    }
-
     private void D_copyDay() {
         final String outputName = util.getFilenameForDay(this);
         String inputName = "DAY-" + selected_day_of_week + ".srl";
@@ -465,8 +423,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + inputName)));
             hoursTemp = (String[]) input.readObject();
-            for(String s : hoursTemp){
-                if(s != null && !s.equals("")){
+            for (String s : hoursTemp) {
+                if (s != null && !s.equals("")) {
                     inputEmpty = false;
                     break;
                 }
@@ -474,9 +432,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
-        final String [] hours = hoursTemp;
+        final String[] hours = hoursTemp;
 
-        if(!inputEmpty) {
+        if (!inputEmpty) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(title).setMessage(null).setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
                 @Override
@@ -508,60 +466,60 @@ public class MainActivity extends AppCompatActivity {
         final AppCompatActivity a = this;
 
         builder.setTitle(res.getString(R.string.D_editEmptyHour_title))
-            .setItems(subject_names, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    try {
-                        String filename = util.getFilenameForDay(a);
-                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                        String[] hours = (String[]) input.readObject();
-                        input.close();
-
-                        selected_subject = subject_names[which];
-                        hours[selected_hour] = selected_subject;
+                .setItems(subject_names, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         try {
-                            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                            out.writeObject(hours);
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    dialog.cancel();
-                    try {
-                        String filename = "SUBJECT-" + selected_subject + ".srl";
-                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                        Subject subject = (Subject) input.readObject();
-                        input.close();
+                            String filename = util.getFilenameForDay(a);
+                            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+                            String[] hours = (String[]) input.readObject();
+                            input.close();
 
-                        if(subject.getTeacher() == null){
-                            subject.setTeacher("");
+                            selected_subject = subject_names[which];
+                            hours[selected_hour] = selected_subject;
                             try {
                                 ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                                out.writeObject(subject);
+                                out.writeObject(hours);
                                 out.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            newSubject = false;
-                            setActivitySubject();
+                        } catch (ClassNotFoundException | IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
+                        dialog.cancel();
+                        try {
+                            String filename = "SUBJECT-" + selected_subject + ".srl";
+                            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+                            Subject subject = (Subject) input.readObject();
+                            input.close();
+
+                            if (subject.isNew()) {
+                                subject.markNotNew();
+                                try {
+                                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
+                                    out.writeObject(subject);
+                                    out.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                newSubject = false;
+                                setActivitySubject();
+                            }
+                        } catch (ClassNotFoundException | IOException e) {
+                            e.printStackTrace();
+                        }
+                        updateActivityMain();
                     }
-                    updateActivityMain();
-                }
-            })
-            .setPositiveButton(res.getString(R.string.D_editEmptyHour_YES), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                    newSubject = true;
-                    setActivitySubject();
-                }
-            });
+                })
+                .setPositiveButton(res.getString(R.string.D_editEmptyHour_YES), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        newSubject = true;
+                        setActivitySubject();
+                    }
+                });
         return builder.create();
     }
 
@@ -571,35 +529,34 @@ public class MainActivity extends AppCompatActivity {
         final AppCompatActivity a = this;
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){
-                            dialog.cancel();
-                            try {
-                                String filename = util.getFilenameForDay(a);
-                                ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                                String[] hours = (String[]) input.readObject();
-                                input.close();
-                                hours[selected_hour] = null;
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    dialog.cancel();
+                    try {
+                        String filename = util.getFilenameForDay(a);
+                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+                        String[] hours = (String[]) input.readObject();
+                        input.close();
+                        hours[selected_hour] = null;
 
-                                try {
-                                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                                    out.writeObject(hours);
-                                    out.close();
-                                    updateActivityMain();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            } catch (ClassNotFoundException | IOException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
+                            out.writeObject(hours);
+                            out.close();
+                            updateActivityMain();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        else if(which == 1){
-                            dialog.cancel();
-                            D_editEmptyHour().show();
-                        }
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
                     }
-                });
+                } else if (which == 1) {
+                    dialog.cancel();
+                    D_editEmptyHour().show();
+                }
+            }
+        });
         return builder.create();
     }
 
@@ -671,40 +628,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String[] getSubjectNames() {
+        String[] subject_names = new String[0];
+
         File[] files = getFilesDir().listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.startsWith("SUBJECT-");
             }
         });
-        Arrays.sort(files);
+        if (files != null) {
+            Arrays.sort(files);
 
-        String[] subject_names = new String[files.length];
-        for (int i = 0; i < files.length; i++) {
-            try {
-                String filename = files[i].getName();
-                ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+            subject_names = new String[files.length];
+            for (int i = 0; i < files.length; i++) {
+                try {
+                    String filename = files[i].getName();
+                    ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
 
-                Subject subject = (Subject) input.readObject();
-                subject_names[i] = subject.getName();
-                input.close();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
+                    Subject subject = (Subject) input.readObject();
+                    subject_names[i] = subject.getName();
+                    input.close();
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return subject_names;
     }
 
-    public static int getSelected_day_of_week(){
+    public static int getSelected_day_of_week() {
         return selected_day_of_week;
     }
 
-    public static int getSelected_hour(){
-        return  selected_hour;
+    public static int getSelected_hour() {
+        return selected_hour;
     }
 
-    public static String getSelected_subject(){
-        return  selected_subject;
+    public static String getSelected_subject() {
+        return selected_subject;
     }
 
     public static boolean isNewSubject() {
@@ -719,13 +680,38 @@ public class MainActivity extends AppCompatActivity {
         return week_isOdd;
     }
 
-    public static boolean isEditingMode() { return editing_mode; }
+    public static boolean isEditingMode() {
+        return editing_mode;
+    }
 
-    private String getButtonName(View v){
+    private String getButtonName(View v) {
         Button btn = (Button) v;
         return btn.getText().toString();
     }
 
+    private TextView[] getHourLabels() {
+        return new TextView[]{null,
+                findViewById(R.id.n1), findViewById(R.id.n2), findViewById(R.id.n3),
+                findViewById(R.id.n4), findViewById(R.id.n5), findViewById(R.id.n6),
+                findViewById(R.id.n7), findViewById(R.id.n8), findViewById(R.id.n9),
+                findViewById(R.id.n10), findViewById(R.id.n11)};
+    }
+
+    private Button[] getHourButtons() {
+        return new Button[]{null,
+                findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
+                findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
+                findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
+                findViewById(R.id.h10), findViewById(R.id.h11)};
+    }
+
+    private TextView[] getHourRooms() {
+        return new TextView[]{null,
+                findViewById(R.id.r1), findViewById(R.id.r2), findViewById(R.id.r3),
+                findViewById(R.id.r4), findViewById(R.id.r5), findViewById(R.id.r6),
+                findViewById(R.id.r7), findViewById(R.id.r8), findViewById(R.id.r9),
+                findViewById(R.id.r10), findViewById(R.id.r11)};
+    }
 }
 
 

@@ -5,12 +5,20 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
+import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -41,32 +49,72 @@ public class SettingsActivity extends AppCompatActivity {
         String[] days = MainActivity.res.getStringArray(R.array.days);
         Button B_startDay = findViewById(R.id.B_settings_startDay);
         Button B_endDay = findViewById(R.id.B_settings_endDay);
-        Switch Switch_evenOddWeekSystem = findViewById(R.id.Switch_evenOddWeekSystem);
-        Switch Switch_weekDisplay = findViewById(R.id.Switch_weekDisplay);
+        SwitchMaterial Switch_evenOddWeekSystem = findViewById(R.id.Switch_evenOddWeekSystem);
+        SwitchMaterial Switch_weekDisplay = findViewById(R.id.Switch_weekDisplay);
+        SwitchMaterial Switch_hourTimes = findViewById(R.id.Switch_hourTimes);
 
         B_startDay.setText(days[settings.getStart_day()]);
         B_endDay.setText(days[settings.getEnd_day()]);
 
-        if (settings.getWeekSystem()) Switch_evenOddWeekSystem.setChecked(true);
-        else Switch_evenOddWeekSystem.setChecked(false);
-        if (settings.getShowWeek()) Switch_weekDisplay.setChecked(true);
-        else Switch_weekDisplay.setChecked(false);
+        Switch_evenOddWeekSystem.setChecked(settings.getWeekSystem());
+        Switch_weekDisplay.setChecked(settings.getShowWeek());
+        Switch_hourTimes.setChecked(settings.getShowHourTimes());
+
+        LinearLayout hourTimeLayout = findViewById(R.id.hourTimes);
+        hourTimeLayout.setVisibility(settings.getShowHourTimes() ? View.VISIBLE : View.INVISIBLE);
+        if(settings.getShowHourTimes()) {
+            final EditText[] hourTimeInputs = getHourTimeInputs();
+            String[] hourTimes = settings.getHourTimes();
+
+            if (hourTimes != null) {
+                for (int i=0; i < hourTimeInputs.length && i < hourTimes.length; i++) {
+                    hourTimeInputs[i].setText(hourTimes[i]);
+                }
+            }
+            for (EditText hourTimeInput : hourTimeInputs) {
+                System.out.println(hourTimeInput);
+                hourTimeInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String[] hourTimes = new String[hourTimeInputs.length];
+                        for (int i = 0; i < hourTimes.length; i++) {
+                            hourTimes[i] = hourTimeInputs[i].getText().toString();
+                        }
+                        settings.setHourTimes(hourTimes);
+                        util.saveSettings(a, settings);
+                    }
+                });
+            }
+
+        }
 
         Switch_evenOddWeekSystem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) settings.setWeekSystem(true);
-                else settings.setWeekSystem(false);
+                settings.setWeekSystem(isChecked);
                 util.saveSettings(a, settings);
             }
         });
         Switch_weekDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) settings.setShowWeek(true);
-                else settings.setShowWeek(false);
+                settings.setShowWeek(isChecked);
                 util.saveSettings(a, settings);
 
+            }
+        });
+        Switch_hourTimes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settings.setShowHourTimes(isChecked);
+                util.saveSettings(a, settings);
+                updateActivitySettings();
             }
         });
     }
@@ -115,4 +163,12 @@ public class SettingsActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    private EditText[] getHourTimeInputs() {
+        return new EditText[]{
+                findViewById(R.id.time1), findViewById(R.id.time2), findViewById(R.id.time3),
+                findViewById(R.id.time4), findViewById(R.id.time5), findViewById(R.id.time6),
+                findViewById(R.id.time7), findViewById(R.id.time8), findViewById(R.id.time9),
+                findViewById(R.id.time10), findViewById(R.id.time11)
+        };
+    }
 }

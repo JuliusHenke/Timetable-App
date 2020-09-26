@@ -9,12 +9,19 @@ class Subject implements Serializable {
     private String name;
     private String room;
     private String teacher;
+    private String notes;
     private int color;
-    
-    Subject(String name, String room, String teacher, int color){
+
+    Subject(String name, int color, String room, String teacher, String notes){
         this.name = name;
+        this.color = color;
         this.room = room;
         this.teacher = teacher;
+        this.notes = notes;
+    }
+
+    Subject(String name, int color){
+        this.name = name;
         this.color = color;
     }
 
@@ -22,12 +29,12 @@ class Subject implements Serializable {
     String getName(){return name;}
     String getRoom(){return room;}
     String getTeacher(){return teacher;}
-    int getColor(){
-        return color;
-    }
+    String getNotes(){return notes;}
+    int getColor(){return color;}
+    boolean isNew(){return teacher == null;}
 
     //Setters
-    void setTeacher(String teacher){
-        this.teacher = teacher;
+    void markNotNew(){
+        this.teacher = "";
     }
 }

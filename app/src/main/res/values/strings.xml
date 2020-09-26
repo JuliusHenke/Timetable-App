@@ -60,13 +60,11 @@
 
     //Text Views ----------------------------------------------------------------------------
     <string name="TV_settings_manageDays">Manage these days:</string>
-    <string name="TV_subject_room">Room:</string>
-    <string name="TV_subject_teacher">Teacher:</string>
+    <string name="TV_subject_room">Room</string>
+    <string name="TV_subject_teacher">Teacher</string>
 
     //Text Field ----------------------------------------------------------------------------
     <string name="TF_subject_name">Subject</string>
-    <string name="TF_subject_room">Room (optional)</string>
-    <string name="TF_subject_teacher">Teacher (optional)</string>
 
     //Switch --------------------------------------------------------------------------------
     <string name="Switch_settings_weekSystem">Even/odd week system</string>
@@ -147,6 +145,8 @@
     <string name="placeholder">" "</string>
     <string name="D_copyEvenDay">Do you want to copy this day of the even week?</string>
     <string name="D_copyOddDay">Do you want to copy this day of the odd week?</string>
+    <string name="notes">Notes</string>
+    <string name="Switch_hour_times">Start times for hours</string>
 
 
 </resources>

@@ -10,12 +10,16 @@ class Settings implements Serializable {
     private int end_day;
     private boolean weekSystem;
     private boolean showWeek;
+    private boolean showHourTimes;
+    private String[] hourTimes;
 
     Settings() {
         this.start_day = 1;
         this.end_day = 5;
         this.weekSystem = false;
         this.showWeek = false;
+        this.showHourTimes = false;
+        this.hourTimes = new String[0];
     }
 
     //Getters
@@ -23,6 +27,8 @@ class Settings implements Serializable {
     int getEnd_day(){return end_day;}
     boolean getWeekSystem(){return weekSystem;}
     boolean getShowWeek(){return showWeek;}
+    boolean getShowHourTimes(){return showHourTimes;}
+    String[] getHourTimes(){return hourTimes;}
 
     //Setters
     void setStart_day(int input_day){
@@ -35,4 +41,6 @@ class Settings implements Serializable {
     }
     void setWeekSystem(boolean weekSystem){this.weekSystem = weekSystem;}
     void setShowWeek(boolean showWeek){this.showWeek = showWeek;}
+    void setShowHourTimes(boolean showHourTimes){this.showHourTimes = showHourTimes;}
+    void setHourTimes(String[] hourTimes){this.hourTimes = hourTimes;}
 }
