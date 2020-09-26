@@ -406,6 +406,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void switchHourDisplay(View view) {
+        Settings settings = util.readSettings(this);
+        if (settings.getShowHourTimes()) {
+            settings.setShowHourTimes(false);
+            util.saveSettings(this, settings);
+            updateActivityMain();
+        }
+        else {
+            String[] hourTimes = settings.getHourTimes();
+            if (hourTimes.length > 0 && hourTimes[0] != null && !hourTimes[0].equals("")) {
+                settings.setShowHourTimes(true);
+                util.saveSettings(this, settings);
+                updateActivityMain();
+            }
+            else {
+                D_showHourTimes().show();
+            }
+        }
+    }
+
     //Dialogs ---------------------------------------------------------------------------------
     private void D_copyDay() {
         final String outputName = util.getFilenameForDay(this);
@@ -608,6 +628,30 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                    }
+                });
+        return builder.create();
+    }
+
+    private Dialog D_showHourTimes() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(null)
+                .setMessage(R.string.D_showHourTimes)
+                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Settings settings = util.readSettings(MainActivity.this);
+                        settings.setShowHourTimes(true);
+                        util.saveSettings(MainActivity.this, settings);
+                        dialog.cancel();
+                        setActivitySettings();
                     }
                 });
         return builder.create();

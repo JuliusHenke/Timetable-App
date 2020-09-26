@@ -23,34 +23,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/TF_subject"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:hint="@string/TF_subject_name"
-                android:inputType="textPersonName"
-                android:textSize="18sp"
-                android:autofillHints="" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_weight="1" />
+                <EditText
+                    android:id="@+id/TF_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autofillHints=""
+                    android:hint="@string/TF_subject_name"
+                    android:inputType="textPersonName"
+                    android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/B_subject_color"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/button_rounded"
-                android:fontFamily="sans-serif"
-                android:onClick="clickB_sub_color"
-                android:padding="10dp"
-                android:text="@string/B_subject_color"
-                android:textAllCaps="false"
-                android:textSize="18sp" />
+                <Button
+                    android:id="@+id/B_subject_color"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="82dp"
+                    android:layout_height="82dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_rounded"
+                    android:fontFamily="sans-serif"
+                    android:onClick="clickB_sub_color"
+                    android:padding="10dp"
+                    android:textAllCaps="false"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
@@ -110,12 +112,12 @@
             <EditText
                 android:id="@+id/TF_notes"
                 android:layout_width="match_parent"
-                android:layout_height="95dp"
+                android:layout_height="134dp"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine"
-                android:autofillHints="" />
+                android:inputType="textMultiLine" />
 
             <Space
                 android:layout_width="match_parent"
