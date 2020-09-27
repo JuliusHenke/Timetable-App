@@ -1,7 +1,6 @@
 package juliushenke.smarttt;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,7 +33,7 @@ import static android.graphics.Color.BLACK;
 
 public class SubjectActivity extends AppCompatActivity {
 
-    private static Util util = new Util();
+    private static final Util util = new Util();
     private int selectedColor = BLACK;
 
     @Override

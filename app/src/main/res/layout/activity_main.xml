@@ -22,7 +22,6 @@
         android:paddingTop="15dp">
 
         <LinearLayout
-            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -38,7 +37,7 @@
                         android:id="@+id/TV_main_day"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"

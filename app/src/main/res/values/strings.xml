@@ -4,17 +4,14 @@
     <string name="app_name">Timetable</string>
 
     //Single words ------------------------------------------------------------------
-    <string name="Saved">Saved</string>
     <string name="Deleted">Deleted</string>
     <string name="to">to</string>
     <string name="No">No</string>
     <string name="OK">OK</string>
     <string name="Yes">Yes</string>
     <string name="week">week</string>
-    <string name="Save">Save</string>
     <string name="Settings">Settings</string>
     <string name="Subject">Subject</string>
-    <string name="Editing">Editing</string>
     <string name="Cancel">Cancel</string>
     <string name="free_period">Free period</string>
     <string name="different_subject">Different subject</string>
@@ -51,10 +48,6 @@
     </string-array>
 
     //Buttons -------------------------------------------------------------------------------
-    <string name="B_subject_color">Color</string>
-    <string name="B_subject_delete">Delete subject</string>
-    <string name="B_subject_save">Save</string>
-
     <string name="B_main_dateRight">→</string>
     <string name="B_main_dateLeft">←</string>
 
@@ -63,16 +56,11 @@
     <string name="TV_subject_room">Room</string>
     <string name="TV_subject_teacher">Teacher</string>
 
-    //Text Field ----------------------------------------------------------------------------
-    <string name="TF_subject_name">Subject</string>
-
     //Switch --------------------------------------------------------------------------------
     <string name="Switch_settings_weekSystem">Even/odd week system</string>
     <string name="Switch_settings_showWeek">Show week of year</string>
-    <string name="Switch_settings_darkDesign">Dark design</string>
 
     //Menu items ----------------------------------------------------------------------------
-    <string name="Menu_aboutApp">About app</string>
     <string name="Menu_evenWeek">even week</string>
     <string name="Menu_oddWeek">odd week</string>
     <string name="Menu_editTable">Edit timetable</string>
@@ -81,12 +69,8 @@
 
     //Toasts --------------------------------------------------------------------------------
     <string name="Toast_nameNeeded">Name missing</string>
-    <string name="Toast_nameAlreadyTaken">Name already taken</string>
 
     //Dialogs --------------------------------------------------------------------------
-    <string name="D_intro_title">Welcome</string>
-    <string name="D_intro_content">Do you want to use the even/odd week system? \n(2 timetables)</string>
-
     <string name="D_editEmptyHour_title">Pick a subject</string>
     <string name="D_editEmptyHour_YES">New subject</string>
 
@@ -96,7 +80,6 @@
 
     <string name="D_deleteSubject_title">Pick a subject to delete</string>
 
-    <string name="D_editColor_preset">Preset</string>
     <string name="D_editColor_custom">Custom</string>
     <string name="D_editColor_preset_title">Pick a color</string>
 

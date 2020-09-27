@@ -18,11 +18,9 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import java.util.Arrays;
-
 public class SettingsActivity extends AppCompatActivity {
 
-    private static Util util = new Util();
+    private static final Util util = new Util();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

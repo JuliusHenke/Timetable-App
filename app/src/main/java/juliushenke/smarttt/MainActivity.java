@@ -39,7 +39,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static Util util = new Util();
+    private static final Util util = new Util();
     public static Resources res;
     private static int selected_day_of_week = 0;
     private static int saved_change = 0;
