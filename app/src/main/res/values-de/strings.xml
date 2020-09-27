@@ -19,9 +19,6 @@
     <string name="to">bis</string>
     <string name="Switch_settings_weekSystem">Gerade/ungerade Wochensystem</string>
     <string name="Yes">Ja</string>
-    <string name="D_aboutApp_content">Programmierung: \n- Julius Henke
-                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers \n- https://material.io/icons/
-                            \n\n© Julius Henke</string>
     <string name="Menu_aboutApp">Über die App</string>
 
     <string name="D_intro_title">Willkommen!</string>
@@ -89,4 +86,5 @@
     <string name="notes">Notizen</string>
     <string name="Switch_hour_times">Startzeiten für Stunden</string>
     <string name="D_showHourTimes">Möchtest du Startzeiten der Stunden festlegen?</string>
+    <string name="dialogSubjectName">Wie heißt das Fach?</string>
 </resources>

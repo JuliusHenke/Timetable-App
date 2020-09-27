@@ -30,15 +30,15 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <EditText
+                <TextView
                     android:id="@+id/TF_subject"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:autofillHints=""
-                    android:hint="@string/TF_subject_name"
-                    android:inputType="textPersonName"
-                    android:textSize="18sp" />
+                    android:text="@string/Biology"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/B_subject_color"
@@ -112,7 +112,7 @@
             <EditText
                 android:id="@+id/TF_notes"
                 android:layout_width="match_parent"
-                android:layout_height="134dp"
+                android:layout_height="272dp"
                 android:layout_weight="1"
                 android:autofillHints=""
                 android:ems="10"
@@ -121,21 +121,8 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="30dp" />
-
-            <Button
-                android:id="@+id/B_subject_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|top"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif"
-                android:onClick="clickB_sub_save"
-                android:text="@string/B_subject_save"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="normal" />
+                android:layout_height="58dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
     </ScrollView>

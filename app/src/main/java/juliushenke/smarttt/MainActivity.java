@@ -7,16 +7,19 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,10 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_settings:
                 setActivitySettings();
-                return true;
-
-            case R.id.menu_aboutApp:
-                D_aboutApp().show();
                 return true;
 
             default:
@@ -240,7 +239,9 @@ public class MainActivity extends AppCompatActivity {
                 Bts[i].setVisibility(View.INVISIBLE);
                 TVs_hour[i].setVisibility(View.INVISIBLE);
             }
-            TVs_hour[i].setText(settings.getShowHourTimes() ? hourTimes[i-1] : String.valueOf(i));
+            TVs_hour[i].setText(
+                    settings.getShowHourTimes() && hourTimes != null && i <= hourTimes.length ? hourTimes[i-1] : String.valueOf(i)
+            );
         }
         try {
             String filename = util.getFilenameForDay(this);
@@ -319,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         //Setup preset subjects
         try {
             String[] subject_names = res.getStringArray(R.array.subject_names);
-            int[] colors = res.getIntArray(R.array.subject_colors);
+            int[] colors = res.getIntArray(R.array.preset_colors);
             for (int i = 0; i < subject_names.length && subject_names.length <= colors.length; i++) {
                 Subject subject = new Subject(subject_names[i], colors[i]);
                 try {
@@ -397,8 +398,7 @@ public class MainActivity extends AppCompatActivity {
                 if (getSubjectNames().length > 0) {
                     D_editEmptyHour().show();
                 } else {
-                    newSubject = true;
-                    setActivitySubject();
+                    dialogNewSubject().show();
                 }
             } else { //hour with subject
                 D_editTakenHour().show();
@@ -536,8 +536,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        newSubject = true;
-                        setActivitySubject();
+                        dialogNewSubject().show();
                     }
                 });
         return builder.create();
@@ -545,7 +544,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Dialog D_editTakenHour() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] options = {res.getString(R.string.free_period), res.getString(R.string.different_subject)};
+        final String[] options = {res.getString(R.string.free_period), res.getString(R.string.different_subject),  res.getString(R.string.Menu_editSubject)};
         final AppCompatActivity a = this;
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -574,6 +573,11 @@ public class MainActivity extends AppCompatActivity {
                 } else if (which == 1) {
                     dialog.cancel();
                     D_editEmptyHour().show();
+                }
+                else if (which == 2) {
+                    dialog.cancel();
+                    newSubject = false;
+                    setActivitySubject();
                 }
             }
         });
@@ -657,9 +661,43 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private Dialog D_aboutApp() {
+    private Dialog dialogNewSubject() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(null).setMessage(res.getString(R.string.D_aboutApp_content));
+        builder.setTitle(R.string.dialogSubjectName);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }
+        builder.setView(input);
+
+        builder.setNegativeButton(R.string.colorpicker_dialog_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton(R.string.colorpicker_dialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String subjectName = input.getText().toString();
+                if (!subjectName.equals("") && !subjectName.equals("+")) {
+                    selected_subject = subjectName;
+                    newSubject = true;
+                    setActivitySubject();
+                    dialog.cancel();
+                } else {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            MainActivity.res.getString(R.string.Toast_nameNeeded),
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+
+        }
+        });
+
         return builder.create();
     }
 
@@ -708,7 +746,7 @@ public class MainActivity extends AppCompatActivity {
         return selected_hour;
     }
 
-    public static String getSelected_subject() {
+    public static String getSelectedSubject() {
         return selected_subject;
     }
 

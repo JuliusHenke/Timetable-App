@@ -90,10 +90,6 @@
     <string name="D_editEmptyHour_title">Pick a subject</string>
     <string name="D_editEmptyHour_YES">New subject</string>
 
-    <string name="D_aboutApp_content">Programming: \n- Julius Henke
-                            \n\nDesign: \n- Julius Henke \n- Nicklas Ahlers \n- https://material.io/icons/
-                            \n\n© Julius Henke</string>
-
     <string name="D_warnManageDays_content">Now your week only consists of 1 day!</string>
 
     <string name="D_editSubject_title">Pick a subject to edit</string>
@@ -148,6 +144,7 @@
     <string name="notes">Notes</string>
     <string name="Switch_hour_times">Start times for hours</string>
     <string name="D_showHourTimes">Do you want to set start times for the hours?</string>
+    <string name="dialogSubjectName">What is the subject called?</string>
 
 
 </resources>

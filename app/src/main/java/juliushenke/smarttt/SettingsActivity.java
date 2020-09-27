@@ -30,6 +30,28 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         updateActivitySettings();
         util.updateDesign(this, true);
+
+        final EditText[] hourTimeInputs = getHourTimeInputs();
+        for (EditText hourTimeInput : hourTimeInputs) {
+            hourTimeInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    String[] hourTimes = new String[hourTimeInputs.length];
+                    for (int i = 0; i < hourTimes.length; i++) {
+                        hourTimes[i] = hourTimeInputs[i].getText().toString();
+                    }
+                    final Settings settings = util.readSettings(SettingsActivity.this);
+                    settings.setHourTimes(hourTimes);
+                    util.saveSettings(SettingsActivity.this, settings);
+                }
+            });
+        }
     }
 
     @Override
@@ -71,27 +93,6 @@ public class SettingsActivity extends AppCompatActivity {
                     hourTimeInputs[i].setText(hourTimes[i]);
                 }
             }
-            for (EditText hourTimeInput : hourTimeInputs) {
-                System.out.println(hourTimeInput);
-                hourTimeInput.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        String[] hourTimes = new String[hourTimeInputs.length];
-                        for (int i = 0; i < hourTimes.length; i++) {
-                            hourTimes[i] = hourTimeInputs[i].getText().toString();
-                        }
-                        settings.setHourTimes(hourTimes);
-                        util.saveSettings(a, settings);
-                    }
-                });
-            }
-
         }
 
         Switch_evenOddWeekSystem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

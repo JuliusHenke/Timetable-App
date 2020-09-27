@@ -1,20 +1,17 @@
 package juliushenke.smarttt;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,42 +36,29 @@ public class SubjectActivity extends AppCompatActivity {
 
     private static Util util = new Util();
     private int selectedColor = BLACK;
-    private boolean finishActivity = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        updateActivitySubject();
+        initializeActivitySubject();
         util.updateDesign(this, true);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_subject, menu);
-        return true;
-    }
+        EditText[] inputs = {findViewById(R.id.TF_room), findViewById(R.id.TF_teacher), findViewById(R.id.TF_notes)};
+        for (EditText input: inputs) {
+            input.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
-        MenuItem item = menu.findItem(R.id.menu_saveSubject);
-        item.setIcon(R.drawable.ic_done_white_24dp);
-        return true;
-    }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_saveSubject:
-                clickB_sub_save(findViewById(R.id.B_subject_save));
-                return true;
-            // TODO add delete option
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    saveSubject();
+                }
+            });
         }
     }
 
@@ -88,28 +72,24 @@ public class SubjectActivity extends AppCompatActivity {
     }
 
     //Voids --------------------------------------------------------------------------------
-    public void updateActivitySubject() {
-        EditText TF_subject = findViewById(R.id.TF_subject);
+    public void initializeActivitySubject() {
+        TextView TF_subject = findViewById(R.id.TF_subject);
         EditText TF_room = findViewById(R.id.TF_room);
         EditText TF_teacher = findViewById(R.id.TF_teacher);
         EditText TF_notes = findViewById(R.id.TF_notes);
 
+        String selectedSubject = MainActivity.getSelectedSubject();
         if (MainActivity.isNewSubject()) {
-            TF_subject.setEnabled(true);
-            TF_subject.setFocusable(true);
-            TF_subject.setTypeface(Typeface.DEFAULT);
-            TF_subject.setText("");
+            TF_subject.setText(selectedSubject);
             TF_room.setText("");
             TF_teacher.setText("");
             TF_notes.setText("");
+            saveSubject();
+            clickB_sub_color(findViewById(R.id.B_subject_color));
         }
         else {
-            TF_subject.setEnabled(false);
-            TF_subject.setFocusable(false);
-            TF_subject.setTextColor(Color.BLACK);
-            TF_subject.setTypeface(Typeface.DEFAULT_BOLD);
             try {
-                String filename = "SUBJECT-" + MainActivity.getSelected_subject() + ".srl";
+                String filename = "SUBJECT-" + selectedSubject + ".srl";
                 ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
                 Subject subject = (Subject) input.readObject();
 
@@ -128,7 +108,7 @@ public class SubjectActivity extends AppCompatActivity {
 
     //Clickers ---------------------------------------------------------------------------------
     public void clickB_sub_color(View view) {
-        int[] colors = MainActivity.res.getIntArray(R.array.subject_colors);
+        int[] colors = MainActivity.res.getIntArray(R.array.preset_colors);
 
         final ColorPicker presetColorPicker = new ColorPicker(SubjectActivity.this);
         presetColorPicker.setTitle(getString(R.string.D_editColor_preset_title))
@@ -141,8 +121,7 @@ public class SubjectActivity extends AppCompatActivity {
                     public void setOnFastChooseColorListener(int position, int color) {
                         selectedColor = color;
                         changeColorButton();
-                        finishActivity = false;
-                        clickB_sub_save(findViewById(R.id.B_subject_save));
+                        saveSubject();
                         presetColorPicker.dismissDialog();
                     }
 
@@ -167,8 +146,7 @@ public class SubjectActivity extends AppCompatActivity {
                                         selectedColor = envelope.getColor();
                                         System.out.println(selectedColor);
                                         changeColorButton();
-                                        finishActivity = false;
-                                        clickB_sub_save(findViewById(R.id.B_subject_save));
+                                        saveSubject();
                                     }
                                 })
                         .setNegativeButton(getString(R.string.colorpicker_dialog_cancel),
@@ -191,8 +169,8 @@ public class SubjectActivity extends AppCompatActivity {
         presetColorPicker.show();
     }
 
-    public void clickB_sub_save(View view) {
-        EditText TF_subject = findViewById(R.id.TF_subject);
+    public void saveSubject() {
+        TextView TF_subject = findViewById(R.id.TF_subject);
         EditText TF_room = findViewById(R.id.TF_room);
         EditText TF_teacher = findViewById(R.id.TF_teacher);
         EditText TF_notes = findViewById(R.id.TF_notes);
@@ -225,12 +203,10 @@ public class SubjectActivity extends AppCompatActivity {
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
-
-                    if (finishActivity) finish();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else Toast.makeText(getApplicationContext(), MainActivity.res.getString(R.string.Toast_nameNeeded), Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             try {
@@ -238,86 +214,15 @@ public class SubjectActivity extends AppCompatActivity {
                 ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
                 out.writeObject(subject);
                 out.close();
-
-                if (finishActivity) finish();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        //Hide keyboard
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        finishActivity = true;
     }
 
     private void changeColorButton(){
         Button B_subject_color = findViewById(R.id.B_subject_color);
         GradientDrawable bgShape = (GradientDrawable) B_subject_color.getBackground().getCurrent();
         bgShape.setColor(selectedColor);
-
-        if (util.isColorDark(selectedColor)) B_subject_color.setTextColor(Color.WHITE);
-        else B_subject_color.setTextColor(BLACK);
     }
-
-    //Dialogs
-//    private Dialog D_editColor() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        final String[] options = {getString(R.string.D_editColor_preset), getString(R.string.D_editColor_custom)};
-//
-//        builder.setItems(options, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if(which == 0){
-//
-//                            ColorPickerDialog colorDialog = ColorPickerDialog.newInstance(R.string.D_editColor_preset_title,
-//                                    colors,
-//                                    selectedColor,
-//                                    5, // Number of columns
-//                                    ColorPickerDialog.SIZE_SMALL,
-//                                    true, // True or False to enable or disable the serpentine effect
-//                                    2, // stroke width
-//                                    BLACK // stroke color
-//                            );
-//
-//                            colorDialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-//
-//                                @Override
-//                                public void onColorSelected(int color) {
-//                                    selectedColor = color;
-//                                    changeColorButton();
-//                                    finishActivity = false;
-//                                    clickB_sub_save(findViewById(R.id.B_subject_save));
-//                                }
-//
-//                            });
-//                            colorDialog.show(getFragmentManager(), "color_dialog_test");
-//                        }
-//                        else if(which == 1){
-//                            final ColorPicker cp = new ColorPicker(SubjectActivity.this, Color.red(selectedColor), Color.green(selectedColor), Color.blue(selectedColor));
-//                            cp.show();
-//                            Button okColor = cp.findViewById(R.id.okColorButton);
-//                            okColor.setText(R.string.OK);
-//                            okColor.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    selectedColor = cp.getColor();
-//                                    changeColorButton();
-//                                    finishActivity = false;
-//                                    clickB_sub_save(findViewById(R.id.B_subject_save));
-//                                    cp.dismiss();
-//                                }
-//                            });
-//                        }
-//                        dialog.cancel();
-//                    }
-//                })
-//                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//        return builder.create();
-//    }
-
 }

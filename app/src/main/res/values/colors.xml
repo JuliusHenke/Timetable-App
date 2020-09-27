@@ -19,26 +19,25 @@
     <color name="graphite">#616161</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="wood">#2e0000</color>
-    <color name="ocean">#001a4d</color>
-    <color name="leave">#002e00</color>
+    <color name="wood">#571B1B</color>
+    <color name="ocean">#0B2E71</color>
+    <color name="leave">#064706</color>
 
-    <array name="subject_colors">
+    <array name="preset_colors">
         <item>@color/tomato</item>
         <item>@color/tangerine</item>
         <item>@color/banana</item>
+        <item>@color/flamingo</item>
+        <item>@color/grape</item>
+        <item>@color/leave</item>
         <item>@color/basil</item>
         <item>@color/sage</item>
         <item>@color/peacock</item>
-        <item>@color/blueberry</item>
         <item>@color/lavender</item>
-        <item>@color/grape</item>
-        <item>@color/flamingo</item>
-        <item>@color/graphite</item>
-        <item>@color/black</item>
-        <item>@color/white</item>
-        <item>@color/wood</item>
+        <item>@color/blueberry</item>
         <item>@color/ocean</item>
-        <item>@color/leave</item>
+        <item>@color/graphite</item>
+        <item>@color/wood</item>
+        <item>@color/black</item>
     </array>
 </resources>
