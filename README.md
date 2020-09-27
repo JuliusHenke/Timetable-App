@@ -1,5 +1,5 @@
 # Timetable-App
-This is a timetable App for android phones. 
+This is a timetable App for android phones. It is simple and quick to setup.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
@@ -9,7 +9,6 @@ This is a timetable App for android phones.
      height="80">](https://play.google.com/store/apps/details?id=juliushenke.smarttt)
 
 Features:
-- saveable timetables
-- even/odd week detection
-- saveable subjects
-- a clean design
+- even/odd week detection (2 timetables)
+- savable subjects with more info
+- clean design

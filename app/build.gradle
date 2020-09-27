@@ -6,8 +6,8 @@ android {
         applicationId 'juliushenke.smarttt'
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 17
-        versionName '2.3'
+        versionCode 18
+        versionName '2.4'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
