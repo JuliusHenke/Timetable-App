@@ -128,6 +128,7 @@
     <string name="Switch_hour_times">Start times for hours</string>
     <string name="D_showHourTimes">Do you want to set start times for the hours?</string>
     <string name="dialogSubjectName">What is the subject called?</string>
+    <string name="time">Time</string>
 
 
 </resources>

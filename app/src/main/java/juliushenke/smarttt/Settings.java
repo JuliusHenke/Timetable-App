@@ -28,7 +28,9 @@ class Settings implements Serializable {
     boolean getWeekSystem(){return weekSystem;}
     boolean getShowWeek(){return showWeek;}
     boolean getShowHourTimes(){return showHourTimes;}
-    String[] getHourTimes(){return hourTimes;}
+    String[] getHourTimes(){
+        return hourTimes != null ? hourTimes : new String[0];
+    }
 
     //Setters
     void setStart_day(int input_day){

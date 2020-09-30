@@ -414,8 +414,8 @@ public class MainActivity extends AppCompatActivity {
             updateActivityMain();
         }
         else {
-            String[] hourTimes = settings.getHourTimes();
-            if (hourTimes.length > 0 && hourTimes[0] != null && !hourTimes[0].equals("")) {
+            final String[] hourTimes = settings.getHourTimes();
+            if (hourTimes != null && hourTimes.length > 0 && hourTimes[0] != null && !hourTimes[0].equals("")) {
                 settings.setShowHourTimes(true);
                 util.saveSettings(this, settings);
                 updateActivityMain();

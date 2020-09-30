@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
         hourTimeLayout.setVisibility(settings.getShowHourTimes() ? View.VISIBLE : View.INVISIBLE);
         if(settings.getShowHourTimes()) {
             final EditText[] hourTimeInputs = getHourTimeInputs();
-            String[] hourTimes = settings.getHourTimes();
+            final String[] hourTimes = settings.getHourTimes();
 
             if (hourTimes != null) {
                 for (int i=0; i < hourTimeInputs.length && i < hourTimes.length; i++) {
