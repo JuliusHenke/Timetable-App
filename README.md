@@ -1,5 +1,5 @@
-# Timetable-App
-This is a timetable App for android phones. It is simple and quick to setup.
+# Smart Timetable
+This is a timetable app for android phones. It is simple and quick to setup.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
