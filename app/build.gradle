@@ -6,8 +6,8 @@ android {
         applicationId 'juliushenke.smarttt'
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 19
-        versionName '2.4.1'
+        versionCode 20
+        versionName '2.4.2'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -24,7 +24,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.google.android.material:material:1.2.1'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 
     // Color picking
     implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
@@ -33,6 +33,5 @@ dependencies {
     // Support libraries for older android versions
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'com.android.support:appcompat-v7'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
 }
