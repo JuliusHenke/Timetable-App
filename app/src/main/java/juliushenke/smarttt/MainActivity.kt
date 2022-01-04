@@ -113,13 +113,15 @@ class MainActivity : AppCompatActivity() {
         var extraDayChange = 0
         //positive change - into the future
         if (0 <= shift) {
-            if (selectedDayOfWeek < settings.start_day) extraDayChange =
-                settings.start_day - selectedDayOfWeek else if (selectedDayOfWeek > settings.end_day) extraDayChange =
-                7 - selectedDayOfWeek + settings.start_day
+            if (selectedDayOfWeek < settings.start_day)
+                extraDayChange = settings.start_day - selectedDayOfWeek
+            else if (selectedDayOfWeek > settings.end_day)
+                extraDayChange = 7 - selectedDayOfWeek + settings.start_day
         } else {
-            if (selectedDayOfWeek < settings.start_day) extraDayChange =
-                -selectedDayOfWeek - (7 - settings.end_day) else if (selectedDayOfWeek > settings.end_day) extraDayChange =
-                settings.end_day - selectedDayOfWeek
+            if (selectedDayOfWeek < settings.start_day)
+                extraDayChange = -selectedDayOfWeek - (7 - settings.end_day)
+            else if (selectedDayOfWeek > settings.end_day)
+                extraDayChange = settings.end_day - selectedDayOfWeek
         }
         //update the Calendar
         c.add(Calendar.DAY_OF_YEAR, extraDayChange)
@@ -137,7 +139,7 @@ class MainActivity : AppCompatActivity() {
         val dateWeek = c[Calendar.WEEK_OF_YEAR]
         weekIsOdd = util.isIntOdd(dateWeek)
 
-        //updating views of activity_main -------------------------------------------------------------------------------
+        // updating views of activity_main
         btnDateLeft.visibility = View.VISIBLE
         btnDateRight.visibility = View.VISIBLE
         if (isEditingMode) {
@@ -216,7 +218,10 @@ class MainActivity : AppCompatActivity() {
                         // Buttons (subject name)
                         hourButtons[i]!!.visibility = View.VISIBLE
                         hourButtons[i]!!.text = s.name
-                        hourButtons[i]!!.background.setColorFilter(s.color, PorterDuff.Mode.MULTIPLY)
+                        hourButtons[i]!!.background.setColorFilter(
+                            s.color,
+                            PorterDuff.Mode.MULTIPLY
+                        )
                         if (util.isColorDark(s.color)) hourButtons[i]!!
                             .setTextColor(Color.WHITE) else hourButtons[i]!!.setTextColor(Color.BLACK)
 
@@ -276,8 +281,7 @@ class MainActivity : AppCompatActivity() {
             isEditingMode = true
         } else {
             isEditingMode = false
-            val act_day_of_week = getDayOfWeek(Calendar.getInstance())
-            savedDayChange = selectedDayOfWeek - act_day_of_week
+            savedDayChange = selectedDayOfWeek - getDayOfWeek(Calendar.getInstance())
         }
         updateActivityMain()
         invalidateOptionsMenu()
@@ -286,14 +290,16 @@ class MainActivity : AppCompatActivity() {
     private fun initialSetup() {
         changeMode()
         setDay(8 - selectedDayOfWeek)
+        savePresetSubjects()
+    }
 
-        //Setup preset subjects
+    private fun savePresetSubjects() {
         try {
-            val subject_names = resources!!.getStringArray(R.array.subject_names)
+            val subjectNames = resources!!.getStringArray(R.array.subject_names)
             val colors = resources!!.getIntArray(R.array.preset_colors)
             var i = 0
-            while (i < subject_names.size && subject_names.size <= colors.size) {
-                val subject = Subject(subject_names[i], colors[i])
+            while (i < subjectNames.size && subjectNames.size <= colors.size) {
+                val subject = Subject(subjectNames[i], colors[i])
                 try {
                     val filename = "SUBJECT-" + subject.name + ".srl"
                     val out: ObjectOutput = ObjectOutputStream(
@@ -351,26 +357,16 @@ class MainActivity : AppCompatActivity() {
     fun clickBtnEditHour(view: View) {
         selectedSubject = getButtonName(view)
         when {
-            view === findViewById<View>(R.id.h1) -> selectedHour =
-                1
-            view === findViewById<View>(R.id.h2) -> selectedHour =
-                2
-            view === findViewById<View>(R.id.h3) -> selectedHour =
-                3
-            view === findViewById<View>(R.id.h4) -> selectedHour =
-                4
-            view === findViewById<View>(R.id.h5) -> selectedHour =
-                5
-            view === findViewById<View>(R.id.h6) -> selectedHour =
-                6
-            view === findViewById<View>(R.id.h7) -> selectedHour =
-                7
-            view === findViewById<View>(R.id.h8) -> selectedHour =
-                8
-            view === findViewById<View>(R.id.h9) -> selectedHour =
-                9
-            view === findViewById<View>(R.id.h10) -> selectedHour =
-                10
+            view === findViewById<View>(R.id.h1) -> selectedHour = 1
+            view === findViewById<View>(R.id.h2) -> selectedHour = 2
+            view === findViewById<View>(R.id.h3) -> selectedHour = 3
+            view === findViewById<View>(R.id.h4) -> selectedHour = 4
+            view === findViewById<View>(R.id.h5) -> selectedHour = 5
+            view === findViewById<View>(R.id.h6) -> selectedHour = 6
+            view === findViewById<View>(R.id.h7) -> selectedHour = 7
+            view === findViewById<View>(R.id.h8) -> selectedHour = 8
+            view === findViewById<View>(R.id.h9) -> selectedHour = 9
+            view === findViewById<View>(R.id.h10) -> selectedHour = 10
             view === findViewById<View>(R.id.h11) -> selectedHour = 11
         }
         if (!isEditingMode) {
@@ -699,35 +695,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun readSubjectNames(): Array<String?> {
-            var subjectNames = arrayOfNulls<String>(0)
-            val files = filesDir.listFiles { _, name -> name.startsWith("SUBJECT-") }
-            if (files != null) {
-                Arrays.sort(files)
-                subjectNames = arrayOfNulls(files.size)
-                for (i in files.indices) {
-                    try {
-                        val filename = files[i].name
-                        val input = ObjectInputStream(
-                            FileInputStream(
+        var subjectNames = arrayOfNulls<String>(0)
+        val files = filesDir.listFiles { _, name -> name.startsWith("SUBJECT-") }
+        if (files != null) {
+            Arrays.sort(files)
+            subjectNames = arrayOfNulls(files.size)
+            for (i in files.indices) {
+                try {
+                    val filename = files[i].name
+                    val input = ObjectInputStream(
+                        FileInputStream(
+                            File(
                                 File(
-                                    File(
-                                        filesDir, ""
-                                    ).toString() + File.separator + filename
-                                )
+                                    filesDir, ""
+                                ).toString() + File.separator + filename
                             )
                         )
-                        val subject = input.readObject() as Subject
-                        subjectNames[i] = subject.name
-                        input.close()
-                    } catch (e: ClassNotFoundException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
+                    )
+                    val subject = input.readObject() as Subject
+                    subjectNames[i] = subject.name
+                    input.close()
+                } catch (e: ClassNotFoundException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
             }
-            return subjectNames
         }
+        return subjectNames
+    }
 
     private fun getButtonName(v: View): String {
         val btn = v as Button
@@ -743,7 +739,7 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.n10), findViewById(R.id.n11)
         )
     private val hourButtons: Array<Button?>
-        get() =  arrayOf(
+        get() = arrayOf(
             null,
             findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
             findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
@@ -751,7 +747,7 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.h10), findViewById(R.id.h11)
         )
     private val hourRooms: Array<TextView?>
-        get() =  arrayOf(
+        get() = arrayOf(
             null,
             findViewById(R.id.r1), findViewById(R.id.r2), findViewById(R.id.r3),
             findViewById(R.id.r4), findViewById(R.id.r5), findViewById(R.id.r6),
