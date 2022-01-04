@@ -1,173 +1,136 @@
-package juliushenke.smarttt;
+package juliushenke.smarttt
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog
+import android.app.Dialog
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.switchmaterial.SwitchMaterial
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+class SettingsActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_settings)
+        updateActivitySettings()
+        util.updateDesign(this, true)
+        for (hourTimeInput in hourTimeInputs) {
+            hourTimeInput.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
-import com.google.android.material.switchmaterial.SwitchMaterial;
-
-public class SettingsActivity extends AppCompatActivity {
-
-    private static final Util util = new Util();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        updateActivitySettings();
-        util.updateDesign(this, true);
-
-        final EditText[] hourTimeInputs = getHourTimeInputs();
-        for (EditText hourTimeInput : hourTimeInputs) {
-            hourTimeInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    String[] hourTimes = new String[hourTimeInputs.length];
-                    for (int i = 0; i < hourTimes.length; i++) {
-                        hourTimes[i] = hourTimeInputs[i].getText().toString();
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(editable: Editable) {
+                    val hourTimes = arrayOfNulls<String>(hourTimeInputs.size)
+                    for (i in hourTimes.indices) {
+                        hourTimes[i] = hourTimeInputs[i].text.toString()
                     }
-                    final Settings settings = util.readSettings(SettingsActivity.this);
-                    settings.setHourTimes(hourTimes);
-                    util.saveSettings(SettingsActivity.this, settings);
+                    val settings = util.readSettings(this@SettingsActivity)
+                    settings.hourTimes = hourTimes
+                    util.saveSettings(this@SettingsActivity, settings)
                 }
-            });
+            })
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            return true;
+            finish()
+            return true
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event)
     }
 
-    //Voids --------------------------------------------------------------------------------
-    private void updateActivitySettings() {
-        final Settings settings = util.readSettings(this);
-        final AppCompatActivity a = this;
+    private fun updateActivitySettings() {
+        val settings = util.readSettings(this)
+        val a: AppCompatActivity = this
+        val days = resources.getStringArray(R.array.days)
+        val switchEvenOddWeekSystem = findViewById<SwitchMaterial>(R.id.switchEvenOddWeekSystem)
+        val switchWeekDisplay = findViewById<SwitchMaterial>(R.id.switchWeekDisplay)
+        val switchHourTimes = findViewById<SwitchMaterial>(R.id.switchHourTimes)
 
-        String[] days = MainActivity.res.getStringArray(R.array.days);
-        Button B_startDay = findViewById(R.id.B_settings_startDay);
-        Button B_endDay = findViewById(R.id.B_settings_endDay);
-        SwitchMaterial Switch_evenOddWeekSystem = findViewById(R.id.Switch_evenOddWeekSystem);
-        SwitchMaterial Switch_weekDisplay = findViewById(R.id.Switch_weekDisplay);
-        SwitchMaterial Switch_hourTimes = findViewById(R.id.Switch_hourTimes);
+        findViewById<Button>(R.id.btnStartDay).text = days[settings.start_day]
+        findViewById<Button>(R.id.btnEndDay).text = days[settings.end_day]
+        switchEvenOddWeekSystem.isChecked = settings.weekSystem
+        switchWeekDisplay.isChecked = settings.showWeek
+        switchHourTimes.isChecked = settings.showHourTimes
 
-        B_startDay.setText(days[settings.getStart_day()]);
-        B_endDay.setText(days[settings.getEnd_day()]);
+        findViewById<LinearLayout>(R.id.hourTimes).visibility =
+            if (settings.showHourTimes) View.VISIBLE
+            else View.INVISIBLE
 
-        Switch_evenOddWeekSystem.setChecked(settings.getWeekSystem());
-        Switch_weekDisplay.setChecked(settings.getShowWeek());
-        Switch_hourTimes.setChecked(settings.getShowHourTimes());
-
-        LinearLayout hourTimeLayout = findViewById(R.id.hourTimes);
-        hourTimeLayout.setVisibility(settings.getShowHourTimes() ? View.VISIBLE : View.INVISIBLE);
-        if(settings.getShowHourTimes()) {
-            final EditText[] hourTimeInputs = getHourTimeInputs();
-            final String[] hourTimes = settings.getHourTimes();
-
-            if (hourTimes != null) {
-                for (int i=0; i < hourTimeInputs.length && i < hourTimes.length; i++) {
-                    hourTimeInputs[i].setText(hourTimes[i]);
-                }
+        if (settings.showHourTimes) {
+            val hourTimeInputs = hourTimeInputs
+            val hourTimes = settings.hourTimes
+            var i = 0
+            while (i < hourTimeInputs.size && i < hourTimes.size) {
+                hourTimeInputs[i].setText(hourTimes[i])
+                i++
             }
         }
-
-        Switch_evenOddWeekSystem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setWeekSystem(isChecked);
-                util.saveSettings(a, settings);
-            }
-        });
-        Switch_weekDisplay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setShowWeek(isChecked);
-                util.saveSettings(a, settings);
-
-            }
-        });
-        Switch_hourTimes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setShowHourTimes(isChecked);
-                util.saveSettings(a, settings);
-                updateActivitySettings();
-            }
-        });
+        switchEvenOddWeekSystem.setOnCheckedChangeListener { _, isChecked ->
+            settings.weekSystem = isChecked
+            util.saveSettings(a, settings)
+        }
+        switchWeekDisplay.setOnCheckedChangeListener { _, isChecked ->
+            settings.showWeek = isChecked
+            util.saveSettings(a, settings)
+        }
+        switchHourTimes.setOnCheckedChangeListener { _, isChecked ->
+            settings.showHourTimes = isChecked
+            util.saveSettings(a, settings)
+            updateActivitySettings()
+        }
     }
 
-    //Clickers ---------------------------------------------------------------------------------
-    public void clickB_opt_startDay(View view) {
-        D_startDay(true).show();
+    fun clickBtnStartDay(view: View) {
+        dialogStartDay(true).show()
     }
 
-    public void clickB_opt_endDay(View view) {
-        D_startDay(false).show();
+    fun clickBtnEndDay(view: View) {
+        dialogStartDay(false).show()
     }
 
-    //Dialogs ---------------------------------------------------------------------------------
-    private Dialog D_startDay(final boolean startDay) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String[] days = MainActivity.res.getStringArray(R.array.days);
-        String[] options = {days[1], days[2], days[3], days[4], days[5], days[6], days[7]};
-        final Settings settings = util.readSettings(this);
-        final AppCompatActivity a = this;
-
-        builder.setTitle(null).setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (startDay) settings.setStart_day(which + 1);
-                else settings.setEnd_day(which + 1);
-                util.saveSettings(a, settings);
-                dialog.cancel();
-
-                if(settings.getStart_day() == settings.getEnd_day()) D_warn_manageDays().show();
-                updateActivitySettings();
-            }
-        });
-        return builder.create();
+    private fun dialogStartDay(startDay: Boolean): Dialog {
+        val builder = AlertDialog.Builder(this)
+        val days = resources.getStringArray(R.array.days)
+        val options = arrayOf(days[1], days[2], days[3], days[4], days[5], days[6], days[7])
+        val settings = util.readSettings(this)
+        val a: AppCompatActivity = this
+        builder.setTitle(null).setItems(options) { dialog, which ->
+            if (startDay) settings.start_day = which + 1 else settings.end_day = which + 1
+            util.saveSettings(a, settings)
+            dialog.cancel()
+            if (settings.start_day == settings.end_day) dialogWarnManageDays().show()
+            updateActivitySettings()
+        }
+        return builder.create()
     }
 
-    private Dialog D_warn_manageDays() {
-        Resources r = MainActivity.res;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(r.getString(R.string.D_warnManageDays_content)).setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        return builder.create();
+    private fun dialogWarnManageDays(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(resources.getString(R.string.D_warnManageDays_content))
+            .setPositiveButton(R.string.OK) { dialog, _ -> dialog.cancel() }
+        return builder.create()
     }
 
-    private EditText[] getHourTimeInputs() {
-        return new EditText[]{
-                findViewById(R.id.time1), findViewById(R.id.time2), findViewById(R.id.time3),
-                findViewById(R.id.time4), findViewById(R.id.time5), findViewById(R.id.time6),
-                findViewById(R.id.time7), findViewById(R.id.time8), findViewById(R.id.time9),
-                findViewById(R.id.time10), findViewById(R.id.time11)
-        };
+    private val hourTimeInputs: Array<EditText>
+        get() = arrayOf(
+            findViewById(R.id.time1), findViewById(R.id.time2), findViewById(R.id.time3),
+            findViewById(R.id.time4), findViewById(R.id.time5), findViewById(R.id.time6),
+            findViewById(R.id.time7), findViewById(R.id.time8), findViewById(R.id.time9),
+            findViewById(R.id.time10), findViewById(R.id.time11)
+        )
+
+    companion object {
+        private val util = Util()
     }
 }

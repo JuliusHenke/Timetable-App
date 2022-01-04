@@ -42,13 +42,13 @@
 
 
                 <Button
-                    android:id="@+id/B_settings_startDay"
+                    android:id="@+id/btnStartDay"
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif"
-                    android:onClick="clickB_opt_startDay"
+                    android:onClick="clickBtnStartDay"
                     android:text="@string/monday"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -65,13 +65,13 @@
                     android:textSize="18sp" />
 
                 <Button
-                    android:id="@+id/B_settings_endDay"
+                    android:id="@+id/btnEndDay"
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif"
-                    android:onClick="clickB_opt_endDay"
+                    android:onClick="clickBtnEndDay"
                     android:text="@string/friday"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -84,7 +84,7 @@
                 android:layout_weight="1" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/Switch_evenOddWeekSystem"
+                android:id="@+id/switchEvenOddWeekSystem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -98,7 +98,7 @@
                 android:layout_weight="1" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/Switch_weekDisplay"
+                android:id="@+id/switchWeekDisplay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -112,7 +112,7 @@
                 android:layout_weight="1" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/Switch_hourTimes"
+                android:id="@+id/switchHourTimes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

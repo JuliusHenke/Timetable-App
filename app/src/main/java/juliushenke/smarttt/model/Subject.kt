@@ -1,40 +1,40 @@
-package juliushenke.smarttt;
+package juliushenke.smarttt.model
 
-import java.io.Serializable;
+import java.io.Serializable
 
-class Subject implements Serializable {
+internal class Subject : Serializable {
+    var name: String
+        private set
+    var room: String? = null
+        private set
+    var teacher: String? = null
+        private set
+    var notes: String? = null
+        private set
+    var color: Int
+        private set
 
-    private static final long serialVersionUID = -29238982928391L;
-
-    private String name;
-    private String room;
-    private String teacher;
-    private String notes;
-    private int color;
-
-    Subject(String name, int color, String room, String teacher, String notes){
-        this.name = name;
-        this.color = color;
-        this.room = room;
-        this.teacher = teacher;
-        this.notes = notes;
+    constructor(name: String, color: Int, room: String?, teacher: String?, notes: String?) {
+        this.name = name
+        this.color = color
+        this.room = room
+        this.teacher = teacher
+        this.notes = notes
     }
 
-    Subject(String name, int color){
-        this.name = name;
-        this.color = color;
+    constructor(name: String, color: Int) {
+        this.name = name
+        this.color = color
     }
 
-    //Getters
-    String getName(){return name;}
-    String getRoom(){return room;}
-    String getTeacher(){return teacher;}
-    String getNotes(){return notes;}
-    int getColor(){return color;}
-    boolean isNew(){return teacher == null;}
+    val isNew: Boolean
+        get() = teacher == null
 
-    //Setters
-    void markNotNew(){
-        this.teacher = "";
+    fun markNotNew() {
+        teacher = ""
+    }
+
+    companion object {
+        private const val serialVersionUID = -29238982928391L
     }
 }

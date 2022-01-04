@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     defaultConfig {
         applicationId 'juliushenke.smarttt'
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 20
         versionName '2.4.2'
         vectorDrawables.useSupportLibrary = true
@@ -16,14 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
-    return void
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.4.0'
     testImplementation 'junit:junit:4.13.1'
 
     // Color picking
@@ -33,5 +35,10 @@ dependencies {
     // Support libraries for older android versions
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

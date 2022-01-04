@@ -1,227 +1,228 @@
-package juliushenke.smarttt;
+package juliushenke.smarttt
 
-import android.content.DialogInterface;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.View
+import android.view.WindowManager
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+import juliushenke.smarttt.MainActivity.Companion.isNewSubject
+import juliushenke.smarttt.MainActivity.Companion.selectedSubject
+import juliushenke.smarttt.MainActivity.Companion.selectedHour
+import juliushenke.smarttt.model.Subject
+import petrov.kristiyan.colorpicker.ColorPicker
+import petrov.kristiyan.colorpicker.ColorPicker.OnFastChooseColorListener
+import java.io.*
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.skydoves.colorpickerview.ColorEnvelope;
-import com.skydoves.colorpickerview.ColorPickerDialog;
-import com.skydoves.colorpickerview.ColorPickerView;
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-
-import petrov.kristiyan.colorpicker.ColorPicker;
-
-import static android.graphics.Color.BLACK;
-
-public class SubjectActivity extends AppCompatActivity {
-
-    private static final Util util = new Util();
-    private int selectedColor = BLACK;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subject);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        initializeActivitySubject();
-        util.updateDesign(this, true);
-
-        EditText[] inputs = {findViewById(R.id.TF_room), findViewById(R.id.TF_teacher), findViewById(R.id.TF_notes)};
-        for (EditText input: inputs) {
-            input.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    saveSubject();
+class SubjectActivity : AppCompatActivity() {
+    private var selectedColor = Color.BLACK
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_subject)
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        initializeActivitySubject()
+        util.updateDesign(this, true)
+        val inputs = arrayOf(
+            findViewById(R.id.textViewRoom),
+            findViewById(R.id.textViewTeacher),
+            findViewById<EditText>(R.id.textViewNotes)
+        )
+        for (input in inputs) {
+            input.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
-            });
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(editable: Editable) {
+                    saveSubject()
+                }
+            })
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            return true;
+            finish()
+            return true
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event)
     }
 
-    //Voids --------------------------------------------------------------------------------
-    public void initializeActivitySubject() {
-        TextView TF_subject = findViewById(R.id.TF_subject);
-        EditText TF_room = findViewById(R.id.TF_room);
-        EditText TF_teacher = findViewById(R.id.TF_teacher);
-        EditText TF_notes = findViewById(R.id.TF_notes);
-
-        String selectedSubject = MainActivity.getSelectedSubject();
-        if (MainActivity.isNewSubject()) {
-            TF_subject.setText(selectedSubject);
-            TF_room.setText("");
-            TF_teacher.setText("");
-            TF_notes.setText("");
-            saveSubject();
-            clickB_sub_color(findViewById(R.id.B_subject_color));
-        }
-        else {
+    private fun initializeActivitySubject() {
+        val textViewSubject = findViewById<TextView>(R.id.textViewSubject)
+        val textViewRoom = findViewById<EditText>(R.id.textViewRoom)
+        val textViewTeacher = findViewById<EditText>(R.id.textViewTeacher)
+        val textViewNotes = findViewById<EditText>(R.id.textViewNotes)
+        if (isNewSubject) {
+            textViewSubject.text = selectedSubject
+            textViewRoom.setText("")
+            textViewTeacher.setText("")
+            textViewNotes.setText("")
+            saveSubject()
+            clickBtnSubjectColor(findViewById<TextView>(R.id.btnSubjectColor))
+        } else {
             try {
-                String filename = "SUBJECT-" + selectedSubject + ".srl";
-                ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                Subject subject = (Subject) input.readObject();
-
-                TF_subject.setText(subject.getName());
-                TF_room.setText(subject.getRoom());
-                TF_teacher.setText(subject.getTeacher());
-                TF_notes.setText(subject.getNotes());
-                selectedColor = subject.getColor();
-                input.close();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
+                val filename = "SUBJECT-$selectedSubject.srl"
+                val input = ObjectInputStream(
+                    FileInputStream(
+                        File(
+                            File(
+                                filesDir, ""
+                            ).toString() + File.separator + filename
+                        )
+                    )
+                )
+                val subject = input.readObject() as Subject
+                textViewSubject.text = subject.name
+                textViewRoom.setText(subject.room)
+                textViewTeacher.setText(subject.teacher)
+                textViewNotes.setText(subject.notes)
+                selectedColor = subject.color
+                input.close()
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
-        changeColorButton();
+        changeColorButton()
     }
 
-    //Clickers ---------------------------------------------------------------------------------
-    public void clickB_sub_color(View view) {
-        int[] colors = MainActivity.res.getIntArray(R.array.preset_colors);
-
-        final ColorPicker presetColorPicker = new ColorPicker(SubjectActivity.this);
+    fun clickBtnSubjectColor(view: View) {
+        val colors = resources.getIntArray(R.array.preset_colors)
+        val presetColorPicker = ColorPicker(this@SubjectActivity)
         presetColorPicker.setTitle(getString(R.string.D_editColor_preset_title))
-            .setColors(colors)
+            .setColors(*colors)
             .setDefaultColorButton(selectedColor)
             .disableDefaultButtons(true)
             .setRoundColorButton(true)
-            .setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
-                    @Override
-                    public void setOnFastChooseColorListener(int position, int color) {
-                        selectedColor = color;
-                        changeColorButton();
-                        saveSubject();
-                        presetColorPicker.dismissDialog();
-                    }
+            .setOnFastChooseColorListener(object : OnFastChooseColorListener {
+                override fun setOnFastChooseColorListener(position: Int, color: Int) {
+                    selectedColor = color
+                    changeColorButton()
+                    saveSubject()
+                    presetColorPicker.dismissDialog()
+                }
 
-                    @Override
-                    public void onCancel(){ }
+                override fun onCancel() {}
             })
-            .addListenerButton(getString(R.string.colorpicker_dialog_cancel), new ColorPicker.OnButtonListener() {
-                @Override
-                public void onClick(View v, int position, int color) {
-                    presetColorPicker.dismissDialog();
-                }
-            })
-            .addListenerButton(getString(R.string.D_editColor_custom), new ColorPicker.OnButtonListener() {
-                @Override
-                public void onClick(View v, int position, int color) {
-                    ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(SubjectActivity.this)
-                        .setTitle(getString(R.string.D_editColor_custom))
-                        .setPositiveButton(getString(R.string.colorpicker_dialog_ok),
-                                new ColorEnvelopeListener() {
-                                    @Override
-                                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
-                                        selectedColor = envelope.getColor();
-                                        System.out.println(selectedColor);
-                                        changeColorButton();
-                                        saveSubject();
-                                    }
-                                })
-                        .setNegativeButton(getString(R.string.colorpicker_dialog_cancel),
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                        .attachAlphaSlideBar(false) // the default value is true.
-                        .attachBrightnessSlideBar(true)  // the default value is true.
-                        .setBottomSpace(12);
-                    ColorPickerView colorPickerView = builder.getColorPickerView();
-                    colorPickerView.setInitialColor(selectedColor);
-                    builder.show();
-                    presetColorPicker.dismissDialog();
-                }
-            })
-            .getDialogViewLayout().findViewById(R.id.buttons_layout).setVisibility(View.VISIBLE);
-        presetColorPicker.show();
+            .addListenerButton(getString(R.string.colorpicker_dialog_cancel)) { _, _, _ -> presetColorPicker.dismissDialog() }
+            .addListenerButton(getString(R.string.D_editColor_custom)) { _, _, _ ->
+                val builder = ColorPickerDialog.Builder(this@SubjectActivity)
+                    .setTitle(getString(R.string.D_editColor_custom))
+                    .setPositiveButton(getString(R.string.colorpicker_dialog_ok),
+                        ColorEnvelopeListener { envelope, _ ->
+                            selectedColor = envelope.color
+                            println(selectedColor)
+                            changeColorButton()
+                            saveSubject()
+                        })
+                    .setNegativeButton(
+                        getString(R.string.colorpicker_dialog_cancel)
+                    ) { dialogInterface, _ -> dialogInterface.dismiss() }
+                    .attachAlphaSlideBar(false) // the default value is true.
+                    .attachBrightnessSlideBar(true) // the default value is true.
+                    .setBottomSpace(12)
+                val colorPickerView = builder.colorPickerView
+                colorPickerView.setInitialColor(selectedColor)
+                builder.show()
+                presetColorPicker.dismissDialog()
+            }
+            .dialogViewLayout.findViewById<View>(R.id.buttons_layout).visibility = View.VISIBLE
+        presetColorPicker.show()
     }
 
-    public void saveSubject() {
-        TextView TF_subject = findViewById(R.id.TF_subject);
-        EditText TF_room = findViewById(R.id.TF_room);
-        EditText TF_teacher = findViewById(R.id.TF_teacher);
-        EditText TF_notes = findViewById(R.id.TF_notes);
-
-        String name = TF_subject.getText().toString().trim();
-        String room = TF_room.getText().toString().trim();
-        String teacher = TF_teacher.getText().toString().trim();
-        String notes = TF_notes.getText().toString().trim();
-
-        Subject subject = new Subject(name, selectedColor, room, teacher, notes);
-
-        if(MainActivity.isNewSubject()){
-            int selected_hour = MainActivity.getSelected_hour();
-            if (!name.equals("") && !name.equals("+")) {
+    fun saveSubject() {
+        val textViewSubject = findViewById<TextView>(R.id.textViewSubject)
+        val textViewRoom = findViewById<EditText>(R.id.textViewRoom)
+        val textViewTeacher = findViewById<EditText>(R.id.textViewTeacher)
+        val textViewNotes = findViewById<EditText>(R.id.textViewNotes)
+        val name = textViewSubject.text.toString().trim { it <= ' ' }
+        val room = textViewRoom.text.toString().trim { it <= ' ' }
+        val teacher = textViewTeacher.text.toString().trim { it <= ' ' }
+        val notes = textViewNotes.text.toString().trim { it <= ' ' }
+        val subject = Subject(name, selectedColor, room, teacher, notes)
+        if (isNewSubject) {
+            if (name != "" && name != "+") {
                 try {
-                    String filename = "SUBJECT-" + subject.getName() + ".srl";
-                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                    out.writeObject(subject);
-                    out.close();
+                    var filename: String? = "SUBJECT-" + subject.name + ".srl"
+                    var out: ObjectOutput = ObjectOutputStream(
+                        FileOutputStream(
+                            File(
+                                filesDir, ""
+                            ).toString() + File.separator + filename
+                        )
+                    )
+                    out.writeObject(subject)
+                    out.close()
                     try {
-                        filename = util.getFilenameForDay(this);
-                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                        String[] hours = (String[]) input.readObject();
-                        input.close();
-                        hours[selected_hour] = name;
-
-                        out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                        out.writeObject(hours);
-                        out.close();
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
+                        filename = util.getFilenameForDay(this)
+                        val input = ObjectInputStream(
+                            FileInputStream(
+                                File(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                        )
+                        val hours = input.readObject() as Array<String>
+                        input.close()
+                        hours[selectedHour] = name
+                        out = ObjectOutputStream(
+                            FileOutputStream(
+                                File(
+                                    filesDir, ""
+                                ).toString() + File.separator + filename
+                            )
+                        )
+                        out.writeObject(hours)
+                        out.close()
+                    } catch (e: ClassNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
             }
-        }
-        else{
+        } else {
             try {
-                String filename = "SUBJECT-" + subject.getName() + ".srl";
-                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                out.writeObject(subject);
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                val filename = "SUBJECT-" + subject.name + ".srl"
+                val out: ObjectOutput = ObjectOutputStream(
+                    FileOutputStream(
+                        File(
+                            filesDir, ""
+                        ).toString() + File.separator + filename
+                    )
+                )
+                out.writeObject(subject)
+                out.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
     }
 
-    private void changeColorButton(){
-        Button B_subject_color = findViewById(R.id.B_subject_color);
-        GradientDrawable bgShape = (GradientDrawable) B_subject_color.getBackground().getCurrent();
-        bgShape.setColor(selectedColor);
+    private fun changeColorButton() {
+        val btnSubjectColor = findViewById<Button>(R.id.btnSubjectColor)
+        val bgShape = btnSubjectColor.background.current as GradientDrawable
+        bgShape.setColor(selectedColor)
+    }
+
+    companion object {
+        private val util = Util()
     }
 }

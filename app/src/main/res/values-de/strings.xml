@@ -70,7 +70,7 @@
     <string name="D_copyOddDay">Möchtest du diesen Tag aus der ungeraden Woche kopieren?</string>
     <string name="notes">Notizen</string>
     <string name="Switch_hour_times">Startzeiten für Stunden</string>
-    <string name="D_showHourTimes">Möchtest du Startzeiten der Stunden festlegen?</string>
+    <string name="dialogShowHourTimes">Möchtest du Startzeiten der Stunden festlegen?</string>
     <string name="dialogSubjectName">Wie heißt das Fach?</string>
     <string name="time">Zeit</string>
 </resources>

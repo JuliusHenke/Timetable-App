@@ -1,799 +1,788 @@
-package juliushenke.smarttt;
+package juliushenke.smarttt
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.os.Build;
-import android.os.Bundle;
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.os.Build
+import android.os.Bundle
+import android.text.InputType
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
+import juliushenke.smarttt.model.Subject
+import java.io.*
+import java.text.DateFormat
+import java.util.*
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-
-import android.text.InputType;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.text.DateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Locale;
-
-public class MainActivity extends AppCompatActivity {
-
-    private static final Util util = new Util();
-    public static Resources res;
-    private static int selected_day_of_week = 0;
-    private static int saved_change = 0;
-
-    private static int selected_hour = 1;
-    private static String selected_subject = "";
-
-    private static boolean newSubject = true;
-    private static boolean selected_evenWeeks = true;
-    private static boolean week_isOdd = false;
-    private static boolean editing_mode = false;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        res = getResources();
-        if (util.isFirstTimeRunning(this)) initialSetup();
-        updateActivityMain();
-        util.updateDesign(this, false);
-
-        final Button[] Bts = getHourButtons();
-
-        for (int i = 1; i <= 11; i++) {
-            Bts[i].setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    selected_subject = getButtonName(v);
-                    newSubject = selected_subject.equals("+");
-                    setActivitySubject();
-                    return true;
-                }
-            });
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        if (util.isFirstTimeRunning(this)) initialSetup()
+        updateActivityMain()
+        util.updateDesign(this, false)
+        for (i in 1..11) {
+            hourButtons[i]!!.setOnLongClickListener { v ->
+                selectedSubject = getButtonName(v)
+                isNewSubject = selectedSubject == "+"
+                setActivitySubject()
+                true
+            }
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateActivityMain();
+    public override fun onResume() {
+        super.onResume()
+        updateActivityMain()
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.menu_editMode);
-        if (editing_mode) item.setIcon(R.drawable.ic_done_white_24dp);
-        else item.setIcon(R.drawable.ic_edit_white_24dp);
-        return true;
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val item = menu.findItem(R.id.menu_editMode)
+        if (isEditingMode) item.setIcon(R.drawable.ic_done_white_24dp) else item.setIcon(R.drawable.ic_edit_white_24dp)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_editMode:
-                changeMode();
-                return true;
-
-            case R.id.menu_editSubject:
-                D_editSubject().show();
-                return true;
-
-            case R.id.menu_deleteSubject:
-                D_deleteSubject().show();
-                return true;
-
-            case R.id.menu_settings:
-                setActivitySettings();
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_editMode -> {
+                changeMode()
+                true
+            }
+            R.id.menu_editSubject -> {
+                dialogEditSubject().show()
+                true
+            }
+            R.id.menu_deleteSubject -> {
+                dialogDeleteSubject().show()
+                true
+            }
+            R.id.menu_settings -> {
+                setActivitySettings()
+                true
+            }
+            else ->                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+                super.onOptionsItemSelected(item)
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (editing_mode) changeMode();
-            else finish();
-            return true;
+            if (isEditingMode) changeMode() else finish()
+            return true
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event)
     }
 
-    //Voids --------------------------------------------------------------------------------
-    private void updateActivityMain() {
-        setDay(0);
+    private fun updateActivityMain() {
+        setDay(0)
     }
 
-    private void setActivitySettings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+    private fun setActivitySettings() {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
     }
 
-    private void setActivitySubject() {
-        Intent intent = new Intent(this, SubjectActivity.class);
-        startActivity(intent);
+    private fun setActivitySubject() {
+        val intent = Intent(this, SubjectActivity::class.java)
+        startActivity(intent)
     }
 
-    private void setDay(int shift) {
-        Settings settings = util.readSettings(this);
+    private fun setDay(shift: Int) {
+        val settings = util.readSettings(this)
 
         //Mathematical calculation of the new date
-        Calendar c = Calendar.getInstance();
-        saved_change = saved_change + shift;
-        c.add(Calendar.DAY_OF_YEAR, saved_change);
-        selected_day_of_week = getDayOfWeek(c);
-
-        int extra_change = 0;
+        val c = Calendar.getInstance()
+        savedDayChange += shift
+        c.add(Calendar.DAY_OF_YEAR, savedDayChange)
+        selectedDayOfWeek = getDayOfWeek(c)
+        var extraDayChange = 0
         //positive change - into the future
         if (0 <= shift) {
-            if (selected_day_of_week < settings.getStart_day())
-                extra_change = settings.getStart_day() - selected_day_of_week;
-            else if (selected_day_of_week > settings.getEnd_day())
-                extra_change = 7 - selected_day_of_week + settings.getStart_day();
-        }
-        //negative change - into the past
-        else {
-            if (selected_day_of_week < settings.getStart_day())
-                extra_change = -selected_day_of_week - (7 - settings.getEnd_day());
-            else if (selected_day_of_week > settings.getEnd_day())
-                extra_change = settings.getEnd_day() - selected_day_of_week;
+            if (selectedDayOfWeek < settings.start_day) extraDayChange =
+                settings.start_day - selectedDayOfWeek else if (selectedDayOfWeek > settings.end_day) extraDayChange =
+                7 - selectedDayOfWeek + settings.start_day
+        } else {
+            if (selectedDayOfWeek < settings.start_day) extraDayChange =
+                -selectedDayOfWeek - (7 - settings.end_day) else if (selectedDayOfWeek > settings.end_day) extraDayChange =
+                settings.end_day - selectedDayOfWeek
         }
         //update the Calendar
-        c.add(Calendar.DAY_OF_YEAR, extra_change);
-        saved_change = saved_change + extra_change;
+        c.add(Calendar.DAY_OF_YEAR, extraDayChange)
+        savedDayChange += extraDayChange
 
         //update the day_of_week
-        selected_day_of_week = getDayOfWeek(c);
-
-        String[] days = res.getStringArray(R.array.days);
-        TextView TV_main_day = findViewById(R.id.TV_main_day);
-        TV_main_day.setText(days[selected_day_of_week]);
-
-        Button B_main_dateLeft = findViewById(R.id.B_main_dateLeft);
-        Button B_main_dateCenter = findViewById(R.id.B_main_dateCenter);
-        Button B_main_dateRight = findViewById(R.id.B_main_dateRight);
-        Button B_main_weekType = findViewById(R.id.B_main_weekType);
-
-        int date_week = c.get(Calendar.WEEK_OF_YEAR);
-        week_isOdd = util.isIntOdd(date_week);
+        selectedDayOfWeek = getDayOfWeek(c)
+        val days = resources!!.getStringArray(R.array.days)
+        val textViewDay = findViewById<TextView>(R.id.textViewDay)
+        textViewDay.text = days[selectedDayOfWeek]
+        val btnDateLeft = findViewById<Button>(R.id.btnDateLeft)
+        val btnDateCenter = findViewById<Button>(R.id.btnDateCenter)
+        val btnDateRight = findViewById<Button>(R.id.btnDateRight)
+        val btnWeekType = findViewById<Button>(R.id.btnWeekType)
+        val dateWeek = c[Calendar.WEEK_OF_YEAR]
+        weekIsOdd = util.isIntOdd(dateWeek)
 
         //updating views of activity_main -------------------------------------------------------------------------------
-        B_main_dateLeft.setVisibility(View.VISIBLE);
-        B_main_dateRight.setVisibility(View.VISIBLE);
-        if (editing_mode) {
-            B_main_dateCenter.setVisibility(View.INVISIBLE);
-            if (selected_day_of_week == settings.getStart_day())
-                B_main_dateLeft.setVisibility(View.INVISIBLE);
-            if (selected_day_of_week == settings.getEnd_day())
-                B_main_dateRight.setVisibility(View.INVISIBLE);
-            B_main_dateCenter.setText("");
-            if (settings.getWeekSystem()) {
-                B_main_dateCenter.setVisibility(View.GONE);
-                B_main_weekType.setVisibility(View.VISIBLE);
-                if (selected_evenWeeks) {
-                    B_main_weekType.setText(R.string.Menu_evenWeek);
+        btnDateLeft.visibility = View.VISIBLE
+        btnDateRight.visibility = View.VISIBLE
+        if (isEditingMode) {
+            btnDateCenter.visibility = View.INVISIBLE
+            if (selectedDayOfWeek == settings.start_day) btnDateLeft.visibility =
+                View.INVISIBLE
+            if (selectedDayOfWeek == settings.end_day) btnDateRight.visibility =
+                View.INVISIBLE
+            btnDateCenter.text = ""
+            if (settings.weekSystem) {
+                btnDateCenter.visibility = View.GONE
+                btnWeekType.visibility = View.VISIBLE
+                if (selectedEvenWeeks) {
+                    btnWeekType.setText(R.string.Menu_evenWeek)
                 } else {
-                    B_main_weekType.setText(R.string.Menu_oddWeek);
+                    btnWeekType.setText(R.string.Menu_oddWeek)
                 }
             } else {
-                B_main_weekType.setVisibility(View.GONE);
+                btnWeekType.visibility = View.GONE
             }
         } else {
-            DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
-            String string_date = DATE_FORMAT.format(c.getTime());
-            String s = string_date + " (" + res.getString(R.string.week) + " " + date_week + ")";
-            if (settings.getShowWeek()) B_main_dateCenter.setText(s);
-            else B_main_dateCenter.setText(string_date);
-            B_main_dateCenter.setVisibility(View.VISIBLE);
-            B_main_weekType.setVisibility(View.GONE);
+            val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
+            val stringDate = dateFormat.format(c.time)
+            val s = stringDate + " (" + resources.getString(R.string.week) + " " + dateWeek + ")"
+            if (settings.showWeek) btnDateCenter.text = s else btnDateCenter.text =
+                stringDate
+            btnDateCenter.visibility = View.VISIBLE
+            btnWeekType.visibility = View.GONE
         }
-
-        final TextView[] TVs_hour = getHourLabels();
-        final Button[] Bts = getHourButtons();
-        final TextView[] TVs_room = getHourRooms();
-        final String[] hourTimes = settings.getHourTimes();
-
-        for (int i = 1; i <= 11; i++) {
-            TVs_room[i].setText("");
-            Bts[i].setTextColor(Color.BLACK);
-            Bts[i].getBackground().setColorFilter(null);
-            if (editing_mode) {
-                Bts[i].setVisibility(View.VISIBLE);
-                Bts[i].setText("+");
-                TVs_hour[i].setVisibility(View.VISIBLE);
+        val hourTimes = settings.hourTimes
+        for (i in 1..11) {
+            hourRooms[i]!!.text = ""
+            hourButtons[i]!!.setTextColor(Color.BLACK)
+            hourButtons[i]!!.background.colorFilter = null
+            if (isEditingMode) {
+                hourButtons[i]!!.visibility = View.VISIBLE
+                hourButtons[i]!!.text = "+"
+                hourLabels[i]!!.visibility = View.VISIBLE
             } else {
-                Bts[i].setVisibility(View.INVISIBLE);
-                TVs_hour[i].setVisibility(View.INVISIBLE);
+                hourButtons[i]!!.visibility = View.INVISIBLE
+                hourLabels[i]!!.visibility = View.INVISIBLE
             }
-            TVs_hour[i].setText(
-                    settings.getShowHourTimes() && hourTimes != null && i <= hourTimes.length ? hourTimes[i-1] : String.valueOf(i)
-            );
+            hourLabels[i]!!.text =
+                if (settings.showHourTimes && i <= hourTimes.size) hourTimes[i - 1] else i.toString()
         }
         try {
-            String filename = util.getFilenameForDay(this);
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-            String[] hours = (String[]) input.readObject();
-            for (int i = 1; i <= 11; i++) {
-                if (hours[i] != null && !hours[i].equals("")) {
+            var filename = util.getFilenameForDay(this)
+            var input = ObjectInputStream(
+                FileInputStream(
+                    File(
+                        File(
+                            filesDir, ""
+                        ).toString() + File.separator + filename
+                    )
+                )
+            )
+            val hours = input.readObject() as Array<String?>
+            for (i in 1..11) {
+                if (hours[i] != null && hours[i] != "") {
                     try {
-                        filename = "SUBJECT-" + hours[i] + ".srl";
-                        input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                        Subject s = (Subject) input.readObject();
+                        filename = "SUBJECT-" + hours[i] + ".srl"
+                        input = ObjectInputStream(
+                            FileInputStream(
+                                File(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                        )
+                        val s = input.readObject() as Subject
 
                         // TextViews (number/time of hour)
-                        TVs_hour[i].setVisibility(View.VISIBLE);
+                        hourLabels[i]!!.visibility = View.VISIBLE
 
                         // Buttons (subject name)
-                        Bts[i].setVisibility(View.VISIBLE);
-                        Bts[i].setText(s.getName());
-                        Bts[i].getBackground().setColorFilter(s.getColor(), PorterDuff.Mode.MULTIPLY);
-                        if (util.isColorDark(s.getColor())) Bts[i].setTextColor(Color.WHITE);
-                        else Bts[i].setTextColor(Color.BLACK);
+                        hourButtons[i]!!.visibility = View.VISIBLE
+                        hourButtons[i]!!.text = s.name
+                        hourButtons[i]!!.background.setColorFilter(s.color, PorterDuff.Mode.MULTIPLY)
+                        if (util.isColorDark(s.color)) hourButtons[i]!!
+                            .setTextColor(Color.WHITE) else hourButtons[i]!!.setTextColor(Color.BLACK)
 
                         //TextViews (subject room)
-                        if (!s.getName().equals(hours[i - 1])) TVs_room[i].setText(s.getRoom());
-                    } catch (FileNotFoundException e) {
-                        filename = util.getFilenameForDay(this);
+                        if (s.name != hours[i - 1]) hourRooms[i]!!.text = s.room
+                    } catch (e: FileNotFoundException) {
+                        filename = util.getFilenameForDay(this)
                         try {
-                            hours[i] = "";
-                            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                            out.writeObject(hours);
-                            out.close();
-                        } catch (IOException e2) {
-                            e2.printStackTrace();
+                            hours[i] = ""
+                            val out: ObjectOutput = ObjectOutputStream(
+                                FileOutputStream(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                            out.writeObject(hours)
+                            out.close()
+                        } catch (e2: IOException) {
+                            e2.printStackTrace()
                         }
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
+                        e.printStackTrace()
+                    } catch (e: ClassNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
                 }
             }
-            input.close();
-        } catch (FileNotFoundException e) {
-            String[] hours = new String[12];
-            String outputName = util.getFilenameForDay(this);
+            input.close()
+        } catch (e: FileNotFoundException) {
+            val hours = arrayOfNulls<String>(12)
+            val outputName = util.getFilenameForDay(this)
             try {
-                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + outputName));
-                out.writeObject(hours);
-                out.close();
-            } catch (IOException e1) {
-                e.printStackTrace();
+                val out: ObjectOutput = ObjectOutputStream(
+                    FileOutputStream(
+                        File(
+                            filesDir, ""
+                        ).toString() + File.separator + outputName
+                    )
+                )
+                out.writeObject(hours)
+                out.close()
+            } catch (e1: IOException) {
+                e.printStackTrace()
             }
-            if (editing_mode && settings.getWeekSystem()) D_copyDay();
-
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            if (isEditingMode && settings.weekSystem) dialogCopyDay()
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
-    private void changeMode() {
-        if (!editing_mode) {
-            editing_mode = true;
-
+    private fun changeMode() {
+        if (!isEditingMode) {
+            isEditingMode = true
         } else {
-            editing_mode = false;
-            int act_day_of_week = getDayOfWeek(Calendar.getInstance());
-            saved_change = selected_day_of_week - act_day_of_week;
+            isEditingMode = false
+            val act_day_of_week = getDayOfWeek(Calendar.getInstance())
+            savedDayChange = selectedDayOfWeek - act_day_of_week
         }
-        updateActivityMain();
-        invalidateOptionsMenu();
+        updateActivityMain()
+        invalidateOptionsMenu()
     }
 
-    private void initialSetup() {
-        changeMode();
-        setDay(8 - selected_day_of_week);
+    private fun initialSetup() {
+        changeMode()
+        setDay(8 - selectedDayOfWeek)
 
         //Setup preset subjects
         try {
-            String[] subject_names = res.getStringArray(R.array.subject_names);
-            int[] colors = res.getIntArray(R.array.preset_colors);
-            for (int i = 0; i < subject_names.length && subject_names.length <= colors.length; i++) {
-                Subject subject = new Subject(subject_names[i], colors[i]);
+            val subject_names = resources!!.getStringArray(R.array.subject_names)
+            val colors = resources!!.getIntArray(R.array.preset_colors)
+            var i = 0
+            while (i < subject_names.size && subject_names.size <= colors.size) {
+                val subject = Subject(subject_names[i], colors[i])
                 try {
-                    String filename = "SUBJECT-" + subject.getName() + ".srl";
-                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                    out.writeObject(subject);
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    val filename = "SUBJECT-" + subject.name + ".srl"
+                    val out: ObjectOutput = ObjectOutputStream(
+                        FileOutputStream(
+                            File(
+                                filesDir, ""
+                            ).toString() + File.separator + filename
+                        )
+                    )
+                    out.writeObject(subject)
+                    out.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
+                i++
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    //Clickers ---------------------------------------------------------------------------------
-    public void click_B_main_weekType(View view) {
-        Button B_main_weekType = findViewById(R.id.B_main_weekType);
-
-        PopupMenu popup = new PopupMenu(MainActivity.this, B_main_weekType);
+    fun clickBtnWeekType(view: View) {
+        val popup = PopupMenu(this@MainActivity, findViewById<Button>(R.id.btnWeekType))
         //Inflating the Popup using xml file
-        if (selected_evenWeeks)
-            popup.getMenuInflater().inflate(R.menu.menu_even_weeks, popup.getMenu());
-        else popup.getMenuInflater().inflate(R.menu.menu_odd_weeks, popup.getMenu());
+        if (selectedEvenWeeks) popup.menuInflater.inflate(
+            R.menu.menu_even_weeks,
+            popup.menu
+        ) else popup.menuInflater.inflate(R.menu.menu_odd_weeks, popup.menu)
 
         //registering popup with OnMenuItemClickListener
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.act_evenWeeks) selected_evenWeeks = true;
-                else if (item.getItemId() == R.id.act_oddWeeks) selected_evenWeeks = false;
-                updateActivityMain();
-                return true;
-            }
-        });
-
-        popup.show();
+        popup.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.act_evenWeeks) selectedEvenWeeks =
+                true else if (item.itemId == R.id.act_oddWeeks) selectedEvenWeeks = false
+            updateActivityMain()
+            true
+        }
+        popup.show()
     }
 
-    public void clickB_main_dateLeft(View view) {
-        setDay(-1);
-        updateActivityMain();
+    fun clickBtnDateLeft(view: View) {
+        setDay(-1)
+        updateActivityMain()
     }
 
-    public void clickB_main_dateCenter(View view) {
-        if (!editing_mode) saved_change = 0;
-        updateActivityMain();
+    fun clickBtnDateCenter(view: View) {
+        if (!isEditingMode) savedDayChange = 0
+        updateActivityMain()
     }
 
-    public void clickB_main_dateRight(View view) {
-        setDay(+1);
-        updateActivityMain();
+    fun clickBtnDateRight(view: View) {
+        setDay(+1)
+        updateActivityMain()
     }
 
-    public void clickB_main_editHour(View view) {
-        selected_subject = getButtonName(view);
-
-        if (view == findViewById(R.id.h1)) selected_hour = 1;
-        else if (view == findViewById(R.id.h2)) selected_hour = 2;
-        else if (view == findViewById(R.id.h3)) selected_hour = 3;
-        else if (view == findViewById(R.id.h4)) selected_hour = 4;
-        else if (view == findViewById(R.id.h5)) selected_hour = 5;
-        else if (view == findViewById(R.id.h6)) selected_hour = 6;
-        else if (view == findViewById(R.id.h7)) selected_hour = 7;
-        else if (view == findViewById(R.id.h8)) selected_hour = 8;
-        else if (view == findViewById(R.id.h9)) selected_hour = 9;
-        else if (view == findViewById(R.id.h10)) selected_hour = 10;
-        else if (view == findViewById(R.id.h11)) selected_hour = 11;
-
-        if (!editing_mode) {
-            newSubject = false;
-            setActivitySubject();
+    fun clickBtnEditHour(view: View) {
+        selectedSubject = getButtonName(view)
+        when {
+            view === findViewById<View>(R.id.h1) -> selectedHour =
+                1
+            view === findViewById<View>(R.id.h2) -> selectedHour =
+                2
+            view === findViewById<View>(R.id.h3) -> selectedHour =
+                3
+            view === findViewById<View>(R.id.h4) -> selectedHour =
+                4
+            view === findViewById<View>(R.id.h5) -> selectedHour =
+                5
+            view === findViewById<View>(R.id.h6) -> selectedHour =
+                6
+            view === findViewById<View>(R.id.h7) -> selectedHour =
+                7
+            view === findViewById<View>(R.id.h8) -> selectedHour =
+                8
+            view === findViewById<View>(R.id.h9) -> selectedHour =
+                9
+            view === findViewById<View>(R.id.h10) -> selectedHour =
+                10
+            view === findViewById<View>(R.id.h11) -> selectedHour = 11
+        }
+        if (!isEditingMode) {
+            isNewSubject = false
+            setActivitySubject()
         } else {
-            if (selected_subject.equals("+")) { //hour without subject
-                if (getSubjectNames().length > 0) {
-                    D_editEmptyHour().show();
+            if (selectedSubject == "+") { //hour without subject
+                if (readSubjectNames().isNotEmpty()) {
+                    dialogEditEmptyHour().show()
                 } else {
-                    dialogNewSubject().show();
+                    dialogNewSubject().show()
                 }
             } else { //hour with subject
-                D_editTakenHour().show();
+                dialogEditTakenHour().show()
             }
         }
     }
 
-    public void switchHourDisplay(View view) {
-        Settings settings = util.readSettings(this);
-        if (settings.getShowHourTimes()) {
-            settings.setShowHourTimes(false);
-            util.saveSettings(this, settings);
-            updateActivityMain();
-        }
-        else {
-            final String[] hourTimes = settings.getHourTimes();
-            if (hourTimes != null && hourTimes.length > 0 && hourTimes[0] != null && !hourTimes[0].equals("")) {
-                settings.setShowHourTimes(true);
-                util.saveSettings(this, settings);
-                updateActivityMain();
-            }
-            else {
-                D_showHourTimes().show();
+    fun switchHourDisplay(view: View) {
+        val settings = util.readSettings(this)
+        if (settings.showHourTimes) {
+            settings.showHourTimes = false
+            util.saveSettings(this, settings)
+            updateActivityMain()
+        } else {
+            val hourTimes = settings.hourTimes
+            if (hourTimes.isNotEmpty() && hourTimes[0] != null && hourTimes[0] != "") {
+                settings.showHourTimes = true
+                util.saveSettings(this, settings)
+                updateActivityMain()
+            } else {
+                dialogShowHourTimes().show()
             }
         }
     }
 
-    //Dialogs ---------------------------------------------------------------------------------
-    private void D_copyDay() {
-        final String outputName = util.getFilenameForDay(this);
-        String inputName = "DAY-" + selected_day_of_week + ".srl";
-        String title = res.getString(R.string.D_copyEvenDay);
-
-        if (outputName.equals("DAY-" + selected_day_of_week + ".srl")) {
-            inputName = "ODD-DAY-" + selected_day_of_week + ".srl";
-            title = res.getString(R.string.D_copyOddDay);
+    private fun dialogCopyDay() {
+        val outputName = util.getFilenameForDay(this)
+        var inputName = "DAY-$selectedDayOfWeek.srl"
+        var title = resources!!.getString(R.string.D_copyEvenDay)
+        if (outputName == "DAY-$selectedDayOfWeek.srl") {
+            inputName = "ODD-DAY-$selectedDayOfWeek.srl"
+            title = resources!!.getString(R.string.D_copyOddDay)
         }
-
-        String[] hoursTemp = new String[12];
-        boolean inputEmpty = true;
+        var hoursTemp = arrayOfNulls<String>(12)
+        var inputEmpty = true
         //read the input
         try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + inputName)));
-            hoursTemp = (String[]) input.readObject();
-            for (String s : hoursTemp) {
-                if (s != null && !s.equals("")) {
-                    inputEmpty = false;
-                    break;
+            val input = ObjectInputStream(
+                FileInputStream(
+                    File(
+                        File(
+                            filesDir, ""
+                        ).toString() + File.separator + inputName
+                    )
+                )
+            )
+            hoursTemp = input.readObject() as Array<String?>
+            for (s in hoursTemp) {
+                if (s != null && s != "") {
+                    inputEmpty = false
+                    break
                 }
             }
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        final String[] hours = hoursTemp;
-
+        val hours = hoursTemp
         if (!inputEmpty) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(title).setMessage(null).setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //overwrite the output with input
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(title).setMessage(null)
+                .setPositiveButton(R.string.Yes) { dialog, _ -> //overwrite the output with input
                     try {
-                        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + outputName));
-                        out.writeObject(hours);
-                        out.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        val out: ObjectOutput = ObjectOutputStream(
+                            FileOutputStream(
+                                File(
+                                    filesDir, ""
+                                ).toString() + File.separator + outputName
+                            )
+                        )
+                        out.writeObject(hours)
+                        out.close()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
-                    updateActivityMain();
-                    dialog.cancel();
+                    updateActivityMain()
+                    dialog.cancel()
                 }
-            }).setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            builder.create().show();
+                .setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }
+            builder.create().show()
         }
     }
 
-    private Dialog D_editEmptyHour() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] subject_names = getSubjectNames();
-        final AppCompatActivity a = this;
-
-        builder.setTitle(res.getString(R.string.D_editEmptyHour_title))
-                .setItems(subject_names, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            String filename = util.getFilenameForDay(a);
-                            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                            String[] hours = (String[]) input.readObject();
-                            input.close();
-
-                            selected_subject = subject_names[which];
-                            hours[selected_hour] = selected_subject;
-                            try {
-                                ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                                out.writeObject(hours);
-                                out.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } catch (ClassNotFoundException | IOException e) {
-                            e.printStackTrace();
-                        }
-                        dialog.cancel();
-                        try {
-                            String filename = "SUBJECT-" + selected_subject + ".srl";
-                            ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                            Subject subject = (Subject) input.readObject();
-                            input.close();
-
-                            if (subject.isNew()) {
-                                subject.markNotNew();
-                                try {
-                                    ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                                    out.writeObject(subject);
-                                    out.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                newSubject = false;
-                                setActivitySubject();
-                            }
-                        } catch (ClassNotFoundException | IOException e) {
-                            e.printStackTrace();
-                        }
-                        updateActivityMain();
-                    }
-                })
-                .setPositiveButton(res.getString(R.string.D_editEmptyHour_YES), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        dialogNewSubject().show();
-                    }
-                });
-        return builder.create();
-    }
-
-    private Dialog D_editTakenHour() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] options = {res.getString(R.string.free_period), res.getString(R.string.different_subject),  res.getString(R.string.Menu_editSubject)};
-        final AppCompatActivity a = this;
-
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    dialog.cancel();
-                    try {
-                        String filename = util.getFilenameForDay(a);
-                        ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
-                        String[] hours = (String[]) input.readObject();
-                        input.close();
-                        hours[selected_hour] = null;
-
-                        try {
-                            ObjectOutput out = new ObjectOutputStream(new FileOutputStream(new File(getFilesDir(), "") + File.separator + filename));
-                            out.writeObject(hours);
-                            out.close();
-                            updateActivityMain();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
-                    }
-                } else if (which == 1) {
-                    dialog.cancel();
-                    D_editEmptyHour().show();
-                }
-                else if (which == 2) {
-                    dialog.cancel();
-                    newSubject = false;
-                    setActivitySubject();
-                }
-            }
-        });
-        return builder.create();
-    }
-
-    private Dialog D_editSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] subject_names = getSubjectNames();
-
-        builder.setTitle(res.getString(R.string.D_editSubject_title))
-                .setItems(subject_names, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        selected_subject = subject_names[which];
-                        newSubject = false;
-                        dialog.cancel();
-                        setActivitySubject();
-                    }
-                })
-                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        return builder.create();
-    }
-
-    private Dialog D_deleteSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final String[] subject_names = getSubjectNames();
-
-        builder.setTitle(res.getString(R.string.D_deleteSubject_title))
-                .setItems(subject_names, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            File dir = getFilesDir();
-                            File file = new File(dir, "SUBJECT-" + subject_names[which] + ".srl");
-                            boolean deleted = file.delete();
-                            if (deleted)
-                                Toast.makeText(getApplicationContext(), res.getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
-                            updateActivityMain();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        return builder.create();
-    }
-
-    private Dialog D_showHourTimes() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(null)
-                .setMessage(R.string.D_showHourTimes)
-                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Settings settings = util.readSettings(MainActivity.this);
-                        settings.setShowHourTimes(true);
-                        util.saveSettings(MainActivity.this, settings);
-                        dialog.cancel();
-                        setActivitySettings();
-                    }
-                });
-        return builder.create();
-    }
-
-    private Dialog dialogNewSubject() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialogSubjectName);
-
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        }
-        builder.setView(input);
-
-        builder.setNegativeButton(R.string.colorpicker_dialog_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.setPositiveButton(R.string.colorpicker_dialog_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String subjectName = input.getText().toString();
-                if (!subjectName.equals("") && !subjectName.equals("+")) {
-                    selected_subject = subjectName;
-                    newSubject = true;
-                    setActivitySubject();
-                    dialog.cancel();
-                } else {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            MainActivity.res.getString(R.string.Toast_nameNeeded),
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
-
-        }
-        });
-
-        return builder.create();
-    }
-
-    //Getters ---------------------------------------------------------------------------------
-    private int getDayOfWeek(Calendar c) {
-        int day_of_week = c.get(Calendar.DAY_OF_WEEK) - 1;
-        if (day_of_week == -1) day_of_week = 6;
-        else if (day_of_week == 0) day_of_week = 7;
-        return day_of_week;
-    }
-
-    private String[] getSubjectNames() {
-        String[] subject_names = new String[0];
-
-        File[] files = getFilesDir().listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.startsWith("SUBJECT-");
-            }
-        });
-        if (files != null) {
-            Arrays.sort(files);
-
-            subject_names = new String[files.length];
-            for (int i = 0; i < files.length; i++) {
+    private fun dialogEditEmptyHour(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        val subjectNames = readSubjectNames()
+        val a: AppCompatActivity = this
+        builder.setTitle(resources!!.getString(R.string.D_editEmptyHour_title))
+            .setItems(subjectNames) { dialog, which ->
                 try {
-                    String filename = files[i].getName();
-                    ObjectInputStream input = new ObjectInputStream(new FileInputStream(new File(new File(getFilesDir(), "") + File.separator + filename)));
+                    val filename = util.getFilenameForDay(a)
+                    val input = ObjectInputStream(
+                        FileInputStream(
+                            File(
+                                File(
+                                    filesDir, ""
+                                ).toString() + File.separator + filename
+                            )
+                        )
+                    )
+                    val hours = input.readObject() as Array<String?>
+                    input.close()
+                    selectedSubject = subjectNames[which]
+                    hours[selectedHour] = selectedSubject
+                    try {
+                        val out: ObjectOutput = ObjectOutputStream(
+                            FileOutputStream(
+                                File(
+                                    filesDir, ""
+                                ).toString() + File.separator + filename
+                            )
+                        )
+                        out.writeObject(hours)
+                        out.close()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                } catch (e: ClassNotFoundException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                dialog.cancel()
+                try {
+                    val filename = "SUBJECT-$selectedSubject.srl"
+                    val input = ObjectInputStream(
+                        FileInputStream(
+                            File(
+                                File(
+                                    filesDir, ""
+                                ).toString() + File.separator + filename
+                            )
+                        )
+                    )
+                    val subject = input.readObject() as Subject
+                    input.close()
+                    if (subject.isNew) {
+                        subject.markNotNew()
+                        try {
+                            val out: ObjectOutput = ObjectOutputStream(
+                                FileOutputStream(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                            out.writeObject(subject)
+                            out.close()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                        isNewSubject = false
+                        setActivitySubject()
+                    }
+                } catch (e: ClassNotFoundException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                updateActivityMain()
+            }
+            .setPositiveButton(resources!!.getString(R.string.D_editEmptyHour_YES)) { dialog, _ ->
+                dialog.cancel()
+                dialogNewSubject().show()
+            }
+        return builder.create()
+    }
 
-                    Subject subject = (Subject) input.readObject();
-                    subject_names[i] = subject.getName();
-                    input.close();
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
+    private fun dialogEditTakenHour(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        val options = arrayOf(
+            resources!!.getString(R.string.free_period),
+            resources!!.getString(R.string.different_subject),
+            resources!!.getString(R.string.Menu_editSubject)
+        )
+        val a: AppCompatActivity = this
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> {
+                    dialog.cancel()
+                    try {
+                        val filename = util.getFilenameForDay(a)
+                        val input = ObjectInputStream(
+                            FileInputStream(
+                                File(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                        )
+                        val hours = input.readObject() as Array<String?>
+                        input.close()
+                        hours[selectedHour] = null
+                        try {
+                            val out: ObjectOutput = ObjectOutputStream(
+                                FileOutputStream(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                            out.writeObject(hours)
+                            out.close()
+                            updateActivityMain()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    } catch (e: ClassNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+                1 -> {
+                    dialog.cancel()
+                    dialogEditEmptyHour().show()
+                }
+                2 -> {
+                    dialog.cancel()
+                    isNewSubject = false
+                    setActivitySubject()
                 }
             }
         }
-        return subject_names;
+        return builder.create()
     }
 
-    public static int getSelected_day_of_week() {
-        return selected_day_of_week;
+    private fun dialogEditSubject(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        val subjectNames = readSubjectNames()
+        builder.setTitle(resources!!.getString(R.string.D_editSubject_title))
+            .setItems(subjectNames) { dialog, which ->
+                selectedSubject = subjectNames[which]
+                isNewSubject = false
+                dialog.cancel()
+                setActivitySubject()
+            }
+            .setNegativeButton(R.string.Cancel) { dialog, _ -> dialog.cancel() }
+        return builder.create()
     }
 
-    public static int getSelected_hour() {
-        return selected_hour;
+    private fun dialogDeleteSubject(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        val subjectNames = readSubjectNames()
+        builder.setTitle(resources!!.getString(R.string.D_deleteSubject_title))
+            .setItems(subjectNames) { dialog, which ->
+                try {
+                    val dir = filesDir
+                    val file = File(dir, "SUBJECT-" + subjectNames[which] + ".srl")
+                    val deleted = file.delete()
+                    if (deleted) Toast.makeText(
+                        applicationContext,
+                        resources!!.getString(R.string.Deleted),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    updateActivityMain()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                dialog.cancel()
+            }
+            .setNegativeButton(R.string.Cancel) { dialog, _ -> dialog.cancel() }
+        return builder.create()
     }
 
-    public static String getSelectedSubject() {
-        return selected_subject;
+    private fun dialogShowHourTimes(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(null)
+            .setMessage(R.string.dialogShowHourTimes)
+            .setNegativeButton(R.string.Cancel) { dialog, _ -> dialog.cancel() }
+            .setPositiveButton(R.string.Yes) { dialog, _ ->
+                val settings = util.readSettings(this@MainActivity)
+                settings.showHourTimes = true
+                util.saveSettings(this@MainActivity, settings)
+                dialog.cancel()
+                setActivitySettings()
+            }
+        return builder.create()
     }
 
-    public static boolean isNewSubject() {
-        return newSubject;
+    private fun dialogNewSubject(): Dialog {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.dialogSubjectName)
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            input.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        }
+        builder.setView(input)
+        builder.setNegativeButton(R.string.colorpicker_dialog_cancel) { dialog, _ -> dialog.cancel() }
+        builder.setPositiveButton(R.string.colorpicker_dialog_ok) { dialog, _ ->
+            val subjectName = input.text.toString()
+            if (subjectName != "" && subjectName != "+") {
+                selectedSubject = subjectName
+                isNewSubject = true
+                setActivitySubject()
+                dialog.cancel()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    resources!!.getString(R.string.Toast_nameNeeded),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        return builder.create()
     }
 
-    public static boolean getSelected_evenWeeks() {
-        return selected_evenWeeks;
+    private fun getDayOfWeek(c: Calendar): Int {
+        var dayOfWeek = c[Calendar.DAY_OF_WEEK] - 1
+        if (dayOfWeek == -1) dayOfWeek = 6 else if (dayOfWeek == 0) dayOfWeek = 7
+        return dayOfWeek
     }
 
-    public static boolean getWeek_isOdd() {
-        return week_isOdd;
+    private fun readSubjectNames(): Array<String?> {
+            var subjectNames = arrayOfNulls<String>(0)
+            val files = filesDir.listFiles { _, name -> name.startsWith("SUBJECT-") }
+            if (files != null) {
+                Arrays.sort(files)
+                subjectNames = arrayOfNulls(files.size)
+                for (i in files.indices) {
+                    try {
+                        val filename = files[i].name
+                        val input = ObjectInputStream(
+                            FileInputStream(
+                                File(
+                                    File(
+                                        filesDir, ""
+                                    ).toString() + File.separator + filename
+                                )
+                            )
+                        )
+                        val subject = input.readObject() as Subject
+                        subjectNames[i] = subject.name
+                        input.close()
+                    } catch (e: ClassNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            return subjectNames
+        }
+
+    private fun getButtonName(v: View): String {
+        val btn = v as Button
+        return btn.text.toString()
     }
 
-    public static boolean isEditingMode() {
-        return editing_mode;
-    }
+    private val hourLabels: Array<TextView?>
+        get() = arrayOf(
+            null,
+            findViewById(R.id.n1), findViewById(R.id.n2), findViewById(R.id.n3),
+            findViewById(R.id.n4), findViewById(R.id.n5), findViewById(R.id.n6),
+            findViewById(R.id.n7), findViewById(R.id.n8), findViewById(R.id.n9),
+            findViewById(R.id.n10), findViewById(R.id.n11)
+        )
+    private val hourButtons: Array<Button?>
+        get() =  arrayOf(
+            null,
+            findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
+            findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
+            findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
+            findViewById(R.id.h10), findViewById(R.id.h11)
+        )
+    private val hourRooms: Array<TextView?>
+        get() =  arrayOf(
+            null,
+            findViewById(R.id.r1), findViewById(R.id.r2), findViewById(R.id.r3),
+            findViewById(R.id.r4), findViewById(R.id.r5), findViewById(R.id.r6),
+            findViewById(R.id.r7), findViewById(R.id.r8), findViewById(R.id.r9),
+            findViewById(R.id.r10), findViewById(R.id.r11)
+        )
 
-    private String getButtonName(View v) {
-        Button btn = (Button) v;
-        return btn.getText().toString();
-    }
+    companion object {
+        private val util = Util()
 
-    private TextView[] getHourLabels() {
-        return new TextView[]{null,
-                findViewById(R.id.n1), findViewById(R.id.n2), findViewById(R.id.n3),
-                findViewById(R.id.n4), findViewById(R.id.n5), findViewById(R.id.n6),
-                findViewById(R.id.n7), findViewById(R.id.n8), findViewById(R.id.n9),
-                findViewById(R.id.n10), findViewById(R.id.n11)};
-    }
+        @JvmStatic
+        var selectedDayOfWeek = 0
+            private set
+        private var savedDayChange = 0
 
-    private Button[] getHourButtons() {
-        return new Button[]{null,
-                findViewById(R.id.h1), findViewById(R.id.h2), findViewById(R.id.h3),
-                findViewById(R.id.h4), findViewById(R.id.h5), findViewById(R.id.h6),
-                findViewById(R.id.h7), findViewById(R.id.h8), findViewById(R.id.h9),
-                findViewById(R.id.h10), findViewById(R.id.h11)};
-    }
+        @JvmStatic
+        var selectedHour = 1
+            private set
+        var selectedSubject: String? = ""
+            private set
+        var isNewSubject = true
+            private set
 
-    private TextView[] getHourRooms() {
-        return new TextView[]{null,
-                findViewById(R.id.r1), findViewById(R.id.r2), findViewById(R.id.r3),
-                findViewById(R.id.r4), findViewById(R.id.r5), findViewById(R.id.r6),
-                findViewById(R.id.r7), findViewById(R.id.r8), findViewById(R.id.r9),
-                findViewById(R.id.r10), findViewById(R.id.r11)};
+        @JvmStatic
+        var selectedEvenWeeks = true
+            private set
+
+        @JvmStatic
+        var weekIsOdd = false
+            private set
+        var isEditingMode = false
+            private set
     }
 }
-
-
