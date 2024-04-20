@@ -1,5 +1,7 @@
 # Smart Timetable
-This is a timetable app for android phones. It is simple and quick to setup.
+This is a timetable app for Android phones. It is easy and quick to set up.
+
+The project is no longer maintained due to time constraints. However, the latest versions of the app are still available on F-Droid or the Google Play Store.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
@@ -9,6 +11,7 @@ This is a timetable app for android phones. It is simple and quick to setup.
      height="80">](https://play.google.com/store/apps/details?id=juliushenke.smarttt)
 
 Features:
-- even/odd week detection (2 timetables)
-- savable subjects with more info
-- clean design
+- Even/odd week detection (2 timetables)
+- Custom subjects with more info
+- Data is kept completly local
+- Clean design
